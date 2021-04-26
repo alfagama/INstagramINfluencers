@@ -120,7 +120,7 @@ def initialize_scrapper():
     submit_btn_el = driver.find_element_by_css_selector("button[type='submit']")
     # we are in!.. let's wait a little! :D
     time.sleep(1)
-    # click submit!
+    # click submit!!
     submit_btn_el.click()
     # call get_comments method
     scraper.get_comments(scraper, urls_list, driver)
