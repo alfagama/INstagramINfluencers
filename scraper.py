@@ -10,6 +10,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
 from credentials import *
 
+
 class scraper():
     def get_comments(self, urls, driver, num_comment=None):
         # set def wait 15 secs
@@ -91,7 +92,6 @@ class scraper():
             self.users = []
             self.texts = []
             self.likes = []
-
 
 
 def initialize_scrapper():
