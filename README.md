@@ -1,11 +1,9 @@
 # ININ
 ### INstagramINfluencers
-Exploring the effects of fitness influencers personality on audience acceptance and motivation
-
 ----------------------------------------------------
 ## MSc Data & Web Science, Aristotle University of Thessaloniki (AUTH)
-### Course: Text Mining and Natural Language Processing
-#### Project: *“Sentiment Analysis of tweets about Covid-19 based on geolocation”*
+### Course: Web Mining
+#### Project: *“Exploring the effects of fitness influencers personality on audience acceptance and motivation”*
 ----------------------------------------------------
 **Team Members**:
 1. Georgios Arampatzis
