@@ -1,4 +1,6 @@
 import re
+import os
+import errno
 import time
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
@@ -12,7 +14,7 @@ from credentials import *
 
 
 class scraper():
-    def get_comments(self, urls, driver, num_comment=None):
+    def get_comments(self, urls, driver, name, num_comment=None):
         # set def wait 15 secs
         self.wait = WebDriverWait(driver, 15)
         self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'Fifk5')))
@@ -36,7 +38,8 @@ class scraper():
                     self.more_btn = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'dCJp8')))
                     # click for more comments (+)
                     self.more_btn.click()
-                    print('Click load more:', self.no)
+                    # counter for how many times (+) button was pressed
+                    # print('Click load more:', self.no)
                     self.no += 1
                     # comments name
                     self.b = len(driver.find_elements_by_class_name('Mr508'))
@@ -86,7 +89,8 @@ class scraper():
             print(df.head(10))
             print('export csv')
             # write to .csv -> name is content URL -> any better ideas? :P
-            df.to_csv('data/scrape_comments/{}.csv'.format(url[28:-1]), index=False)
+            url_lastname = url[28:-1]
+            df.to_csv(f'data/scrape_comments/{name}/{url_lastname}.csv', index=False)
             # clear everything for next URL
             df = df.drop(df.index, inplace=True)
             self.users = []
@@ -94,13 +98,21 @@ class scraper():
             self.likes = []
 
 
-def initialize_scrapper():
+def initialize_scrapper(name, urls):
+    # create directory for user = name
+    try:
+        os.makedirs(f'data/scrape_comments/{name}')
+        print("Created new directory for user: ", name)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
     # pass URL list -> now manually, will change later to get from crowdtangle lists (or something!?)
-    urls_list = [
-        'https://www.instagram.com/p/COHSSCOLlog/',
-        'https://www.instagram.com/p/COI4kTlFvNa/',
-        'https://www.instagram.com/p/COIU0BMMJo5/'
-    ]
+    urls_list = urls
+    # urls_list = [
+    #     'https://www.instagram.com/p/COHSSCOLlog/',
+    #     'https://www.instagram.com/p/COI4kTlFvNa/',
+    #     'https://www.instagram.com/p/COIU0BMMJo5/'
+    # ]
     # manual ChromeDriverManager()... take it or leave it! The only one I managed to use (The background one no
     # longer useful????) <- This requires now 10'' of manual labor(!) when program is ran! :/
     driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -123,4 +135,4 @@ def initialize_scrapper():
     # click submit!!
     submit_btn_el.click()
     # call get_comments method
-    scraper.get_comments(scraper, urls_list, driver)
+    scraper.get_comments(scraper, urls_list, driver, name)
