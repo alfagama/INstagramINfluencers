@@ -15,6 +15,10 @@ pd.set_option('display.max_rows', None)
 
 # get_data
 def get_influencers_names():
+    """
+    Connects to mongoDB and returns all influencers names in 'account_names'.
+    :return: account_names (list)
+    """
     # Get collection from DB
     CollectionName = 'InstagramFitnessInfluencers'
     # set collection
@@ -31,6 +35,11 @@ def get_influencers_names():
 
 
 def get_urls(name):
+    """
+    For name inserted, returns all post URLs
+    :param name: (string)
+    :return: urls: (list)
+    """
     # read csv of influencer's history
     data_set = pd.read_csv(f"data/history/{name}.csv",
                            # sep=',',

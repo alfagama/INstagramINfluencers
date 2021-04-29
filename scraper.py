@@ -14,7 +14,18 @@ from credentials import *
 
 
 class scraper():
+    """
+    Scrapper Class
+    """
     def get_comments(self, urls, driver, name, num_comment=None):
+        """
+        Writes all comments of every post in csv / mongoDB
+        :param urls: urls of posts (list)
+        :param driver: ChromeDriverManager
+        :param name: influencer name (string)
+        :param num_comment: total num of comments to use as limit (int)
+        :return: -
+        """
         # set def wait 15 secs
         self.wait = WebDriverWait(driver, 15)
         self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'Fifk5')))
@@ -99,6 +110,12 @@ class scraper():
 
 
 def initialize_scrapper(name, urls):
+    """
+    Method to initialize scrapper and call 'get_comments' for all user's posts.
+    :param name: influencer name (string)
+    :param urls: post URLs (list)
+    :return: -
+    """
     # create directory for user = name
     try:
         os.makedirs(f'data/scrape_comments/{name}')
