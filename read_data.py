@@ -19,7 +19,7 @@ def get_influencers_names():
     :return: account_names (list)
     """
     # Get collection from DB
-    CollectionName = 'InstagramFitnessInfluencers'
+    CollectionName = 'myLeaderboards'
     # set collection
     collection = db[CollectionName]
     # get data in influencers variable
