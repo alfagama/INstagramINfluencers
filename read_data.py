@@ -45,4 +45,7 @@ def get_urls(name):
                            # header=0,
                            # skiprows=0
                            )
-    return data_set['URL']
+    # return only posts from April month -> '2021-04-'
+    april_posts = data_set[data_set['Post Created'].str.match('2021-04-')]
+    print("Posts created by user: ", name, "in the month of April: ", april_posts['Post Created'].count() + 1)
+    return april_posts['URL']

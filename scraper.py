@@ -152,4 +152,4 @@ def initialize_scrapper(name, urls):
     # click submit!!
     submit_btn_el.click()
     # call get_comments method
-    scraper.get_comments(scraper, urls_list, driver, name)
+    scraper.get_comments(scraper, urls_list, driver, name, 100)  # getting only the 100 first comments!
