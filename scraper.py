@@ -136,7 +136,7 @@ def initialize_scrapper(name, urls):
     # set website URL
     url = "https://www.instagram.com"
     driver.get(url)
-    time.sleep(1)
+    time.sleep(10)
     # find username element
     username_el = driver.find_element_by_name("username")
     # pass USERNAME

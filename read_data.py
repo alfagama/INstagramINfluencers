@@ -13,7 +13,6 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
 
-# get_data
 def get_influencers_names():
     """
     Connects to mongoDB and returns all influencers names in 'account_names'.
