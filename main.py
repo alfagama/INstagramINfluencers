@@ -11,7 +11,7 @@ if __name__ == '__main__':
      ...
      influencerN_name.csv
     """
-    if os.path.isdir('data/scrape_comments'):
+    if os.path.isdir('data/scrape_comments') & os.path.isdir('data/history'):
         # get all influencers' names
         account_names = get_influencers_names()
         # for all of them get the URL posts
@@ -25,4 +25,4 @@ if __name__ == '__main__':
                 # #awesome! :D
                 initialize_scrapper(name, urls)
     else:
-        print("Directory not found!")
+        print("Needed directory/ies not found!")
