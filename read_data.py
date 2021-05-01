@@ -1,5 +1,6 @@
 import pandas as pd
 import pymongo
+import mongo
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -48,4 +49,6 @@ def get_urls(name):
     # return only posts from April month -> '2021-04-'
     april_posts = data_set[data_set['Post Created'].str.match('2021-04-')]
     print("Posts created by user: ", name, "in the month of April: ", april_posts['Post Created'].count() + 1)
+
+    mongo.update_posts(april_posts)
     return april_posts['URL']

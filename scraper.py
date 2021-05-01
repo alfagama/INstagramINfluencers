@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
 from credentials import *
+import mongo
 
 
 class scraper():
@@ -102,6 +103,9 @@ class scraper():
             # write to .csv -> name is content URL -> any better ideas? :P
             url_lastname = url[28:-1]
             df.to_csv(f'data/scrape_comments/{name}/{url_lastname}.csv', index=False)
+
+            mongo.update_comments(df, name, url)
+
             # clear everything for next URL
             df = df.drop(df.index, inplace=True)
             self.users = []
