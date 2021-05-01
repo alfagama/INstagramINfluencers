@@ -30,7 +30,7 @@ def get_influencers_names():
     # loop through all influencers
     for influencer in influencers:
         account_names.append(influencer['Codename'])
-
+    # return names from all accounts
     return account_names
 
 
@@ -49,6 +49,8 @@ def get_urls(name):
     # return only posts from April month -> '2021-04-'
     april_posts = data_set[data_set['Post Created'].str.match('2021-04-')]
     print("Posts created by user: ", name, "in the month of April: ", april_posts['Post Created'].count() + 1)
-
+    # update MongoDB for user's posts
     mongo.update_posts(april_posts)
+
+    # return URLs from selected month's posts
     return april_posts['URL']

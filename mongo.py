@@ -1,4 +1,3 @@
-import pandas as pd
 import pymongo
 
 # MongoDB
@@ -13,11 +12,6 @@ CollectionName = 'influencers'
 collection = db[CollectionName]
 
 
-# Options for pandas -----
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-
-
 def update_comments(comments, account_name, post_url):
     """
     Updates db with post's comments (deriving from scraper)
@@ -30,7 +24,6 @@ def update_comments(comments, account_name, post_url):
     """
 
     for index, comment in comments.iterrows():
-
         collection.update_one(
             {
                 'Codename': account_name,
@@ -41,8 +34,8 @@ def update_comments(comments, account_name, post_url):
                     'Posts.$.All Comments': {'user': comment['user'],
                                              'comment': comment['comment'],
                                              'like': comment['like']
-                                            }
-                   }
+                                             }
+                }
             }
         )
 
@@ -69,23 +62,23 @@ def update_posts(accounts):
             {
                 '$push': {
                     'Posts': {'Followers at Posting': post['Followers at Posting'],
-                               'Post Created': post['Post Created'],
-                               'Post Created Date': post['Post Created Date'],
-                               'Post Created Time': post['Post Created Time'],
-                               'Type': post['Type'],
-                               'Total Interactions': post['Total Interactions'],
-                               'Likes': post['Likes'],
-                               'Comments': post['Comments'],
-                               'Views': post['Views'],
-                               'URL': post['URL'],
-                               'Link': post['Link'],
-                               'Photo': post['Photo'],
-                               'Title': post['Title'],  # not
-                               'Description': post['Description'],
-                               'Image Text': post['Image Text'],
-                               'Sponsor Id': post['Sponsor Id'],
-                               'Sponsor Name': post['Sponsor Name'],
-                               'Overperforming Score': post['Overperforming Score (weighted  —  Likes 1x Comments 1x )']}
+                              'Post Created': post['Post Created'],
+                              'Post Created Date': post['Post Created Date'],
+                              'Post Created Time': post['Post Created Time'],
+                              'Type': post['Type'],
+                              'Total Interactions': post['Total Interactions'],
+                              'Likes': post['Likes'],
+                              'Comments': post['Comments'],
+                              'Views': post['Views'],
+                              'URL': post['URL'],
+                              'Link': post['Link'],
+                              'Photo': post['Photo'],
+                              'Title': post['Title'],  # not
+                              'Description': post['Description'],
+                              'Image Text': post['Image Text'],
+                              'Sponsor Id': post['Sponsor Id'],
+                              'Sponsor Name': post['Sponsor Name'],
+                              'Overperforming Score': post['Overperforming Score (weighted  —  Likes 1x Comments 1x )']}
                 }
             }
         )

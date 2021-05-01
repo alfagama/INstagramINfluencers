@@ -16,8 +16,9 @@ import mongo
 
 class scraper():
     """
-    Scrapper Class
+    Scraper Class
     """
+
     def get_comments(self, urls, driver, name, num_comment=None):
         """
         Writes all comments of every post in csv / mongoDB
@@ -77,9 +78,15 @@ class scraper():
             print('Load comments')
             self.comments = driver.find_elements_by_class_name('Mr508')
             for i in self.comments[:self.num_comment]:
-                self.user = i.text.split('\n')[0]
-                self.text = i.text.split('\n')[1]
-                self.like = i.text.split('\n')[2]
+                # i.text.replace('Verified', '')
+                if i.text.split('\n')[1] == 'Verified':
+                    self.user = i.text.split('\n')[0]
+                    self.text = i.text.split('\n')[2]
+                    self.like = i.text.split('\n')[3]
+                else:
+                    self.user = i.text.split('\n')[0]
+                    self.text = i.text.split('\n')[1]
+                    self.like = i.text.split('\n')[2]
                 # get number of likes -> maybe we will need for importance of comment!?
                 try:
                     self.like = re.findall(r'\d+', self.like)[1]
@@ -98,14 +105,12 @@ class scraper():
             df['user'] = scraper.users
             df['comment'] = scraper.texts
             df['like'] = scraper.likes
-            print(df.head(10))
-            print('export csv')
+            # print('export csv')
             # write to .csv -> name is content URL -> any better ideas? :P
             url_lastname = url[28:-1]
             df.to_csv(f'data/scrape_comments/{name}/{url_lastname}.csv', index=False)
-
+            # update MongoDB with comments of all posts
             mongo.update_comments(df, name, url)
-
             # clear everything for next URL
             df = df.drop(df.index, inplace=True)
             self.users = []
@@ -113,9 +118,9 @@ class scraper():
             self.likes = []
 
 
-def initialize_scrapper(name, urls):
+def initialize_scraper(name, urls_list):
     """
-    Method to initialize scrapper and call 'get_comments' for all user's posts.
+    Method to initialize scraper and call 'get_comments' for all user's posts.
     :param name: influencer name (string)
     :param urls: post URLs (list)
     :return: -
@@ -127,20 +132,12 @@ def initialize_scrapper(name, urls):
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-    # pass URL list -> now manually, will change later to get from crowdtangle lists (or something!?)
-    urls_list = urls
-    # urls_list = [
-    #     'https://www.instagram.com/p/COHSSCOLlog/',
-    #     'https://www.instagram.com/p/COI4kTlFvNa/',
-    #     'https://www.instagram.com/p/COIU0BMMJo5/'
-    # ]
-    # manual ChromeDriverManager()... take it or leave it! The only one I managed to use (The background one no
-    # longer useful????) <- This requires now 10'' of manual labor(!) when program is ran! :/
+    # manual ChromeDriverManager()
     driver = webdriver.Chrome(ChromeDriverManager().install())
     # set website URL
     url = "https://www.instagram.com"
     driver.get(url)
-    time.sleep(10)
+    time.sleep(4)
     # find username element
     username_el = driver.find_element_by_name("username")
     # pass USERNAME
@@ -156,4 +153,4 @@ def initialize_scrapper(name, urls):
     # click submit!!
     submit_btn_el.click()
     # call get_comments method
-    scraper.get_comments(scraper, urls_list, driver, name, 100)  # getting only the 100 first comments!
+    scraper.get_comments(scraper, urls_list, driver, name, 500)  # getting only the 100 first comments!
