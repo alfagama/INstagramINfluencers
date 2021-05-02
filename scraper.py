@@ -1,10 +1,6 @@
 import re
-import os
-import errno
 import time
 import pandas as pd
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -102,13 +98,13 @@ class scraper():
             # create DF -> new every time
             df = pd.DataFrame()
             # create cols and pass users / texts / likes
-            df['user'] = scraper.users
-            df['comment'] = scraper.texts
-            df['like'] = scraper.likes
-            # print('export csv')
-            # write to .csv -> name is content URL -> any better ideas? :P
-            url_lastname = url[28:-1]
-            df.to_csv(f'data/scrape_comments/{name}/{url_lastname}.csv', index=False)
+            df['user'] = self.users
+            df['comment'] = self.texts
+            df['like'] = self.likes
+            # # print('export csv')
+            # # write to .csv -> name is content URL -> any better ideas? :P
+            # url_lastname = url[28:-1]
+            # df.to_csv(f'data/scrape_comments/{name}/{url_lastname}.csv', index=False)
             # update MongoDB with comments of all posts
             mongo.update_comments(df, name, url)
             # clear everything for next URL
@@ -118,22 +114,11 @@ class scraper():
             self.likes = []
 
 
-def initialize_scraper(name, urls_list):
+def initialize_scraper(driver):
     """
     Method to initialize scraper and call 'get_comments' for all user's posts.
-    :param name: influencer name (string)
-    :param urls: post URLs (list)
-    :return: -
+    :param driver: ChromeDriverManager
     """
-    # create directory for user = name
-    try:
-        os.makedirs(f'data/scrape_comments/{name}')
-        print("Created new directory for user: ", name)
-    except OSError as e:
-        if e.errno != errno.EEXIST:
-            raise
-    # manual ChromeDriverManager()
-    driver = webdriver.Chrome(ChromeDriverManager().install())
     # set website URL
     url = "https://www.instagram.com"
     driver.get(url)
@@ -152,5 +137,3 @@ def initialize_scraper(name, urls_list):
     time.sleep(1)
     # click submit!!
     submit_btn_el.click()
-    # call get_comments method
-    scraper.get_comments(scraper, urls_list, driver, name, 500)  # getting only the 100 first comments!

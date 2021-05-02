@@ -1,6 +1,8 @@
 import pandas as pd
 import pymongo
 import mongo
+import os
+import errno
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -54,3 +56,18 @@ def get_urls(name):
 
     # return URLs from selected month's posts
     return april_posts['URL']
+
+
+def create_directory(name):
+    """
+    creates directory for scraped comments
+    :param name: name of directory (string)
+    :return: -
+    """
+    # create directory for user = name
+    try:
+        os.makedirs(f'data/scrape_comments/{name}')
+        print("Created new directory for user: ", name)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise

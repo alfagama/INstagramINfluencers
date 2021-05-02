@@ -23,6 +23,7 @@ def get_sentiment(comment):
     returns sentiment score
     :param comment: user comment from post (string)
     :return: sentiment_score: -1 for negative, 0 for neutral, 1 for positive (integer)
+    OR
     :return: sentiment_score: 'negative' for negative, 'neutral' for neutral, 'positive' for positive (string)
     """
     # call preprocess_comment()
