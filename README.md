@@ -12,7 +12,13 @@
 4. Leonidas Vogiatzis
 
 ----------------------------------------------------
-
 ## [Influencers List](https://docs.google.com/spreadsheets/d/1L-l74HHXwRrunIwQjSWoBb7D1PbDF-07/edit#gid=32005799)
+
+----------------------------------------------------
+Requirements:
+
+- pandas: 1.2.0
+- pymongo: 3.11.2
+- selenium: 3.141.0
 
 ----------------------------------------------------
