@@ -12,7 +12,7 @@ if __name__ == '__main__':
             urls = get_urls(name)
             # create scraper object
             scraper = scraper()
-            # call initialize_ <- this will take said list and scrape ALL comments from ALL posts!
+            # call initialize_scraper <- this will take said list and scrape ALL comments from ALL posts!
             # #awesome! :D
             initialize_scraper(name, urls)
     else:

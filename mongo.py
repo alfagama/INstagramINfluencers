@@ -7,7 +7,7 @@ client = pymongo.MongoClient(uri)
 # Import database by name
 db = client.ININ
 # Get collection from DB
-CollectionName = 'influencers'
+CollectionName = 'myLeaderboards'
 # set collection
 collection = db[CollectionName]
 
@@ -24,6 +24,7 @@ def update_comments(comments, account_name, post_url):
     """
 
     for index, comment in comments.iterrows():
+        # update collection with comments
         collection.update_one(
             {
                 'Codename': account_name,
@@ -54,7 +55,9 @@ def update_posts(accounts):
         if collection.count_documents({'Posts.URL': post['URL']}, limit=1) != 0:
             print('Post with url ', post['URL'], ' already exists')
             continue
-
+        # Get tags from all posts
+        hashtags = list({tag.strip("#") for tag in post['Description'].split() if tag.startswith("#")})
+        # update collection with posts
         collection.update_one(
             {
                 'Codename': post['User Name']
@@ -75,10 +78,12 @@ def update_posts(accounts):
                               'Photo': post['Photo'],
                               'Title': post['Title'],  # not
                               'Description': post['Description'],
+                              'Hashtags': hashtags,
                               'Image Text': post['Image Text'],
                               'Sponsor Id': post['Sponsor Id'],
                               'Sponsor Name': post['Sponsor Name'],
-                              'Overperforming Score': post['Overperforming Score (weighted  —  Likes 1x Comments 1x )']}
+                              'Overperforming Score': post['Overperforming Score (weighted  —  Likes 1x Comments 1x )']
+                              }
                 }
             }
         )
