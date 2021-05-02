@@ -1,4 +1,5 @@
 import pymongo
+from comments_sentiment import *
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -24,6 +25,8 @@ def update_comments(comments, account_name, post_url):
     """
 
     for index, comment in comments.iterrows():
+        # get sentiment score from comment
+        sentiment_score = get_sentiment(comment)
         # update collection with comments
         collection.update_one(
             {
@@ -34,7 +37,8 @@ def update_comments(comments, account_name, post_url):
                 '$push': {
                     'Posts.$.All Comments': {'user': comment['user'],
                                              'comment': comment['comment'],
-                                             'like': comment['like']
+                                             'like': comment['like'],
+                                             'sentiment_score': sentiment_score
                                              }
                 }
             }
@@ -56,6 +60,7 @@ def update_posts(accounts):
             print('Post with url ', post['URL'], ' already exists')
             continue
         # Get tags from all posts
+        # hashtags = []
         hashtags = list({tag.strip("#") for tag in post['Description'].split() if tag.startswith("#")})
         # update collection with posts
         collection.update_one(
