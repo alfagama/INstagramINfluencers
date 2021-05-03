@@ -1,4 +1,2 @@
-# USERNAME = 'awesome_username'  # 'USERNAME'
-# PASSWORD = '1234567890'  # 'PASSWORD'
-USERNAME = 'grill26627'  # 'USERNAME'
-PASSWORD = 't00dumb2live'  # 'PASSWORD'
+USERNAME = 'awesome_username'  # 'USERNAME'
+PASSWORD = '1234567890'  # 'PASSWORD'
