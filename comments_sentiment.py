@@ -9,7 +9,7 @@ sid = SentimentIntensityAnalyzer()
 
 def preprocess_comment(comment):
     """
-
+    returns comments after getting preprocessed
     :param comment:  user comment from post (string)
     :return:  preprocessed user comment from post (string)
     """
