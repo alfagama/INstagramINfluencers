@@ -13,7 +13,7 @@ def preprocess_comment(comment):
     :param comment:  user comment from post (string)
     :return:  preprocessed user comment from post (string)
     """
-    # preprocessing stage
+    # pre-processing stage
 
     return comment
 
