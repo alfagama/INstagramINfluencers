@@ -2,17 +2,12 @@ import pandas as pd
 import pymongo
 
 """!!! IMPORTANT: !!!
-1. Use this as 1st row of .csv using notepad++ :
-"timestamp","influencer","sex","age","συμπαθές","δημιουργικό","ήρεμο/συναισθηματικά ισορροπημένο", "εξωστρεφές",
-"συνοχή","εγωκεντρικό / νάρκισσος","ευέξαπτο","αξιόπιστο / σωστός επαγγελματίας","εμπιστευόμουν για 
-θέματα fitness","εμπιστευόμουν για τομέα διαφορετικό","follow","reason"
+Use this as 1st row of .csv using notepad++ :
+>>>
+"timestamp","influencer","sex","age","συμπαθές","δημιουργικό","ήρεμο/συναισθηματικά ισορροπημένο", "εξωστρεφές","συνοχή","εγωκεντρικό / νάρκισσος","ευέξαπτο","αξιόπιστο / σωστός επαγγελματίας","εμπιστευόμουν για θέματα fitness","εμπιστευόμουν για τομέα διαφορετικό","follow","reason"
+<<<
 Since MongoDB understands '1. Is this influencer..' As column named '1' with sub-level the follow-up question.
-2. Again using notepad++ replace-> 
-'(space)"' with-> '"'
-, since many people answered 'username(space)' for some reason.
-3. Run this from this file since it is not linked with the main execution.
 """
-
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -44,6 +39,7 @@ def get_influencers_names():
         account_names.append(influencer['Codename'])
     # return names from all accounts
     return account_names
+
 
 def get_questionnaire_answers():
     """
@@ -84,17 +80,26 @@ def get_questionnaire_answers():
                         "reason": influencer['reason']
                         },
                        ignore_index=True)
-
+    print(df['age'].value_counts())
     # get list of names from our own collections
     influencers_names = get_influencers_names()
     # sort values
     # df = df.sort_values(by=['influencer'])
+    # specific changes
+    df['influencer'] = df['influencer'].replace('Ronnie Coleman', 'ronniecoleman8')
+    df['influencer'] = df['influencer'].replace('flex_luis', 'flex_lewis')
+    # replace ' "' with '"'
+    df['influencer'] = df['influencer'].str.strip()
+    # lowercase
+    df['influencer'] = df['influencer'].str.lower()
     # keep only influencers inside retrieved collection
     df = df[df['influencer'].isin(influencers_names)]
     # # print whole dataframe values
     # print(df)
     # print how many times each influencer was evaluated
     print(df['influencer'].value_counts())
+
+    # print(df[['sex', 'age']])
 
 
 # get questionnaire information
