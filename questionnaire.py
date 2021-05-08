@@ -1,10 +1,11 @@
 import pandas as pd
 import pymongo
+from mongo import *
 
 """!!! IMPORTANT: !!!
 Use this as 1st row of .csv using notepad++ :
 >>>
-"timestamp","influencer","sex","age","συμπαθές","δημιουργικό","ήρεμο/συναισθηματικά ισορροπημένο", "εξωστρεφές","συνοχή","εγωκεντρικό / νάρκισσος","ευέξαπτο","αξιόπιστο / σωστός επαγγελματίας","εμπιστευόμουν για θέματα fitness","εμπιστευόμουν για τομέα διαφορετικό","follow","reason"
+"timestamp","influencer","sex","age","συμπαθές","δημιουργικό","ήρεμο/συναισθηματικά ισορροπημένο","εξωστρεφές","συνοχή","εγωκεντρικό / νάρκισσος","ευέξαπτο","αξιόπιστο / σωστός επαγγελματίας","εμπιστευόμουν για θέματα fitness","εμπιστευόμουν για τομέα διαφορετικό","follow","reason"
 <<<
 Since MongoDB understands '1. Is this influencer..' As column named '1' with sub-level the follow-up question.
 """
@@ -47,7 +48,7 @@ def get_questionnaire_answers():
     :return: -
     """
     # Get collection from DB
-    CollectionName = 'questionnaire'
+    CollectionName = 'questionnaire2'
     # set collection
     collection = db[CollectionName]
     # get data in influencers variable
@@ -99,7 +100,49 @@ def get_questionnaire_answers():
     # print how many times each influencer was evaluated
     print(df['influencer'].value_counts())
 
-    # print(df[['sex', 'age']])
+    # changes Yes and No to 1 and 0
+    yes_no_dict = {'Ναι': 1, 'Όχι': 0}
+    df = df.replace({"follow": yes_no_dict})
+
+    df.to_csv('data/complete_csv_of_all_of_my_influencers.csv')
+
+    # change datatypes to int from string
+    # print(df.dtypes)
+    df['συμπαθές'] = df['συμπαθές'].astype(str).astype(int)
+    df['δημιουργικό'] = df['δημιουργικό'].astype(str).astype(int)
+    df['ήρεμο/συναισθηματικά ισορροπημένο'] = df['ήρεμο/συναισθηματικά ισορροπημένο'].astype(str).astype(int)
+    df['εξωστρεφές'] = df['εξωστρεφές'].astype(str).astype(int)
+    df['συνοχή'] = df['συνοχή'].astype(str).astype(int)
+    df['εγωκεντρικό / νάρκισσος'] = df['εγωκεντρικό / νάρκισσος'].astype(str).astype(int)
+    df['ευέξαπτο'] = df['ευέξαπτο'].astype(str).astype(int)
+    df['αξιόπιστο / σωστός επαγγελματίας'] = df['αξιόπιστο / σωστός επαγγελματίας'].astype(str).astype(int)
+    df['εμπιστευόμουν για θέματα fitness'] = df['εμπιστευόμουν για θέματα fitness'].astype(str).astype(int)
+    df['εμπιστευόμουν για τομέα διαφορετικό'] = df['εμπιστευόμουν για τομέα διαφορετικό'].astype(str).astype(int)
+    df['follow'] = df['follow'].astype(str).astype(int)
+    # print(df.dtypes)
+
+    # get mean value for all questions 1-10 + follow probability
+    df_new = df.groupby(['influencer']).agg({'συμπαθές': 'mean',
+                                             'δημιουργικό': 'mean',
+                                             'ήρεμο/συναισθηματικά ισορροπημένο': 'mean',
+                                             'εξωστρεφές': 'mean',
+                                             'συνοχή': 'mean',
+                                             'εγωκεντρικό / νάρκισσος': 'mean',
+                                             'ευέξαπτο': 'mean',
+                                             'αξιόπιστο / σωστός επαγγελματίας': 'mean',
+                                             'εμπιστευόμουν για θέματα fitness': 'mean',
+                                             'εμπιστευόμουν για τομέα διαφορετικό': 'mean',
+                                             'follow': 'mean',
+                                             })
+
+    # print(df.head(40))
+
+    # create dataset with mean values
+    df_new.to_csv('data/dataset_with_mean_values_to_pass_to_mongodb.csv')
+
+    # pass dataframe to mongodb + skip 1st row
+    # update_questionnaire_answers(df.iloc[1:])
+    update_questionnaire_answers(df_new)
 
 
 # get questionnaire information

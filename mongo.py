@@ -92,3 +92,34 @@ def update_posts(accounts):
                 }
             }
         )
+
+
+def update_questionnaire_answers(dataframe):
+    """
+    update mongoDB with questionnaire answers
+    :param dataframe:
+    :return: -
+    """
+    # update collection with questionnaire answers
+    for index, row in dataframe.iterrows():
+
+        collection.update_one(
+            {
+                'Codename': row.index.name
+            },
+            {
+                '$push': {
+                    'likeable': row['συμπαθές'],
+                    'creative': row['δημιουργικό'],
+                    'calm': row['ήρεμο/συναισθηματικά ισορροπημένο'],
+                    'outgoing': row['εξωστρεφές'],
+                    'post_cohesion': row['συνοχή'],
+                    'self_centered': row['εγωκεντρικό / νάρκισσος'],
+                    'short_tempered': row['ευέξαπτο'],
+                    'professional': row['αξιόπιστο / σωστός επαγγελματίας'],
+                    'fitness_advice': row['εμπιστευόμουν για θέματα fitness'],
+                    'general_advice': row['εμπιστευόμουν για τομέα διαφορετικό'],
+                    'follow_probability': row['follow'],
+                }
+            }
+        )
