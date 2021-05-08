@@ -102,13 +102,12 @@ def update_questionnaire_answers(dataframe):
     """
     # update collection with questionnaire answers
     for index, row in dataframe.iterrows():
-
         collection.update_one(
             {
-                'Codename': row.index.name
+                'Codename': row.name
             },
             {
-                '$push': {
+                '$set': {
                     'likeable': row['συμπαθές'],
                     'creative': row['δημιουργικό'],
                     'calm': row['ήρεμο/συναισθηματικά ισορροπημένο'],

@@ -48,7 +48,7 @@ def get_questionnaire_answers():
     :return: -
     """
     # Get collection from DB
-    CollectionName = 'questionnaire2'
+    CollectionName = 'questionnaire'
     # set collection
     collection = db[CollectionName]
     # get data in influencers variable
@@ -81,7 +81,10 @@ def get_questionnaire_answers():
                         "reason": influencer['reason']
                         },
                        ignore_index=True)
-    print(df['age'].value_counts())
+
+    # print age groups and counts
+    # print(df['age'].value_counts())
+
     # get list of names from our own collections
     influencers_names = get_influencers_names()
     # sort values
@@ -95,10 +98,12 @@ def get_questionnaire_answers():
     df['influencer'] = df['influencer'].str.lower()
     # keep only influencers inside retrieved collection
     df = df[df['influencer'].isin(influencers_names)]
+
     # # print whole dataframe values
     # print(df)
-    # print how many times each influencer was evaluated
-    print(df['influencer'].value_counts())
+
+    # # print how many times each influencer was evaluated
+    # print(df['influencer'].value_counts())
 
     # changes Yes and No to 1 and 0
     yes_no_dict = {'Ναι': 1, 'Όχι': 0}
@@ -137,11 +142,13 @@ def get_questionnaire_answers():
 
     # print(df.head(40))
 
+    # round decimals
+    df_new = df_new.round(decimals=2)
+
     # create dataset with mean values
     df_new.to_csv('data/dataset_with_mean_values_to_pass_to_mongodb.csv')
 
-    # pass dataframe to mongodb + skip 1st row
-    # update_questionnaire_answers(df.iloc[1:])
+    # pass dataframe to mongodb
     update_questionnaire_answers(df_new)
 
 
