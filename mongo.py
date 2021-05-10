@@ -61,7 +61,10 @@ def update_posts(accounts):
             continue
         # Get tags from all posts
         # hashtags = []
-        hashtags = list({tag.strip("#") for tag in post['Description'].split() if tag.startswith("#")})
+        try:
+            hashtags = list({tag.strip("#") for tag in post['Description'].split() if tag.startswith("#")})
+        except:
+            hashtags = []
         # update collection with posts
         collection.update_one(
             {
