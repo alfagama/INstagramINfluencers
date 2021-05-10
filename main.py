@@ -28,6 +28,6 @@ if __name__ == '__main__':
             # get all URLs
             urls = get_urls(name)
             # call get_comments method
-            scraper.get_comments(scraper_name, urls, driver, name, 100)  # can add extra argument in the end for max_comments
+            scraper.get_comments(scraper_name, urls, driver, name, 500)  # can add extra argument in the end for max_comments
     else:
         print("Needed directory/ies not found!")
