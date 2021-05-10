@@ -49,14 +49,15 @@ def get_urls(name):
                            # skiprows=0
                            )
 
-    # # return only posts from April month -> '2021-04-'
-    # posts_to_scrape = data_set[data_set['Post Created'].str.match('2021-04-')]
-    # print("Posts created by user: ", name, "in the month of April: ", posts_to_scrape['Post Created'].count() + 1)
+    # return only posts from April month -> '2021-04-'
+    posts_to_scrape = data_set[data_set['Post Created'].str.match('2021-04-')]
+    posts_to_scrape = posts_to_scrape.append(data_set[data_set['Post Created'].str.match('2021-03-')])
+    print("Posts created by user: ", name, " from 1st of March to 30th of April: ", posts_to_scrape['Post Created'].count() + 1)
 
-    # return X last posts
-    num_of_posts = 25  # change to get more or less posts
-    posts_to_scrape = data_set[:num_of_posts]
-    print("Scraping last ", num_of_posts, " posts of user: ", name)
+    # # return X last posts
+    # num_of_posts = 25  # change to get more or less posts
+    # posts_to_scrape = data_set[:num_of_posts]
+    # print("Scraping last ", num_of_posts, " posts of user: ", name)
 
     # update MongoDB for user's posts
     mongo.update_posts(posts_to_scrape)
