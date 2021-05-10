@@ -92,6 +92,8 @@ def get_questionnaire_answers():
     # specific changes
     df['influencer'] = df['influencer'].replace('Ronnie Coleman', 'ronniecoleman8')
     df['influencer'] = df['influencer'].replace('flex_luis', 'flex_lewis')
+    df['influencer'] = df['influencer'].replace('willdabeast_', 'willdabeast__')
+    df['age'] = df['age'].replace('9999999999999999999999', '27')
     # replace ' "' with '"'
     df['influencer'] = df['influencer'].str.strip()
     # lowercase
