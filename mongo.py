@@ -125,3 +125,27 @@ def update_questionnaire_answers(dataframe):
                 }
             }
         )
+
+
+def update_demographics(dataframe):
+    """
+    update mongoDB with demographics (age, sex, marital status and category)
+    :param dataframe:
+    :return: -
+    """
+
+    # update collection with questionnaire answers
+    for index, row in dataframe.iterrows():
+        collection.update_one(
+            {
+                'Codename': row['username']
+            },
+            {
+                '$set': {
+                    'sex': row['sex'],
+                    'age': row['age'],
+                    'marital_status': row['marital_status'],
+                    'category': row['category']
+                }
+            }
+        )
