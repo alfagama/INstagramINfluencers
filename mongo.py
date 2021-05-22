@@ -1,5 +1,7 @@
 import pymongo
 from comments_sentiment import *
+import pandas as pd
+
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -99,8 +101,8 @@ def update_posts(accounts):
 
 def update_questionnaire_answers(dataframe):
     """
-    update mongoDB with questionnaire answers
-    :param dataframe:
+    Updates mongoDB with questionnaire answers
+    :param: -
     :return: -
     """
     # update collection with questionnaire answers
@@ -129,8 +131,8 @@ def update_questionnaire_answers(dataframe):
 
 def update_demographics(dataframe):
     """
-    update mongoDB with demographics (age, sex, marital status and category)
-    :param dataframe:
+    Updates mongoDB with demographics (age, sex, marital status and category)
+    :param: -
     :return: -
     """
 
@@ -149,3 +151,39 @@ def update_demographics(dataframe):
                 }
             }
         )
+
+
+def get_post_description():
+    """
+    Gets a dataframe with the description of posts grouped by influencer's category
+    :param: -
+    :return posts_description_df: dataframe with posts' description
+    """
+
+    print('\nLoading posts description from MongoDB..')
+
+    cursor = collection.aggregate([
+        {'$group': {'_id': '$category',
+                    'posts_description': {'$push': '$Posts.Description'}}}
+    ])
+
+    posts_description_df = pd.DataFrame(list(cursor))
+    return posts_description_df
+
+
+def get_post_comments():
+    """
+    Gets a dataframe with the comments of posts grouped by influencer's category
+    :param: -
+    :return comments_df: dataframe with posts' comments
+    """
+
+    print('\nLoading post comments from MongoDB..')
+
+    cursor = collection.aggregate([
+        {'$group': {'_id': '$category',
+                    'comments': {'$push': '$Posts.All Comments.comment'}}}
+    ])
+
+    comments_df = pd.DataFrame(list(cursor))
+    return comments_df
