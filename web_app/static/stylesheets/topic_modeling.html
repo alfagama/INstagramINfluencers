@@ -83,27 +83,40 @@
 
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-top: 2%">
 
         <div class="form-row">
             <div class="form-group col-md-2" style="margin-left: 0%;">
-                <label for="inputState"  >Distance Metric</label>
+                <label form="inputState">Influencer Category: </label>
             </div>
-            <div class="form-group col-md-4" style="margin-left: 0%;">
-                <select id="inputState" class="form-control" name="distance">
-                    <option selected="selected">Yoga</option>
-                    <option>Pilates</option>
-                    <option>Chebyshev</option>
-                    <option>Minkowski</option>
-                    <option>Cosine</option>
+            <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
+
+                <select id="category" class="form-control" name="category">
+                    <option value="todo">Body Building</option>
+                    <option value="dance">Dance</option>
+                    <option value="todo">Nutrition</option>
+                    <option value="pilates" selected="selected">Pilates</option>
+                    <option value="yoga">Yoga</option>
+                    <option value="todo">Fitness Model</option>
+                    <option value="todo">Athlete</option>
                 </select>
-            </div>
 
-        </div>
+            </form>
+         </div>
 
-        <iframe src = "Comments_LDA_Visualization_dance.html" height="800px" width="1200px" ></iframe>
+        <iframe src="Comments_LDA_Visualization_dance.html" id="myIframe" height="800px" width="1200px"></iframe>
 
     </div>
 </body>
+<script>
+    function setIframeSource() {
+        var theSelect = document.getElementById('category');
+        var theIframe = document.getElementById('myIframe');
+        var theCategory;
 
+        theCategory = theSelect.options[theSelect.selectedIndex].value;
+        theIframe.src = "visualizations/lda/Comments_LDA_Visualization_".concat(theCategory,".html");
+        //alert(theIframe.src)
+    }
+</script>
 </html>
