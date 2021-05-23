@@ -1,6 +1,4 @@
-import pandas as pd
-import pymongo
-from mongo import *
+from dataset_creation.mongo import *
 
 """!!! IMPORTANT: !!!
 Use this as 1st row of .csv using notepad++ :
@@ -105,7 +103,7 @@ def get_questionnaire_answers():
     # print(df)
 
     # # print how many times each influencer was evaluated
-    # print(df['influencer'].value_counts())
+    print(df['influencer'].value_counts())
 
     # changes Yes and No to 1 and 0
     yes_no_dict = {'Ναι': 1, 'Όχι': 0}

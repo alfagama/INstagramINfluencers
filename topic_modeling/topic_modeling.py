@@ -1,4 +1,4 @@
-from mongo import get_post_description, get_post_comments
+from dataset_creation.mongo import get_post_description, get_post_comments
 import gensim
 import re
 from gensim.models import CoherenceModel

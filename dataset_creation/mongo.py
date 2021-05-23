@@ -1,5 +1,5 @@
 import pymongo
-from comments_sentiment import *
+from dataset_creation.comments_sentiment import *
 import pandas as pd
 
 

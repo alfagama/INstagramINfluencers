@@ -1,5 +1,5 @@
-from read_data import *
-from scraper import *
+from dataset_creation.read_data import *
+from dataset_creation.scraper import *
 import os
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
@@ -7,7 +7,7 @@ from selenium import webdriver
 if __name__ == '__main__':
     # check if needed directory/ies exist!
     # if os.path.isdir('data/scrape_comments') & os.path.isdir('data/history'):
-    if os.path.isdir('data/history'):
+    if os.path.isdir('../data/history'):
         # get all influencers' names
         account_names = get_influencers_names()
         # # exclude account names
@@ -22,7 +22,10 @@ if __name__ == '__main__':
             # create_directory(name)
             # new object name for each user
             scraper_name = name
-            exec(scraper_name + f" = '{name}' ")
+            if name == "something.somethingelse":
+                scraper_name = 'does_not_matter'
+            else:
+                exec(scraper_name + f" = '{name}' ")
             # create scraper object
             scraper_name = scraper()
             # get all URLs

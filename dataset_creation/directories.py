@@ -10,7 +10,7 @@ def initialize_dirs():
     """
     # create directory for user = name
     try:
-        os.makedirs('data/history')
+        os.makedirs('../data/history')
         print("Created directory:  data/history")
     except OSError as e:
         if e.errno != errno.EEXIST:

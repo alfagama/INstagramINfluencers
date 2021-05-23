@@ -6,8 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
-from credentials import *
-import mongo
+from dataset_creation.credentials import *
+from dataset_creation import mongo
 
 
 class scraper():
@@ -28,7 +28,7 @@ class scraper():
         self.wait = WebDriverWait(driver, 15)
         self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'Fifk5')))
         # wait 10 to load -> increase if you have slow internet connection (Εγώ είμαι με 50Mbps για αναλογία!)
-        time.sleep(10)
+        time.sleep(20)
         # set empty lists (users, comments and likes)
         self.users = []
         self.texts = []
@@ -43,7 +43,7 @@ class scraper():
             self.a = 0
             while self.loop:
                 try:
-                    # (+))
+                    # (+)
                     self.more_btn = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'dCJp8')))
                     # click for more comments (+)
                     self.more_btn.click()
@@ -122,7 +122,7 @@ def initialize_scraper(driver):
     # set website URL
     url = "https://www.instagram.com"
     driver.get(url)
-    time.sleep(4)
+    time.sleep(10)
     # find username element
     username_el = driver.find_element_by_name("username")
     # pass USERNAME

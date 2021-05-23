@@ -1,6 +1,6 @@
 import pandas as pd
 import pymongo
-import mongo
+from dataset_creation import mongo
 import os
 import errno
 
