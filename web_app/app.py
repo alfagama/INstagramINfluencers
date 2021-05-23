@@ -15,8 +15,11 @@ app = Flask(__name__, template_folder='static/stylesheets')
 db = Db()
 
 
+@app.route('/wordclouds')
+def word_loud():
+    return render_template('wordclouds.html')
 # declare route # can also declare methods to accept. like -> 'GET'
-# @app.route("/", methods=['GET'])
+@app.route("/", methods=['GET'])
 @app.route("/static/stylesheets/home.html")
 def index():
     influencer_count_by_category_df = db.find_influencers_count_by_category()
