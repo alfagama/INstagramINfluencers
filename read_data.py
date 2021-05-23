@@ -98,22 +98,3 @@ def get_influencer_info():
     print(in_info.head(5))
 
     return in_info
-
-
-def get_influencer_info():
-    """
-        Connects to mongoDB and returns all influencer's info.
-        :return: in_info (dataframe)
-        """
-    # Get collection from DB
-    CollectionName = 'myLeaderboards'
-    # set collection
-    collection = db[CollectionName]
-
-    # Make a query and exclude
-    cursor = collection.find({},{"_id": 0, "Account":0, "Codename":0, "URL":0, "Posts":0})
-
-    # Expand the cursor and construct the DataFrame
-    df = pd.DataFrame(list(cursor))
-    print(df.head(5))
-    return df
