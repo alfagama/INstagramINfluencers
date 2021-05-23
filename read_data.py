@@ -83,9 +83,9 @@ def create_directory(name):
 
 def get_influencer_info():
     """
-        Connects to mongoDB and returns all influencer's info.
+        Connects to mongoDB and returns all influencers' info.
         :return: in_info (dataframe)
-        """
+    """
     # Get collection from DB
     CollectionName = 'myLeaderboards'
     collection = db[CollectionName]
