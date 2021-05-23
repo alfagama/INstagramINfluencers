@@ -90,7 +90,6 @@
                 <label form="inputState">Influencer Category: </label>
             </div>
             <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-
                 <select id="category" class="form-control" name="category">
                     <option value="todo">Body Building</option>
                     <option value="dance">Dance</option>
@@ -100,22 +99,33 @@
                     <option value="todo">Fitness Model</option>
                     <option value="todo">Athlete</option>
                 </select>
-
+            </form>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2" style="padding-left: 0%;">
+                <label form="inputState">Text Category(???): </label>
+            </div>
+            <form id="form2" method="post" class="form-group col-md-4" onchange="setIframeSource()">
+                <select id="text_category" class="form-control" name="text_category">
+                    <option value="Description">Post Description</option>
+                    <option value="Comments">Post Comments</option>
+                </select>
             </form>
          </div>
 
-        <iframe src="Comments_LDA_Visualization_dance.html" id="myIframe" height="800px" width="1200px"></iframe>
+        <iframe src="visualizations/lda/Description_LDA_Visualization_dance.html" id="myIframe" height="800px" width="1200px"></iframe>
 
     </div>
 </body>
 <script>
     function setIframeSource() {
-        var theSelect = document.getElementById('category');
+        var InfluencerFormSelect = document.getElementById('category');
+        var TextFormSelect = document.getElementById('text_category');
         var theIframe = document.getElementById('myIframe');
-        var theCategory;
+        var InfluencerCategory = InfluencerFormSelect.options[InfluencerFormSelect.selectedIndex].value;
+        var TextCategory = TextFormSelect.options[TextFormSelect.selectedIndex].value;
 
-        theCategory = theSelect.options[theSelect.selectedIndex].value;
-        theIframe.src = "visualizations/lda/Comments_LDA_Visualization_".concat(theCategory,".html");
+        theIframe.src = "visualizations/lda/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
         //alert(theIframe.src)
     }
 </script>
