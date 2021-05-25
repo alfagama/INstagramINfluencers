@@ -52,7 +52,7 @@ def preprocess_comment(comment):
                if not token.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
                if token.islower()
                ]
-
+ 
     #   We deTokenize here in order to use RE more efficinetly
     comment = TreebankWordDetokenizer().detokenize(comment)
 

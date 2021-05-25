@@ -60,7 +60,6 @@ def update_posts(accounts):
     :param accounts: dataframe with the accounts
     :return: None
     """
-
     # print(account.columns)
     for index, post in accounts.iterrows():
 
