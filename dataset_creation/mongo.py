@@ -1,5 +1,5 @@
 import pymongo
-from dataset_creation.comments_sentiment import *
+from dataset_creation.preprocess_and_sentiment import *
 import pandas as pd
 
 
@@ -25,8 +25,12 @@ def update_comments(comments, account_name, post_url):
     :param post_url: url of the post
     :return: None
     """
-
+    inc_number = 0
     for index, comment in comments.iterrows():
+        # increment + 1
+        inc_number = inc_number + 1
+        # get preprocessed comment
+        comment_no_stopwords, comment_spaces = preprocess_comment(comment)
         # get sentiment score from comment
         sentiment_score = get_sentiment(comment)
         # update collection with comments
@@ -37,8 +41,11 @@ def update_comments(comments, account_name, post_url):
             },
             {
                 '$push': {
-                    'Posts.$.All Comments': {'user': comment['user'],
+                    'Posts.$.All Comments': {'comment_id': inc_number,
+                                             'user': comment['user'],
                                              'comment': comment['comment'],
+                                             'comment_no_stopwords': comment_no_stopwords,
+                                             'comment_spaces': comment_spaces,
                                              'like': comment['like'],
                                              'sentiment_score': sentiment_score
                                              }
@@ -67,6 +74,8 @@ def update_posts(accounts):
             hashtags = list({tag.strip("#") for tag in post['Description'].split() if tag.startswith("#")})
         except:
             hashtags = []
+        # get preprocessed description
+        description_without_hashtags, description_preprocessed = preprocess_description(post['Description'])
         # update collection with posts
         collection.update_one(
             {
@@ -88,6 +97,8 @@ def update_posts(accounts):
                               'Photo': post['Photo'],
                               'Title': post['Title'],  # not
                               'Description': post['Description'],
+                              'description_without_hashtags': description_without_hashtags,
+                              'description_preprocessed': description_preprocessed,
                               'Hashtags': hashtags,
                               'Image Text': post['Image Text'],
                               'Sponsor Id': post['Sponsor Id'],
