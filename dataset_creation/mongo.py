@@ -74,7 +74,7 @@ def update_posts(accounts):
         except:
             hashtags = []
         # get preprocessed description
-        description_without_hashtags, description_preprocessed = preprocess_description(post['Description'])
+        description_without_hashtags, description_preprocessed = preprocess_description(str(post['Description']))
         # update collection with posts
         collection.update_one(
             {
