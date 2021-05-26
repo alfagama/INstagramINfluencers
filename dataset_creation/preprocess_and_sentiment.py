@@ -52,7 +52,7 @@ def preprocess_comment(comment):
                if not token.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
                if token.islower()
                ]
- 
+
     #   We deTokenize here in order to use RE more efficinetly
     comment = TreebankWordDetokenizer().detokenize(comment)
 
@@ -168,9 +168,9 @@ def get_sentiment(comment):
     :return: sentiment_score: 'negative' for negative, 'neutral' for neutral, 'positive' for positive (string)
     """
     # call preprocess_comment()
-    comment = preprocess_comment(comment)
+    # comment = preprocess_comment(comment['comment'])
     # get polarity score for comment
-    v_scores = sid.polarity_scores(comment['comment'])
+    v_scores = sid.polarity_scores(comment)
     # define sentiment score (integer)
     sentiment_score = 1 if v_scores['compound'] > 0 else -1 if v_scores['compound'] < 0 else 0
     # define sentiment score (string)

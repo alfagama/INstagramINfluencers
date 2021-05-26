@@ -26,7 +26,7 @@ def get_influencers_names():
     :return: account_names (list)
     """
     # Get collection from DB
-    CollectionName = 'myLeaderboards'
+    CollectionName = 'myLeaderboardsNew'
     # set collection
     collection = db[CollectionName]
     # get data in influencers variable
@@ -109,7 +109,7 @@ def get_questionnaire_answers():
     yes_no_dict = {'Ναι': 1, 'Όχι': 0}
     df = df.replace({"follow": yes_no_dict})
 
-    df.to_csv('data/complete_csv_of_all_of_my_influencers.csv')
+    df.to_csv('../../data/complete_csv_of_all_of_my_influencers.csv')
 
     # change datatypes to int from string
     # print(df.dtypes)
@@ -146,7 +146,7 @@ def get_questionnaire_answers():
     df_new = df_new.round(decimals=2)
 
     # create dataset with mean values
-    df_new.to_csv('data/dataset_with_mean_values_to_pass_to_mongodb.csv')
+    df_new.to_csv('../../data/dataset_with_mean_values_to_pass_to_mongodb.csv')
 
     # pass dataframe to mongodb
     update_questionnaire_answers(df_new)

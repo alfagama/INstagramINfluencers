@@ -10,7 +10,7 @@ client = pymongo.MongoClient(uri)
 # Import database by name
 db = client.ININ
 # Get collection from DB
-CollectionName = 'myLeaderboards'
+CollectionName = 'myLeaderboardsNew'
 # set collection
 collection = db[CollectionName]
 
@@ -30,9 +30,9 @@ def update_comments(comments, account_name, post_url):
         # increment + 1
         inc_number = inc_number + 1
         # get preprocessed comment
-        comment_no_stopwords, comment_spaces = preprocess_comment(comment)
+        comment_spaces, comment_no_stopwords = preprocess_comment(comment['comment'])
         # get sentiment score from comment
-        sentiment_score = get_sentiment(comment)
+        sentiment_score = get_sentiment(comment_no_stopwords)
         # update collection with comments
         collection.update_one(
             {

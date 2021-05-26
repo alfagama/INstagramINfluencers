@@ -21,16 +21,15 @@ if __name__ == '__main__':
             # # create directory for each name to store scraped comments
             # create_directory(name)
             # new object name for each user
+            name = name.replace(".", "")
             scraper_name = name
-            if name == "something.somethingelse":
-                scraper_name = 'does_not_matter'
-            else:
-                exec(scraper_name + f" = '{name}' ")
+            exec(scraper_name + f" = '{name}' ")
             # create scraper object
             scraper_name = scraper()
             # get all URLs
             urls = get_urls(name)
             # call get_comments method
-            scraper.get_comments(scraper_name, urls, driver, name, 500)  # can add extra argument in the end for max_comments
+            scraper.get_comments(scraper_name, urls, driver, name, 500)  # can add extra argument in the end for
+            # max_comments
     else:
         print("Needed directory/ies not found!")

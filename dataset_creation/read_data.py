@@ -43,7 +43,7 @@ def get_urls(name):
     :return: urls: (list)
     """
     # read csv of influencer's history
-    data_set = pd.read_csv(f"data/history/{name}.csv",
+    data_set = pd.read_csv(f"../data/history/{name}.csv",
                            # sep=',',
                            # header=0,
                            # skiprows=0
