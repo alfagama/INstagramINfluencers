@@ -106,6 +106,8 @@ def preprocess_description(description):
     # # lower text
     # description = description.lower()
     # split into tokens
+    print("description")
+    print(description)
     description = description.split()
 
     description_without_hashtags = [token for token in description
