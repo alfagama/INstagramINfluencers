@@ -22,7 +22,7 @@ def get_influencers_names():
     :return: account_names (list)
     """
     # Get collection from DB
-    CollectionName = 'myLeaderboards'
+    CollectionName = 'myLeaderboardsNew'
     # set collection
     collection = db[CollectionName]
     # get data in influencers variable
@@ -87,7 +87,7 @@ def get_influencer_info():
         :return: in_info (dataframe)
     """
     # Get collection from DB
-    CollectionName = 'myLeaderboards'
+    CollectionName = 'myLeaderboardsNew'
     collection = db[CollectionName]
 
     # Make a query and exclude columns we don't need for our model
