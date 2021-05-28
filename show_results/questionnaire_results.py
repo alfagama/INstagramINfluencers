@@ -114,7 +114,6 @@ def show_reasons(df):
 
 
     #Reasons per category
-
     follow_df.dropna(inplace=True)
     print(follow_df.shape)
 
@@ -148,7 +147,7 @@ if __name__ == '__main__':
         write_category_of_influencer_in_questionnaire()
 
     df = read_questionnaire()
-    # cluster_by_gender(df)
+    cluster_by_gender(df)
     show_reasons(df)
 
 
