@@ -93,7 +93,7 @@ def get_influencer_info():
     # Make a query and exclude columns we don't need for our model
     cursor = collection.find({},{"_id": 0, "Account":0, "Codename":0, "URL":0, "Posts":0, "sex":0, "age":0, "marital_status":0,
      "likeable":0, "creative":0, "calm":0, "outgoing":0, "post_cohesion":0, "self_centered":0, "short_tempered":0, "professional":0,
-    "fitness_advice":0, "general_advice":0})
+    "fitness_advice":0, "general_advice":0, "category":0})
 
     # Expand the cursor and construct the DataFrame
     in_info = pd.DataFrame(list(cursor))
