@@ -115,14 +115,14 @@ def make_prediction(dataset, prediction_type):
     # Scale all the data with MinMaxScaler
     # ---------------------------------------------------------------
     scaler = MinMaxScaler() #StandarScaler
-    x_train = scaler.fit_transform(x_train)
-    x_test = scaler.transform(x_test)
+    x_train_s = scaler.fit_transform(x_train)
+    x_test_s = scaler.transform(x_test)
 
     if prediction_type == 'mongo_info':
         pca = PCA(.95)
-        pca.fit(x_train)
-        x_train = pca.transform(x_train)
-        x_test = pca.transform(x_test)
+        pca.fit(x_train_s)
+        x_train_final = pca.transform(x_train_s)
+        x_test_final = pca.transform(x_test_s)
 
 
     """
@@ -130,8 +130,8 @@ def make_prediction(dataset, prediction_type):
     # ---------------------------------------------------------------
     mnb = MultinomialNB().fit(x_train, y_train)
 
-    #y_k_means_predicted = fit_predict(x_train, y_train, mnb)
-    labels = mnb.predict(x_test)
+    #y_k_means_predicted = fit_predict(x_train_final, y_train, mnb)
+    labels = mnb.predict(x_test_final)
     print("Results with MultinomialNB")
     print_scores(y_test, labels)
     print()
@@ -140,11 +140,11 @@ def make_prediction(dataset, prediction_type):
     # Logistic Regression
     # ---------------------------------------------------------------
     lr = LogisticRegression(max_iter=1000)
-    lr.fit(x_train, y_train)
+    lr.fit(x_train_final, y_train)
     print("Results with Logistic Regression")
-    labels = lr.predict(x_test)
+    labels = lr.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(lr.score(x_train, y_train)))
+    print("score on train: " + str(lr.score(x_train_final, y_train)))
     print()
     # ---------------------------------------------------------------
 
@@ -152,33 +152,33 @@ def make_prediction(dataset, prediction_type):
     # K Neighbors Classifier
     # ---------------------------------------------------------------
     knn = KNeighborsClassifier(algorithm='brute', n_jobs=-1)
-    knn.fit(x_train, y_train)
+    knn.fit(x_train_final, y_train)
     print("Results with K Neighbors Classifier")
-    labels = knn.predict(x_test)
+    labels = knn.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(knn.score(x_train, y_train)))
+    print("score on train: " + str(knn.score(x_train_final, y_train)))
     print()
     # ---------------------------------------------------------------
 
     # Support Vector Machine
     # ---------------------------------------------------------------
-    svm = LinearSVC(C=0.0001)
-    svm.fit(x_train, y_train)
+    svm = LinearSVC()
+    svm.fit(x_train_final, y_train)
     print("Results with Support Vector Machine")
-    labels = svm.predict(x_test)
+    labels = svm.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(svm.score(x_train, y_train)))
+    print("score on train: " + str(svm.score(x_train_final, y_train)))
     print()
     # ---------------------------------------------------------------
 
     # Decision Tree Classifier
     # ---------------------------------------------------------------
     clf = DecisionTreeClassifier()
-    clf.fit(x_train, y_train)
+    clf.fit(x_train_final, y_train)
     print("Results with Decision Tree Classifier")
-    labels = clf.predict(x_test)
+    labels = clf.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(clf.score(x_train, y_train)))
+    print("score on train: " + str(clf.score(x_train_final, y_train)))
     print(clf.feature_importances_)
     print()
     # ---------------------------------------------------------------
@@ -189,11 +189,11 @@ def make_prediction(dataset, prediction_type):
     # max_features: maximum of features 1=100% taken here all 10K
     # n_estimators: number of decision trees
     bg = BaggingClassifier(DecisionTreeClassifier(), max_samples=0.5, max_features=1.0, n_estimators=10)
-    bg.fit(x_train, y_train)
+    bg.fit(x_train_final, y_train)
     print("Results with Bagging Decision Tree ")
-    labels = bg.predict(x_test)
+    labels = bg.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(bg.score(x_train, y_train)))
+    print("score on train: " + str(bg.score(x_train_final, y_train)))
     print()
     # ---------------------------------------------------------------
 
@@ -202,11 +202,11 @@ def make_prediction(dataset, prediction_type):
     # ---------------------------------------------------------------
     adb = AdaBoostClassifier(DecisionTreeClassifier(min_samples_split=10, max_depth=4), n_estimators=10,
                              learning_rate=0.6)
-    adb.fit(x_train, y_train)
+    adb.fit(x_train_final, y_train)
     print("Results with Boosting Decision Tree ")
-    labels = adb.predict(x_test)
+    labels = adb.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(adb.score(x_train, y_train)))
+    print("score on train: " + str(adb.score(x_train_final, y_train)))
     print()
     # ---------------------------------------------------------------
 
@@ -214,11 +214,11 @@ def make_prediction(dataset, prediction_type):
     # ---------------------------------------------------------------
     # n_estimators = number of decision trees
     rf = RandomForestClassifier(n_estimators=30, max_depth=9)
-    rf.fit(x_train, y_train)
+    rf.fit(x_train_final, y_train)
     print("Results with Random Forest Classifier")
-    labels = rf.predict(x_test)
+    labels = rf.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(rf.score(x_train, y_train)))
+    print("score on train: " + str(rf.score(x_train_final, y_train)))
     print()
     # perform Random Forest Build-in importance
     importance = rf.feature_importances_
