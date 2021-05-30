@@ -42,7 +42,7 @@
             <li>
                 <a href="home.html">Home</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="">Statistics</a>
             </li>
             <li>
@@ -67,7 +67,7 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Topic Modeling</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="">Per Category</a>
+                        <a href="topic_modeling_per_category.html">Per Category</a>
                     </li>
                     <li>
                         <a href="#">Per Influencer</a>
@@ -80,27 +80,15 @@
 
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-top: 2%">
 
-        <div class="form-row">
-            <div class="form-group col-md-2" style="margin-left: 0%;">
-                <label for="inputState"  >Distance Metric</label>
-            </div>
-            <div class="form-group col-md-4" style="margin-left: 0%;">
-                <select id="inputState" class="form-control" name="distance">
-                    <option selected="selected">Yoga</option>
-                    <option>Pilates</option>
-                    <option>Chebyshev</option>
-                    <option>Minkowski</option>
-                    <option>Cosine</option>
-                </select>
-            </div>
-
-        </div>
-
-        <iframe src = "Comments_LDA_Visualization_uoga.html" height="800px" width="1200px" ></iframe>
+        <div id="plot_by_day"></div>
 
     </div>
 </body>
+<script>
 
+
+    Plotly.newPlot("plot_by_day", {{ graph | safe }})
+</script>
 </html>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style.css">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -39,8 +39,8 @@
         </div>
 
         <ul class="list-unstyled components">
-            <li class="active">
-                <a href="">Home</a>
+            <li>
+                <a href="home.html">Home</a>
             </li>
             <li>
                 <a href="statistics.html">Statistics</a>
@@ -51,7 +51,7 @@
             <li>
                 <a href="">Machine Learning Models</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="clustering.html">Clustering</a>
             </li>
             <li>
@@ -61,16 +61,19 @@
                 <a href="wordclouds.html">Wordclouds</a>
             </li>
             <li>
-                <a href="">About</a>
+                <a href="#">About</a>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Topic Modeling</a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="#">Per Category</a>
+                        <a href="#">Page 1</a>
                     </li>
                     <li>
-                        <a href="#">Per Influencer</a>
+                        <a href="#">Page 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
                     </li>
                 </ul>
             </li>
@@ -80,12 +83,14 @@
 
     </div>
 
-    <div class="container">
-        <div id="myPlot"></div>
-        <div id="topic"></div>
+    <div class="container" style="padding-top: 2%">
+        <div class="container">
+            <div id="number_of_hashtags"></div>
+            <div id="topic"></div>
+        </div>
     </div>
 </body>
 <script>
-    Plotly.newPlot("myPlot", {{ graph | safe }})
+    Plotly.newPlot("number_of_hashtags", {{ number_of_hashtags | safe }})
 </script>
 </html>
