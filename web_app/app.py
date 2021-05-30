@@ -26,7 +26,7 @@ def word_loud():
 @app.route("/", methods=['GET'])
 @app.route("/static/stylesheets/home.html")
 def index():
-    influencer_count_by_category_df = db.find_influencers_count_by_category()
+    influencer_count_by_category_df = db.get_influencers_count_by_category()
     #fig = px.bar(influencer_count_by_category_df, x='_id', y='count', barmode='group')
     fig = px.pie(influencer_count_by_category_df, values='count', names='_id', title='Percentage of influencers from each category')
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -35,15 +35,25 @@ def index():
 
 @app.route("/static/stylesheets/statistics.html")
 def statistics():
-    '''if request.method == "POST":
-        app.logger.warning('dfsdfdsfsdfsd')
-        category = request.form["category"]
-        app.logger.warning(category)'''
-    df = db.get_date_frequency()
-    #fig = px.line(df, x="date", y="frequency", title='Posts frequency by date')
-    fig = px.bar(df, x="date", y="frequency", title="Posts frequency by date")
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("statistics.html", graph=graphJSON)
+    day_freq_df = db.get_frequency_per_day()
+    fig = px.bar(day_freq_df, x="day", y="posts",
+                 labels={
+                     "day": "Day",
+                     "posts": "No. of posts",
+                 },
+                 title="No. of posts by day")
+    day_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    hour_freq_df = db.get_frequency_per_hour()
+    fig = px.bar(hour_freq_df, x="time", y="posts",
+                 labels={
+                     "time": "Time",
+                     "posts": "No. of posts",
+                 },
+                 title="No. of posts by hour")
+    hour_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template("statistics.html", dayGraph=day_graphJSON, hourGraph=hour_graphJSON)
 
 
 @app.route("/static/stylesheets/clustering.html")
@@ -56,7 +66,7 @@ def clustering():
             for post in influencer:
                 all_hashtags.append(post)
 
-    print(all_hashtags)
+    #print(all_hashtags)
     posts_hashtag_count = []
 
     for list in all_hashtags:
@@ -66,9 +76,14 @@ def clustering():
     counter_df = pd.DataFrame.from_dict(counter, orient='index').reset_index()
     counter_df = counter_df.rename(columns={'index': 'Number of Hashtags', 0: 'Number of Posts'})
 
-    fig = px.bar(counter_df, x="Number of Hashtags", y="Number of Posts", title="Hashtags Distribution")
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("clustering.html", number_of_hashtags=graphJSON)
+    fig = px.bar(counter_df, x="Number of Hashtags", y="Number of Posts",
+                 labels={
+                     "Number of Hashtags": "No. of hashtags",
+                     "Number of Posts": "No. of posts",
+                 },
+                 title="Hashtags Distribution")
+    number_of_hashtags_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("clustering.html", number_of_hashtags=number_of_hashtags_graphJSON)
 
 
 @app.route("/todo/<importance_val>")

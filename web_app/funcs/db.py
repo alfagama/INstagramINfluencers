@@ -30,14 +30,26 @@ class Db:
 
 
 
-    def find_influencers_count_by_category(self):
+    def get_influencers_count_by_category(self):
+        """
+        Creates a dataframe with the number of influencers by category
+        :param: -
+        :return df: dataframe with the number of influencers by category
+        """
+
         cursor = collection.aggregate([
             {'$group': {'_id': '$category', "count": {"$sum": 1}}}
         ])
         return pd.DataFrame(list(cursor))
 
 
-    def get_date_frequency(self):
+    def get_frequency_per_day(self):
+        """
+        Creates a dataframe with the number of posts by day
+        :param: -
+        :return df: dataframe with the number of posts by day
+        """
+
         cursor = collection.find({}, {'_id': 0, 'Posts.Post Created Date': 1})
 
         post_list = []
@@ -52,13 +64,13 @@ class Db:
 
         counter = collections.Counter(all_dates)  # count frequency of each date
         df = pd.DataFrame.from_dict(counter, orient='index').reset_index()  # convert conter to df
-        df.columns = ['date', 'frequency']
+        df.columns = ['day', 'posts']
         return df
 
 
     def get_post_hashtags(self):
         """
-        Gets a dataframe with the description of posts grouped by influencer's category
+        Creates a dataframe with the description of posts grouped by influencer's category
         :param: -
         :return posts_description_df: dataframe with posts' description
         """
@@ -72,3 +84,34 @@ class Db:
         posts_description_df.columns = ['category', 'hashtags']
         return posts_description_df
 
+
+    def get_frequency_per_hour(self):
+        """
+        Creates a dataframe with the number of posts by hour
+        :param: -
+        :return df: dataframe with the number of posts by hour
+        """
+
+        cursor = collection.find({}, {'_id': 0, 'Posts.Post Created Time': 1})
+
+        post_list = []
+        for element in cursor:
+            post_list.append(element['Posts'])
+
+        all_hours = []
+        for posts in post_list:  # for each influencer
+            for post in posts:  # for each post of each influencer
+                all_hours.append(post.get('Post Created Time'))
+
+        all_hours_df = pd.DataFrame({'created_at': all_hours})
+        all_hours_df['created_at'] = pd.to_datetime(all_hours_df['created_at'])
+        all_hours_df['created_at'] = all_hours_df['created_at'].dt.hour
+
+        counter = collections.Counter(all_hours_df['created_at'].tolist())  # count frequency of each date
+        df = pd.DataFrame.from_dict(counter, orient='index').reset_index()  # convert conter to df
+        df.columns = ['time', 'posts']
+
+        df = df.sort_values(by=['time'], ascending=True)
+        df['time'] = pd.to_datetime(df['time'], format='%H').dt.time
+        # print(df)
+        return df

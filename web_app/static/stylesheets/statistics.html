@@ -52,7 +52,7 @@
                 <a href="">Machine Learning Models</a>
             </li>
             <li>
-                <a href="">Clustering</a>
+                <a href="clustering.html">Clustering</a>
             </li>
             <li>
                 <a href="topic_modeling.html">Topic Modeling</a>
@@ -81,14 +81,12 @@
     </div>
 
     <div class="container" style="padding-top: 2%">
-
         <div id="plot_by_day"></div>
-
+        <div id="plot_by_hour"></div>
     </div>
 </body>
 <script>
-
-
-    Plotly.newPlot("plot_by_day", {{ graph | safe }})
+    Plotly.newPlot("plot_by_day", {{ dayGraph | safe }})
+    Plotly.newPlot("plot_by_hour", {{ hourGraph | safe }})
 </script>
 </html>
