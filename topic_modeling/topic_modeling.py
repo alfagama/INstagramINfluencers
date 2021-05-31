@@ -7,7 +7,7 @@ import pyLDAvis.gensim_models  # don't skip this
 import os
 
 
-NUM_TOPICS = 6
+NUM_TOPICS = 4
 
 
 def lda(category, influencers_text_data, text_type):
@@ -26,20 +26,21 @@ def lda(category, influencers_text_data, text_type):
     if text_type == 'Description':
         for influencer_posts in influencers_text_data:
             for post_description in influencer_posts:
-                # print(tt)
+                #print(post_description)
                 try:
-                    tokens.append(post_description.split(' '))
+                    if post_description:
+                        tokens.append(post_description.split(' '))
                 except:
                     print("An exception occurred")
     elif text_type == 'Comments':
         for influencer_posts in influencers_text_data:
             for post in influencer_posts:
                 for comment in post:
-                    # print(tt)
-                    try:
-                        tokens.append(comment.split(' '))
-                    except:
-                        print("An exception occurred")
+                    if comment:
+                        try:
+                            tokens.append(comment.split(' '))
+                        except:
+                            print("An exception occurred")
     else:
         return
 
@@ -58,6 +59,12 @@ def lda(category, influencers_text_data, text_type):
     print('\nCreating corpus..')
     corpus = [dictionary.doc2bow(token) for token in tokens]
     # ----------------------------------
+    if not corpus:
+        print("Corpus is empty " + category + " " + text_type)
+        return
+    if not dictionary:
+        print("Dictionary is empty " + category + " " + text_type)
+        return
 
 
     # LDA model
@@ -130,13 +137,39 @@ def lda(category, influencers_text_data, text_type):
     # ----------------------------------
 
 
-
 if __name__ == "__main__":
     posts_description_df = get_post_description()
+    #print(posts_description_df)
     for index, row in posts_description_df.iterrows():
-        lda(row['_id'], row['posts_description'], 'Description')
+        print(row['posts_description'])
+        #lda(row['_id'], row['posts_description'], 'Description')
 
     comments = get_post_comments()
+    #for index, row in comments.iterrows():
+        #lda(row['_id'], row['comments'], 'Comments')
+
+    # -----------------------------------------------
+    # Create LDA for all categories
+    descr_list = []
+    print(posts_description_df['posts_description'])
+    for index, row in posts_description_df.iterrows():
+        for post in row['posts_description']:
+            descr_list.append(post)
+    print(descr_list)
+
+    lda('all_categories', descr_list, 'Description')
+
+    comments_list = []
+    print(comments['comments'])
     for index, row in comments.iterrows():
-        lda(row['_id'], row['comments'], 'Comments')
+        for post in row['comments']:
+            comments_list.append(post)
+    print(descr_list)
+
+    lda('all_categories', comments_list, 'Comments')
+
+
+
+
+
 

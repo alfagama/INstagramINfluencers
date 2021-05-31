@@ -91,13 +91,14 @@
             </div>
             <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
                 <select id="category" class="form-control" name="category">
-                    <option value="todo">Body Building</option>
+                    <option value="all_categories" selected="selected">All Categories</option>
+                    <option value="body_building">Body Building</option>
                     <option value="dance">Dance</option>
-                    <option value="todo">Nutrition</option>
-                    <option value="pilates" selected="selected">Pilates</option>
+                    <option value="nutrition">Nutrition</option>
+                    <option value="pilates">Pilates</option>
                     <option value="yoga">Yoga</option>
-                    <option value="todo">Fitness Model</option>
-                    <option value="todo">Athlete</option>
+                    <option value="fitness_model">Fitness Model</option>
+                    <option value="athlete">Athlete</option>
                 </select>
             </form>
         </div>
@@ -113,7 +114,7 @@
             </form>
          </div>
 
-        <iframe src="visualizations/lda/Description_LDA_Visualization_dance.html" id="myIframe" height="800px" width="1200px"></iframe>
+        <iframe src="visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
 
     </div>
 </body>
@@ -125,8 +126,8 @@
         var InfluencerCategory = InfluencerFormSelect.options[InfluencerFormSelect.selectedIndex].value;
         var TextCategory = TextFormSelect.options[TextFormSelect.selectedIndex].value;
 
-        theIframe.src = "visualizations/lda/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
-        //alert(theIframe.src)
+        theIframe.src = "visualizations/LDA/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
+        // alert(theIframe.src)
     }
 </script>
 </html>
