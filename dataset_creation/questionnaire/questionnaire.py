@@ -1,3 +1,5 @@
+from greenlet.tests.test_throw import switch
+
 from dataset_creation.mongo import *
 
 """!!! IMPORTANT: !!!
@@ -18,6 +20,140 @@ db = client.ININ
 # Options for pandas -----
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
+
+
+# Adapted from https://gist.github.com/ShinNoNoir/4749548
+def fleiss_kappa(ratings, n):
+    '''
+    Computes the Fleiss' kappa measure for assessing the reliability of
+    agreement between a fixed number n of raters when assigning categorical
+    ratings to a number of items.
+
+    Args:
+        ratings: a list of (item, category)-ratings
+        n: number of raters
+        k: number of categories
+    Returns:
+        the Fleiss' kappa score
+
+    See also:
+        http://en.wikipedia.org/wiki/Fleiss'_kappa
+    '''
+    items = set()
+    categories = set()
+    n_ij = {}
+
+    for i, c in ratings:
+        items.add(i)
+        categories.add(c)
+        n_ij[(i, c)] = n_ij.get((i, c), 0) + 1
+
+    N = len(items)
+
+    p_j = dict(((c, sum(n_ij.get((i, c), 0) for i in items) / (1.0 * n * N)) for c in categories))
+    P_i = dict(((i, (sum(n_ij.get((i, c), 0) ** 2 for c in categories) - n) / (n * (n - 1.0))) for i in items))
+
+    P_bar = sum(P_i.values()) / (1.0 * N)
+    P_e_bar = sum(value ** 2 for value in p_j.values())
+
+    kappa = (P_bar - P_e_bar) / (1 - P_e_bar)
+    print('Fleiss Kappa result is:',kappa)
+    return kappa
+
+def preprocess_for_fleiss_kappa(df):
+    count2 = []
+    count3 = []
+    count4 = []
+    count5 = []
+    count6 = []
+    count7 = []
+
+    df_grouped = df.groupby(df['influencer'])
+
+    for name, group in df_grouped:
+        # print(name)
+        # print(len(group))
+        if (len(group)) == 2:
+            count2.append(name)
+        elif (len(group)) == 3:
+            count3.append(name)
+        elif (len(group)) == 4:
+            count4.append(name)
+        elif (len(group)) == 5:
+            count5.append(name)
+        elif (len(group)) == 6:
+            count6.append(name)
+        elif (len(group)) == 7:
+            count7.append(name)
+
+    counters = [count2, count3, count4, count5, count6, count7]
+
+    myratings = []
+    number_of_annotators = 2
+    score = []
+    for team in counters:
+        print(team)
+        counter_influencers = 1
+        rating = []
+        for name in team:
+            yes = 0
+            no = 0
+            #print(name)
+            d_specific = df.loc[df['influencer'] == name]
+            # print(group['follow'])
+            for i in d_specific['follow']:
+                # print(i)
+                if i == 'Ναι':
+                    yes += 1
+                else:
+                    no += 1
+            #print(yes)
+            #print(no)
+            rating = rating + ([(counter_influencers, 'yes')] * yes + [(counter_influencers, 'no')] * no)
+            counter_influencers += 1
+        score.append(fleiss_kappa(rating, number_of_annotators))
+        number_of_annotators += 1
+        myratings.append(rating)
+
+    print(myratings)
+    print(score)
+    print('Fleiss Kappa final result is: ',sum(score) / len(score))
+
+    """
+    myratings = []
+    counter_influencers = 1
+    for name,group in df_grouped:
+        print('name with 3', name)
+        yes = 0
+        no = 0
+        print(name)
+        print(group['follow'])
+        c = 0
+        for i in group['follow']:
+            if c <5:
+                #print(i)
+                if i=='Ναι':
+                    yes+=1
+                else:
+                    no+=1
+            else:
+                break
+            c+=1
+        print(yes)
+        print(no)
+        myratings = myratings + ([(counter_influencers,'yes')] * yes + [(counter_influencers,'no')] * no)
+        counter_influencers += 1
+    print(myratings)
+    print(type(myratings))
+    ratings = [(1, 'yes')] * 10 + [(1, 'no')] * 0 + \
+              [(2, 'yes')] * 8 + [(2, 'no')] * 2 + \
+              [(3, 'yes')] * 9 + [(3, 'no')] * 1 + \
+              [(4, 'yes')] * 0 + [(4, 'no')] * 10 + \
+              [(5, 'yes')] * 7 + [(5, 'no')] * 3
+    print(ratings)
+
+    fleiss_kappa(myratings, 3)
+    """
 
 
 def get_influencers_names():
@@ -104,6 +240,9 @@ def get_questionnaire_answers():
 
     # # print how many times each influencer was evaluated
     print(df['influencer'].value_counts())
+
+    #Calculate the fleiss_kappa score
+    preprocess_for_fleiss_kappa(df)
 
     # changes Yes and No to 1 and 0
     yes_no_dict = {'Ναι': 1, 'Όχι': 0}
