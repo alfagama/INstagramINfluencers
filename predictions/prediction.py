@@ -1,12 +1,12 @@
 import pandas as pd
 from collections import Counter
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
 from matplotlib import pyplot
@@ -87,7 +87,7 @@ def preprocess_data_from_mongo(df):
     #print(df.shape)
 
     #print(df.head(5))
-    return df;
+    return df
 
 
 def print_scores(y_true, y_pred):
@@ -109,17 +109,17 @@ def make_prediction(dataset, prediction_type):
 
     X = dataset.iloc[:, :-1].values
     y = dataset.iloc[:, -1].values
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.25, stratify=y, random_state=2)
 
 
     # Scale all the data with MinMaxScaler
     # ---------------------------------------------------------------
-    scaler = MinMaxScaler() #StandarScaler
+    scaler = StandardScaler()
     x_train_s = scaler.fit_transform(x_train)
     x_test_s = scaler.transform(x_test)
 
     if prediction_type == 'mongo_info':
-        pca = PCA(.95)
+        pca = PCA(0.95)
         pca.fit(x_train_s)
         x_train_final = pca.transform(x_train_s)
         x_test_final = pca.transform(x_test_s)
@@ -139,13 +139,14 @@ def make_prediction(dataset, prediction_type):
 
     # Logistic Regression
     # ---------------------------------------------------------------
-    lr = LogisticRegression(max_iter=1000)
-    lr.fit(x_train_final, y_train)
+    import numpy as np
+    grid = {"C": np.logspace(-3, 3, 7), "tol": [1e-2, 1e-3, 1e-4, 1e-5], "penalty": ["l1", "l2"], "solver": ["saga"], "max_iter": [5000]}
+    model = GridSearchCV(LogisticRegression(), param_grid=grid)
+    model.fit(x_train_final, y_train)
     print("Results with Logistic Regression")
-    labels = lr.predict(x_test_final)
+    labels = model.predict(x_test_final)
     print_scores(y_test, labels)
-    print("score on train: " + str(lr.score(x_train_final, y_train)))
-    print()
+    print("score on train: " + str(model.score(x_train_final, y_train)))
     # ---------------------------------------------------------------
 
 
@@ -162,7 +163,11 @@ def make_prediction(dataset, prediction_type):
 
     # Support Vector Machine
     # ---------------------------------------------------------------
-    svm = LinearSVC()
+    param_grid = {'C': [0.1, 1, 10, 100, 1000],
+                  'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+                  'kernel': ['rbf']}
+
+    svm = GridSearchCV(SVC(), param_grid)
     svm.fit(x_train_final, y_train)
     print("Results with Support Vector Machine")
     labels = svm.predict(x_test_final)
@@ -283,3 +288,5 @@ if __name__ == '__main__':
     dataset_mongo_updated = preprocess_data_from_mongo(dataset_mongo)
     dataset_mongo_updated.to_csv('prediction_info.csv', index=False)
     make_prediction(dataset_mongo_updated, 'mongo_info')
+    #df = pd.read_csv('prediction_info.csv')
+    #make_prediction(df, 'mongo_info')
