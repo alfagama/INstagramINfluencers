@@ -119,6 +119,7 @@ def plot_results():
     plt.title("Machine Learning Model Scores")
     plt.legend()
     plt.show()
+    plt.savefig('prediction_on_mongo_info.png')
 
 
 def fit_predict(x_train, x_test, model):
