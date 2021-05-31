@@ -174,7 +174,7 @@ def get_post_description():
 
     cursor = collection.aggregate([
         {'$group': {'_id': '$category',
-                    'posts_description': {'$push': '$Posts.Description'}}}
+                    'posts_description': {'$push': '$Posts.description_preprocessed'}}}
     ])
 
     posts_description_df = pd.DataFrame(list(cursor))
@@ -192,7 +192,25 @@ def get_post_comments():
 
     cursor = collection.aggregate([
         {'$group': {'_id': '$category',
-                    'comments': {'$push': '$Posts.All Comments.comment'}}}
+                    'comments': {'$push': '$Posts.All Comments.comment_no_stopwords'}}}
+    ])
+
+    comments_df = pd.DataFrame(list(cursor))
+    return comments_df
+
+
+def get_post_comments():
+    """
+    Gets a dataframe with the comments of posts grouped by influencer's category
+    :param: -
+    :return comments_df: dataframe with posts' comments
+    """
+
+    print('\nLoading post comments from MongoDB..')
+
+    cursor = collection.aggregate([
+        {'$group': {'_id': '$category',
+                    'comments': {'$push': '$Posts.All Comments.comment_no_stopwords'}}}
     ])
 
     comments_df = pd.DataFrame(list(cursor))
