@@ -10,11 +10,12 @@ from sklearn.svm import LinearSVC, SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
 from matplotlib import pyplot
-#from dataset_creation import read_data
+from dataset_creation import read_data
 from pandas.api.types import is_string_dtype
 from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
+import os.path
 
 
 # Options for pandas -----
@@ -285,12 +286,15 @@ if __name__ == '__main__':
 
     # Make prediction on the crowdtangle's info
     print("Machine learning methods: Crowdtangle")
-    #dataset_mongo = read_data.get_influencer_info()
-    #dataset_mongo_updated = preprocess_data_from_mongo(dataset_mongo)
-    #dataset_mongo_updated.to_csv('prediction_info.csv', index=False)
-    #make_prediction(dataset_mongo_updated, 'mongo_info')
-    df = pd.read_csv('prediction_info.csv')
-    make_prediction(df, 'mongo_info')
+    if os.path.isfile('prediction_info.csv'):
+        dataset_mongo_updated = pd.read_csv("prediction_info.csv")
+        pass
+    elif os.path.isfile('questionnaire.csv'):
+        dataset_mongo = read_data.get_influencer_info()
+        dataset_mongo_updated = preprocess_data_from_mongo(dataset_mongo)
+        dataset_mongo_updated.to_csv('prediction_info.csv', index=False)
+
+    make_prediction(dataset_mongo_updated, 'mongo_info')
     plot_results("crowdtangle")
     
 
