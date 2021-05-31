@@ -1,5 +1,3 @@
-from greenlet.tests.test_throw import switch
-
 from dataset_creation.mongo import *
 
 """!!! IMPORTANT: !!!
