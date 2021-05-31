@@ -13,9 +13,9 @@ from matplotlib import pyplot
 from dataset_creation import read_data
 from pandas.api.types import is_string_dtype
 from sklearn.decomposition import PCA
+import numpy as np
+import matplotlib.pyplot as plt
 
-#from dataset.dataset_methods import split_df_train_test
-#from keras import layers, models, optimizers, losses, metrics
 
 # Options for pandas -----
 pd.set_option('display.max_columns', None)
@@ -26,6 +26,7 @@ accuracy = []
 precision = []
 recall = []
 f1 = []
+model_names = []
 
 def read_data_from_questionnaire():
     # reads data/category_columns_dataset.csv
@@ -85,12 +86,12 @@ def preprocess_data_from_mongo(df):
     # ---------------------------------------------------------------
     df.dropna(inplace=True)
     #print(df.shape)
-
     #print(df.head(5))
     return df
 
 
-def print_scores(y_true, y_pred):
+def print_scores(y_true, y_pred, model_name):
+    print("Results with ",model_name)
     print("Accuracy: {:.5f}".format(metrics.accuracy_score(y_true, y_pred)))
     print("Precision: {:.5f}".format(metrics.precision_score(y_true, y_pred)))
     print("Recall: {:.5f}".format(metrics.recall_score(y_true, y_pred)))
@@ -99,22 +100,43 @@ def print_scores(y_true, y_pred):
     precision.append(metrics.precision_score(y_true, y_pred))
     recall.append(metrics.recall_score(y_true, y_pred))
     f1.append(metrics.f1_score(y_true, y_pred))
+    model_names.append(model_name)
+
+def plot_results():
+
+    x = np.arange(len(model_names))
+    width = 0.2  # the width of the bars
+    X_axis = np.arange(len(model_names))
+
+    plt.bar(X_axis - 0.3, accuracy, width, label='Accuracy', color='red')
+    plt.bar(X_axis - 0.1, precision, width, label='Precision', color='purple')
+    plt.bar(X_axis + 0.1, recall, width, label='Recall')
+    plt.bar(X_axis + 0.3, f1, width, label='F1')
+
+    plt.xticks(X_axis, model_names)
+    plt.xlabel("Models")
+    plt.ylabel("Scores")
+    plt.title("Machine Learning Model Scores")
+    plt.legend()
+    plt.show()
+
 
 def fit_predict(x_train, x_test, model):
     model.fit(x_train)
     y_predicted = model.predict(x_test)
     return y_predicted
 
+
 def make_prediction(dataset, prediction_type):
 
     X = dataset.iloc[:, :-1].values
     y = dataset.iloc[:, -1].values
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.25, stratify=y, random_state=2)
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=2)
 
 
     # Scale all the data with MinMaxScaler
     # ---------------------------------------------------------------
-    scaler = StandardScaler()
+    scaler = MinMaxScaler()
     x_train_s = scaler.fit_transform(x_train)
     x_test_s = scaler.transform(x_test)
 
@@ -132,21 +154,19 @@ def make_prediction(dataset, prediction_type):
 
     #y_k_means_predicted = fit_predict(x_train_final, y_train, mnb)
     labels = mnb.predict(x_test_final)
-    print("Results with MultinomialNB")
-    print_scores(y_test, labels)
-    print()
+    
+    print_scores(y_test, labels, "MultinomialNB")
+    print("score on train: ", mnb(model.score(x_train_final, y_train)), "\n")
     """
 
     # Logistic Regression
     # ---------------------------------------------------------------
-    import numpy as np
     grid = {"C": np.logspace(-3, 3, 7), "tol": [1e-2, 1e-3, 1e-4, 1e-5], "penalty": ["l1", "l2"], "solver": ["saga"], "max_iter": [5000]}
     model = GridSearchCV(LogisticRegression(), param_grid=grid)
     model.fit(x_train_final, y_train)
-    print("Results with Logistic Regression")
-    labels = model.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(model.score(x_train_final, y_train)))
+    y_predicted = model.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Logistic Regression")
+    print("score on train: ", str(model.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
 
 
@@ -154,11 +174,9 @@ def make_prediction(dataset, prediction_type):
     # ---------------------------------------------------------------
     knn = KNeighborsClassifier(algorithm='brute', n_jobs=-1)
     knn.fit(x_train_final, y_train)
-    print("Results with K Neighbors Classifier")
-    labels = knn.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(knn.score(x_train_final, y_train)))
-    print()
+    y_predicted = knn.predict(x_test_final)
+    print_scores(y_test, y_predicted, "K Neighbors Classifier")
+    print("score on train: ", str(knn.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
 
     # Support Vector Machine
@@ -166,26 +184,21 @@ def make_prediction(dataset, prediction_type):
     param_grid = {'C': [0.1, 1, 10, 100, 1000],
                   'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
                   'kernel': ['rbf']}
-
     svm = GridSearchCV(SVC(), param_grid)
     svm.fit(x_train_final, y_train)
-    print("Results with Support Vector Machine")
-    labels = svm.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(svm.score(x_train_final, y_train)))
-    print()
+    y_predicted = svm.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Support Vector Machine")
+    print("score on train: " + str(svm.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
 
     # Decision Tree Classifier
     # ---------------------------------------------------------------
     clf = DecisionTreeClassifier()
     clf.fit(x_train_final, y_train)
-    print("Results with Decision Tree Classifier")
-    labels = clf.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(clf.score(x_train_final, y_train)))
+    y_predicted = clf.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Decision Tree Classifier")
+    print("score on train: " + str(clf.score(x_train_final, y_train)), "\n")
     print(clf.feature_importances_)
-    print()
     # ---------------------------------------------------------------
 
     # Bagging Decision Tree
@@ -195,11 +208,9 @@ def make_prediction(dataset, prediction_type):
     # n_estimators: number of decision trees
     bg = BaggingClassifier(DecisionTreeClassifier(), max_samples=0.5, max_features=1.0, n_estimators=10)
     bg.fit(x_train_final, y_train)
-    print("Results with Bagging Decision Tree ")
-    labels = bg.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(bg.score(x_train_final, y_train)))
-    print()
+    y_predicted = bg.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Bagging Decision Tree")
+    print("score on train: " + str(bg.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
 
 
@@ -208,11 +219,9 @@ def make_prediction(dataset, prediction_type):
     adb = AdaBoostClassifier(DecisionTreeClassifier(min_samples_split=10, max_depth=4), n_estimators=10,
                              learning_rate=0.6)
     adb.fit(x_train_final, y_train)
-    print("Results with Boosting Decision Tree ")
-    labels = adb.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(adb.score(x_train_final, y_train)))
-    print()
+    y_predicted = adb.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Boosting Decision Tree")
+    print("score on train: " + str(adb.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
 
     # Random Forest Classifier
@@ -220,11 +229,10 @@ def make_prediction(dataset, prediction_type):
     # n_estimators = number of decision trees
     rf = RandomForestClassifier(n_estimators=30, max_depth=9)
     rf.fit(x_train_final, y_train)
-    print("Results with Random Forest Classifier")
-    labels = rf.predict(x_test_final)
-    print_scores(y_test, labels)
-    print("score on train: " + str(rf.score(x_train_final, y_train)))
-    print()
+
+    y_predicted = rf.predict(x_test_final)
+    print_scores(y_test, y_predicted, "Random Forest Classifier")
+    print("score on train: " + str(rf.score(x_train_final, y_train)), "\n")
     # perform Random Forest Build-in importance
     importance = rf.feature_importances_
     # summarize feature importance
@@ -250,32 +258,12 @@ def make_prediction(dataset, prediction_type):
     # 4) support vector machine = svm
     evc = VotingClassifier(estimators=[('mnb', mnb), ('lr', lr), ('rf', rf), ('svm', svm)], voting='hard')
     evc.fit(x_train, y_train)
-    print("Results with Voting Classifier")
     print("score on test: " + str(evc.score(x_test, y_test)))
     print("score on train: " + str(evc.score(x_train, y_train)))
     print()
     # ---------------------------------------------------------------
     """
 
-
-    """
-    # Neural Network
-    # ---------------------------------------------------------------
-    # split an additional validation dataset
-    x_validation = x_train[:1000]
-    x_partial_train = x_train[1000:]
-    y_validation = y_train[:1000]
-    y_partial_train = y_train[1000:]
-    model = models.Sequential()
-    model.add(layers.Dense(16, activation='relu', input_shape=(10000,)))
-    model.add(layers.Dense(16, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
-    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
-    model.fit(x_partial_train, y_partial_train, epochs=4, batch_size=512, validation_data=(x_validation, y_validation))
-    print("score on test: " + str(model.evaluate(x_test, y_test)[1]))
-    print("score on train: " + str(model.evaluate(x_train, y_train)[1]))
-    # ---------------------------------------------------------------
-    """
 
 if __name__ == '__main__':
 
@@ -290,3 +278,4 @@ if __name__ == '__main__':
     make_prediction(dataset_mongo_updated, 'mongo_info')
     #df = pd.read_csv('prediction_info.csv')
     #make_prediction(df, 'mongo_info')
+    plot_results()
