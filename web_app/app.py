@@ -75,10 +75,10 @@ def questionaire_statistics():
     fig = px.pie(gender_df, values='Counter', names='Sex', title='Annotators - Gender Percentage')
     hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow', title='Male Anootators - Probability of Following')
+    fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow', title='Male Annotators - Probability of Following')
     willing_to_follow_male_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow', title='Female Anootators - Probability of Following')
+    fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow', title='Female Annotators - Probability of Following')
     willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     #total_reasons_df = show_reasons(df)
