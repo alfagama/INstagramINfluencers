@@ -1,5 +1,5 @@
 import pandas as pd
-import plot_results
+import show_results.plot_results
 from dataset_creation import read_data
 import os.path
 
@@ -36,10 +36,11 @@ def read_questionnaire():
     dataset.drop(dataset[dataset['age'] > 100].index, inplace=True)
     print(dataset.shape)
 
+    print(dataset['category'].isnull().sum())
     # Drop examples (if any) that may contain NaN features
     # ---------------------------------------------------------------
     #dataset.dropna(inplace=True)
-    print(dataset.head(5))
+    #print(dataset.head(5))
 
     return dataset
 
@@ -89,7 +90,7 @@ def cluster_by_gender(dataset):
     info.append(['female', len(female), len(female_follow)])
 
     #Plot the pies
-    plot_results.plot_pie(clustering, info, ['Men','Women'])
+    #plot_results.plot_pie(clustering, info, ['Men','Women'])
 
     #Create the respective dataframes in order to use them in the app
     gender_df = pd.DataFrame( {'Sex': ['Male', 'Female'], 'Counter': [len(male),len(female)]})
@@ -107,7 +108,7 @@ def show_reasons(df):
     reasons = follow_df.reasons.value_counts(sort=True)# Do we want to keep only px top-10??? .nlargest(10)
 
     # Plot the pie
-    plot_results.plot_pie(reasons.values, [], reasons.index)
+    #plot_results.plot_pie(reasons.values, [], reasons.index)
 
     total_reasons_df = pd.DataFrame({'Reason': reasons.index, 'Counter': reasons.values})
     #print(total_reasons_df)
