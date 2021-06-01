@@ -68,23 +68,6 @@ class Db:
         return df
 
 
-    def get_post_hashtags(self):
-        """
-        Creates a dataframe with the description of posts grouped by influencer's category
-        :param: -
-        :return posts_description_df: dataframe with posts' description
-        """
-
-        cursor = collection.aggregate([
-            {'$group': {'_id': '$category',
-                    'hashtags': {'$push': '$Posts.Hashtags'}}}
-        ])
-
-        posts_description_df = pd.DataFrame(list(cursor))
-        posts_description_df.columns = ['category', 'hashtags']
-        return posts_description_df
-
-
     def get_frequency_per_hour(self):
         """
         Creates a dataframe with the number of posts by hour
@@ -115,3 +98,155 @@ class Db:
         df['time'] = pd.to_datetime(df['time'], format='%H').dt.time
         # print(df)
         return df
+
+
+    def get_hashtags_distribution(self):
+        """
+        Creates a dataframe with the number of posts and number of hashtags
+        :param: -
+        :return df: dataframe with the number of posts and number of hashtags
+        """
+
+        cursor = collection.aggregate([
+            {'$group': {'_id': '$category',
+                        'hashtags': {'$push': '$Posts.Hashtags'}}}
+        ])
+
+        posts_description_df = pd.DataFrame(list(cursor))
+        posts_description_df.columns = ['category', 'hashtags']
+        # print(posts_description_df)
+
+        all_hashtags = []
+        for hashtag_list in posts_description_df['hashtags']:
+            for influencer in hashtag_list:
+                for post in influencer:
+                    all_hashtags.append(post)
+
+        # print(all_hashtags)
+        posts_hashtag_count = []
+
+        for hashtag_list in all_hashtags:
+            posts_hashtag_count.append(len(hashtag_list))
+
+        counter = collections.Counter(posts_hashtag_count)
+        counter_df = pd.DataFrame.from_dict(counter, orient='index').reset_index()
+        counter_df = counter_df.rename(columns={'index': 'Number of Hashtags', 0: 'Number of Posts'})
+
+        return counter_df
+
+
+    def get_top_hashtag_frequency(self):
+        """
+        Creates a dataframe with the most frequent hashtags and their count
+        :param: -
+        :return df: dataframe with the most frequent hashtags and their count
+        """
+        cursor = collection.find({}, {'_id': 0, 'Posts.Followers at Posting': 1, 'Posts.Hashtags': 1, 'Codename': 1})
+
+        hashtags = []
+        for influencer in cursor:
+            # print(influencer['Posts'])
+            for post in influencer['Posts']:
+                if post:
+                    for hashtag in post['Hashtags']:
+                        hashtags.append(hashtag.lower())
+
+        counter = collections.Counter(hashtags)
+        df = pd.DataFrame.from_dict(counter, orient='index').reset_index()
+        df.columns = ['hashtag', 'count']
+        df = df.sort_values(by=['count'], ascending=False)
+        df['hashtag'] = '#' + df['hashtag'].astype(str)
+        return df.head(25)
+
+
+    def get_no_of_hashtags_by_category(self):
+        """
+        Creates a dataframe with the total number of hashtags from each category
+        :param: -
+        :return df: dataframe with the total number of hashtags from each category
+        """
+
+        cursor = collection.aggregate([
+            {'$group': {'_id': '$category',
+                        'hashtags': {'$push': '$Posts.Hashtags'}}}
+        ])
+        df = pd.DataFrame(list(cursor))
+
+        for index, row in df.iterrows():
+            counter = 0
+            for post in row['hashtags']:
+                for hashtag_list in post:
+                    if hashtag_list:
+                        counter += len(hashtag_list)
+            df.loc[index, 'count'] = counter
+
+        df['count'] = df['count'].astype(int)
+        df = df.drop(['hashtags'], axis=1)
+        df = df.sort_values(by=['count'], ascending=False)
+        df.columns = ['category', 'hashtags_count']
+        return df
+
+
+    def get_percentage_of_hashtags_by_category(self):
+        """
+            Creates a dataframe with the percentage of hashtags by post
+            :param: -
+            :return df: dataframe with the percentage of hashtags by post
+        """
+
+        cursor = collection.aggregate([
+            {'$group': {'_id': '$category',
+                        'hashtags': {'$push': '$Posts.Hashtags'}}}
+        ])
+        df = pd.DataFrame(list(cursor))
+
+        for index, row in df.iterrows():
+            counter = 0
+            posts_count = 0
+            for post in row['hashtags']:
+                # print(post)
+                for hashtag_list in post:
+                    posts_count += 1
+                    if hashtag_list:
+                        counter += len(hashtag_list)
+            df.loc[index, 'hashtag_count'] = counter
+            df.loc[index, 'post_count'] = posts_count
+
+        df['hashtag_count'] = df['hashtag_count'].astype(int)
+        df['post_count'] = df['post_count'].astype(int)
+        df['percentage'] = df['hashtag_count'] / df['post_count']
+        df = df.drop(['hashtags', 'hashtag_count', 'post_count'], axis=1)
+        df = df.sort_values(by=['percentage'], ascending=False)
+        df.columns = ['category', 'hashtags_percentage']
+        return df
+
+
+    def get_hashtags_engagement_distribution(self):
+        """
+        Creates a dataframe with the ++
+        :param: -
+        :return posts_description_df:
+        """
+
+        cursor = collection.find({}, {'_id': 0, 'Posts.Hashtags': 1, 'Posts.Comments': 1, 'Posts.Likes': 1})
+
+        posts_list = []
+        for posts in cursor:
+            posts_list.append(posts)
+
+        data = []
+        for posts in posts_list:
+            for post in posts['Posts']:
+                data.append(post)
+
+        df = pd.DataFrame(data)
+        df['hashtag_count'] = df['Hashtags'].str.len()
+        df['engagement'] = df['Likes'] + df['Comments']
+        df = df.drop(['Hashtags', 'Likes', 'Comments'], axis=1)
+        df = df.sort_values(by=['hashtag_count'], ascending=True)
+        return df
+
+
+
+
+

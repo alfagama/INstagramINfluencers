@@ -17,7 +17,7 @@ client = pymongo.MongoClient(uri)
 # Import database by name
 db = client.ININ
 # Get collection from DB
-CollectionName = 'myLeaderboards'
+CollectionName = 'myLeaderboardsNew'
 # set collection
 collection = db[CollectionName]
 
@@ -103,23 +103,17 @@ df = pd.DataFrame({'hashtags': list_for_df})  # create dataframe with a column t
 vectorizer = TfidfVectorizer()
 tfidf_hashtags = vectorizer.fit_transform(all_hashtags)
 
-'''print(type(tfidf_hashtags))
 
-df1 = pd.DataFrame(tfidf_hashtags.toarray(), columns=vectorizer.get_feature_names())
-print(df1)
-res = pd.concat([df, df1], axis=1)
-print(res)'''
-x=1
 # PCA to 2 dimensions
 sklearn_pca = PCA(n_components=2)
 pca_hashtags = sklearn_pca.fit_transform(tfidf_hashtags.toarray())
 print(type(pca_hashtags))
-x=2
+
 # K-means clustering
 NUMBER_OF_CLUSTERS = 3
 kmeans = KMeans(n_clusters=NUMBER_OF_CLUSTERS, max_iter=600, algorithm='auto')
-kmeans.fit(pca_hashtags)
-prediction = kmeans.predict(pca_hashtags)
+kmeans.fit(tfidf_hashtags)
+prediction = kmeans.predict(tfidf_hashtags)
 
 
 

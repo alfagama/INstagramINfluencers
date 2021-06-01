@@ -8,6 +8,7 @@ import plotly.express as px
 import pandas as pd
 import json
 import collections
+from show_results.questionnaire_results import read_questionnaire, cluster_by_gender, show_reasons
 
 
 # declare application. initialize with Flask instance/class
@@ -35,6 +36,14 @@ def index():
 
 @app.route("/static/stylesheets/statistics.html")
 def statistics():
+
+    # --------------- Number of influencer by category ---------------
+    influencer_count_by_category_df = db.get_influencers_count_by_category()
+    fig = px.pie(influencer_count_by_category_df, values='count', names='_id',
+                 title='Percentage of influencers from each category')
+    influencer_count_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Number of posts per day -----------------
     day_freq_df = db.get_frequency_per_day()
     fig = px.bar(day_freq_df, x="day", y="posts",
                  labels={
@@ -42,8 +51,9 @@ def statistics():
                      "posts": "No. of posts",
                  },
                  title="No. of posts by day")
-    day_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    day_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
+    # ----------------- Number of posts per hour -----------------
     hour_freq_df = db.get_frequency_per_hour()
     fig = px.bar(hour_freq_df, x="time", y="posts",
                  labels={
@@ -51,39 +61,87 @@ def statistics():
                      "posts": "No. of posts",
                  },
                  title="No. of posts by hour")
-    hour_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template("statistics.html", dayGraph=day_graphJSON, hourGraph=hour_graphJSON)
+    return render_template("statistics.html", influencerCountGraphJSON=influencer_count_graphjson,
+                           dayGraph=day_graphjson, hourGraph=hour_graphjson)
 
 
-@app.route("/static/stylesheets/clustering.html")
-def clustering():
-    df = db.get_post_hashtags()
+@app.route("/static/stylesheets/questionaire_statistics.html")
+def questionaire_statistics():
+    df = read_questionnaire()
 
-    all_hashtags = []
-    for hashtag_list in df['hashtags']:
-        for influencer in hashtag_list:
-            for post in influencer:
-                all_hashtags.append(post)
+    gender_df, willing_to_follow_male_df, willing_to_follow_female_df = cluster_by_gender(df)
+    fig = px.pie(gender_df, values='Counter', names='Sex', title='Annotators - Gender Percentage')
+    hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    #print(all_hashtags)
-    posts_hashtag_count = []
+    fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow', title='Male Anootators - Probability of Following')
+    willing_to_follow_male_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    for list in all_hashtags:
-        posts_hashtag_count.append(len(list))
+    fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow', title='Female Anootators - Probability of Following')
+    willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    counter = collections.Counter(posts_hashtag_count)
-    counter_df = pd.DataFrame.from_dict(counter, orient='index').reset_index()
-    counter_df = counter_df.rename(columns={'index': 'Number of Hashtags', 0: 'Number of Posts'})
+    #total_reasons_df = show_reasons(df)
+    return render_template("questionaire_statistics.html", hour_graph=hour_graphjson, willing_to_follow_male_graph=willing_to_follow_male_graphjson,
+                           willing_to_follow_female_graph=willing_to_follow_female_graphjson)
 
-    fig = px.bar(counter_df, x="Number of Hashtags", y="Number of Posts",
+
+@app.route("/static/stylesheets/hashtags.html")
+def hashtags():
+
+    # ----------------- Hashtags distribution -----------------
+    df = db.get_hashtags_distribution()
+    fig = px.bar(df, x="Number of Hashtags", y="Number of Posts",
                  labels={
                      "Number of Hashtags": "No. of hashtags",
                      "Number of Posts": "No. of posts",
                  },
                  title="Hashtags Distribution")
-    number_of_hashtags_graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("clustering.html", number_of_hashtags=number_of_hashtags_graphJSON)
+    hashtags_distribution_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Top hashtag frequencies -----------------
+    df = db.get_top_hashtag_frequency()
+    fig = px.bar(df, x="hashtag", y="count",
+                 labels={
+                     "hashtag": "Hashtags",
+                     "count": "No. of posts",
+                 },
+                 title="Most Frequent Hashtags")
+    hashtags_frequency_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Total number of hashtags from each category -----------------
+    df = db.get_no_of_hashtags_by_category()
+    fig = px.bar(df, x="category", y="hashtags_count",
+                 labels={
+                     "category": "Category",
+                     "hashtags_count": "No. of total hashtags",
+                 },
+                 title="No. of total hashtags by category")
+    no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Percentage of hashtags from each category -----------------
+    df = db.get_percentage_of_hashtags_by_category()
+    fig = px.bar(df, x="category", y="hashtags_percentage",
+                 labels={
+                     "category": "Category",
+                     "hashtags_percentage": "Percentage of hashtags",
+                 },
+                 title="Percentage of hashtags by category")
+    percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Hashtags engagement distribution -----------------
+    df = db.get_hashtags_engagement_distribution()
+    fig = px.line(df, x="hashtag_count", y="engagement",
+                 labels={
+                     "hashtag_count": "Category",
+                     "engagement": "Percentage of hashtags",
+                 },
+                 title="Percentage of hashtags by category")
+    hashtags_engagement_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template("hashtags.html", hashtags_distribution=hashtags_distribution_graphjson, hashtags_frequency=hashtags_frequency_graphjson,
+                           no_of_hashtags_by_category=no_of_hashtags_by_category_graphjson, percentage_of_hashtags=percentage_of_hashtags_graphjson,
+                           hashtags_engagement=hashtags_engagement_graphjson)
 
 
 @app.route("/todo/<importance_val>")

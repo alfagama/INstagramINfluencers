@@ -46,13 +46,16 @@
                 <a href="statistics.html">Statistics</a>
             </li>
             <li>
-                <a href="">Questionaire Statistics</a>
+                <a href="questionaire_statistics.html">Questionaire Statistics</a>
             </li>
             <li>
-                <a href="">Machine Learning Models</a>
+                <a href="machine_learning.html">Machine Learning Models</a>
             </li>
             <li class="active">
                 <a href="clustering.html">Clustering</a>
+            </li>
+            <li>
+                <a href="hashtags.html">Hashtag Analysis</a>
             </li>
             <li>
                 <a href="topic_modeling.html">Topic Modeling</a>
@@ -63,20 +66,6 @@
             <li>
                 <a href="#">About</a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
-            </li>
         </ul>
 
     </nav>
@@ -85,12 +74,17 @@
 
     <div class="container" style="padding-top: 2%">
         <div class="container">
-            <div id="number_of_hashtags"></div>
-            <div id="topic"></div>
+            <div id="hour_graph"></div>
+            <div id="willing_to_follow_male_graph"></div>
+            <div id="willing_to_follow_female_graph"></div>
+
         </div>
     </div>
 </body>
 <script>
-    Plotly.newPlot("number_of_hashtags", {{ number_of_hashtags | safe }})
+    Plotly.newPlot("hour_graph", {{ hour_graph | safe }})
+    Plotly.newPlot("willing_to_follow_male_graph", {{ willing_to_follow_male_graph | safe }})
+    Plotly.newPlot("willing_to_follow_female_graph", {{ willing_to_follow_female_graph | safe }})
+
 </script>
 </html>

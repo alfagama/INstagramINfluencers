@@ -46,13 +46,16 @@
                 <a href="">Statistics</a>
             </li>
             <li>
-                <a href="">Questionaire Statistics</a>
+                <a href="questionaire_statistics.html">Questionaire Statistics</a>
             </li>
             <li>
-                <a href="">Machine Learning Models</a>
+                <a href="machine_learning.html">Machine Learning Models</a>
             </li>
             <li>
                 <a href="clustering.html">Clustering</a>
+            </li>
+            <li>
+                <a href="hashtags.html">Hashtag Analysis</a>
             </li>
             <li>
                 <a href="topic_modeling.html">Topic Modeling</a>
@@ -63,17 +66,6 @@
             <li>
                 <a href="">About</a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Topic Modeling</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="topic_modeling_per_category.html">Per Category</a>
-                    </li>
-                    <li>
-                        <a href="#">Per Influencer</a>
-                    </li>
-                </ul>
-            </li>
         </ul>
 
     </nav>
@@ -81,11 +73,13 @@
     </div>
 
     <div class="container" style="padding-top: 2%">
+        <div id="plot_influencer_by_category"></div>
         <div id="plot_by_day"></div>
         <div id="plot_by_hour"></div>
     </div>
 </body>
 <script>
+    Plotly.newPlot("plot_influencer_by_category", {{ influencerCountGraphJSON | safe }})
     Plotly.newPlot("plot_by_day", {{ dayGraph | safe }})
     Plotly.newPlot("plot_by_hour", {{ hourGraph | safe }})
 </script>

@@ -54,10 +54,10 @@
             <li>
                 <a href="clustering.html">Clustering</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="hashtags.html">Hashtag Analysis</a>
             </li>
-            <li class="active">
+            <li>
                 <a href="topic_modeling.html">Topic Modeling</a>
             </li>
             <li>
@@ -73,50 +73,21 @@
     </div>
 
     <div class="container" style="padding-top: 2%">
-
-        <div class="form-row">
-            <div class="form-group col-md-2" style="margin-left: 0%;">
-                <label form="inputState">Influencer Category: </label>
-            </div>
-            <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="category" class="form-control" name="category">
-                    <option value="all_categories" selected="selected">All Categories</option>
-                    <option value="body_building">Body Building</option>
-                    <option value="dance">Dance</option>
-                    <option value="nutrition">Nutrition</option>
-                    <option value="pilates">Pilates</option>
-                    <option value="yoga">Yoga</option>
-                    <option value="fitness_model">Fitness Model</option>
-                    <option value="athlete">Athlete</option>
-                </select>
-            </form>
+        <div class="container">
+            <div id="hashtags_distribution"></div>
+            <div id="hashtags_frequency"></div>
+            <div id="no_of_hashtags_by_category"></div>
+            <div id="percentage_of_hashtags"></div>
+            <div id="hashtags_engagement"></div>
+            <div id="topic"></div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-2" style="padding-left: 0%;">
-                <label form="inputState">Text Category(???): </label>
-            </div>
-            <form id="form2" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="text_category" class="form-control" name="text_category">
-                    <option value="Description">Post Description</option>
-                    <option value="Comments">Post Comments</option>
-                </select>
-            </form>
-         </div>
-
-        <iframe src="visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
-
     </div>
 </body>
 <script>
-    function setIframeSource() {
-        var InfluencerFormSelect = document.getElementById('category');
-        var TextFormSelect = document.getElementById('text_category');
-        var theIframe = document.getElementById('myIframe');
-        var InfluencerCategory = InfluencerFormSelect.options[InfluencerFormSelect.selectedIndex].value;
-        var TextCategory = TextFormSelect.options[TextFormSelect.selectedIndex].value;
-
-        theIframe.src = "visualizations/LDA/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
-        // alert(theIframe.src)
-    }
+    Plotly.newPlot("hashtags_distribution", {{ hashtags_distribution | safe }})
+    Plotly.newPlot("hashtags_frequency", {{ hashtags_frequency | safe }})
+    Plotly.newPlot("no_of_hashtags_by_category", {{ no_of_hashtags_by_category | safe }})
+    Plotly.newPlot("percentage_of_hashtags", {{ percentage_of_hashtags | safe }})
+    Plotly.newPlot("hashtags_engagement", {{ hashtags_engagement | safe }})
 </script>
 </html>

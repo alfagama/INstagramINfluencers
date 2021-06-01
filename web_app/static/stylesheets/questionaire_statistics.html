@@ -45,7 +45,7 @@
             <li>
                 <a href="statistics.html">Statistics</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="questionaire_statistics.html">Questionaire Statistics</a>
             </li>
             <li>
@@ -57,7 +57,7 @@
             <li>
                 <a href="hashtags.html">Hashtag Analysis</a>
             </li>
-            <li class="active">
+            <li>
                 <a href="topic_modeling.html">Topic Modeling</a>
             </li>
             <li>
@@ -73,50 +73,21 @@
     </div>
 
     <div class="container" style="padding-top: 2%">
-
-        <div class="form-row">
-            <div class="form-group col-md-2" style="margin-left: 0%;">
-                <label form="inputState">Influencer Category: </label>
-            </div>
-            <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="category" class="form-control" name="category">
-                    <option value="all_categories" selected="selected">All Categories</option>
-                    <option value="body_building">Body Building</option>
-                    <option value="dance">Dance</option>
-                    <option value="nutrition">Nutrition</option>
-                    <option value="pilates">Pilates</option>
-                    <option value="yoga">Yoga</option>
-                    <option value="fitness_model">Fitness Model</option>
-                    <option value="athlete">Athlete</option>
-                </select>
-            </form>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-2" style="padding-left: 0%;">
-                <label form="inputState">Text Category(???): </label>
-            </div>
-            <form id="form2" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="text_category" class="form-control" name="text_category">
-                    <option value="Description">Post Description</option>
-                    <option value="Comments">Post Comments</option>
-                </select>
-            </form>
+        <div class="container">
+            <a href="https://docs.google.com/forms/d/1mKbfV2ZC_27Qqh8D_0ocI3Hv6a3NBPVRS9SMnkngRyU/edit?fbclid=IwAR23BzkNzuVRy7CBQXICbuQk07iz1b6egbnd_rUQpRXHjWa4F9fzcCEcqMo">Link to Questionaire</a>
          </div>
+        <div class="container">
+            <div id="hour_graph"></div>
+            <div id="willing_to_follow_male_graph"></div>
+            <div id="willing_to_follow_female_graph"></div>
 
-        <iframe src="visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
-
+        </div>
     </div>
 </body>
 <script>
-    function setIframeSource() {
-        var InfluencerFormSelect = document.getElementById('category');
-        var TextFormSelect = document.getElementById('text_category');
-        var theIframe = document.getElementById('myIframe');
-        var InfluencerCategory = InfluencerFormSelect.options[InfluencerFormSelect.selectedIndex].value;
-        var TextCategory = TextFormSelect.options[TextFormSelect.selectedIndex].value;
+    Plotly.newPlot("hour_graph", {{ hour_graph | safe }})
+    Plotly.newPlot("willing_to_follow_male_graph", {{ willing_to_follow_male_graph | safe }})
+    Plotly.newPlot("willing_to_follow_female_graph", {{ willing_to_follow_female_graph | safe }})
 
-        theIframe.src = "visualizations/LDA/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
-        // alert(theIframe.src)
-    }
 </script>
 </html>
