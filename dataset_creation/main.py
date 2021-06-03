@@ -15,6 +15,10 @@ if __name__ == '__main__':
         # manual ChromeDriverManager()
         driver = webdriver.Chrome(ChromeDriverManager().install())
         # initialize scraper
+        for i in account_names:
+            if i in account_names:
+                account_names.remove(i)
+
         initialize_scraper(driver)
         # for all of them get the URL posts
         for name in account_names:

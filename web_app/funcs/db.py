@@ -1,7 +1,7 @@
-import pymongo
-import pandas as pd
 import collections
 
+import pandas as pd
+import pymongo
 
 # MongoDB
 uri = "mongodb://localhost:27017/"
@@ -27,7 +27,6 @@ class Db:
 
     def find(self, collection_name: str, query:dict):
         return list(self.db[collection_name].find(query, {'_id': False}))
-
 
 
     def get_influencers_count_by_category(self):

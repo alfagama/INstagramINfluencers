@@ -17,15 +17,15 @@ app = Flask(__name__, template_folder='static/stylesheets')
 # get MongoDB instance
 db = Db()
 
-
-@app.route('/wordclouds')
-def word_loud():
-    return render_template('wordclouds.html')
-
+# @app.route("/", methods=['GET'])
+# @app.route('/wordclouds')
+# def word_loud():
+#     return render_template('wordclouds.html')
+#
 
 # declare route # can also declare methods to accept. like -> 'GET'
 @app.route("/", methods=['GET'])
-@app.route("/static/stylesheets/home.html")
+@app.route("/home.html")
 def index():
     influencer_count_by_category_df = db.get_influencers_count_by_category()
     #fig = px.bar(influencer_count_by_category_df, x='_id', y='count', barmode='group')
@@ -34,7 +34,24 @@ def index():
     return render_template("home.html", graph=graphJSON)
 
 
-@app.route("/static/stylesheets/statistics.html")
+@app.route("/topic_modeling.html")
+def topic_modeling():
+    return render_template("topic_modeling.html")
+
+
+@app.route("/machine_learning.html")
+def machine_learning():
+    return render_template("machine_learning.html")
+
+@app.route("/clustering.html")
+def clustering():
+    return render_template("clustering.html")
+
+@app.route("/wordclouds.html")
+def wordclouds():
+    return render_template("wordclouds.html")
+
+@app.route("/statistics.html")
 def statistics():
 
     # --------------- Number of influencer by category ---------------
@@ -67,7 +84,7 @@ def statistics():
                            dayGraph=day_graphjson, hourGraph=hour_graphjson)
 
 
-@app.route("/static/stylesheets/questionaire_statistics.html")
+@app.route("/questionaire_statistics.html")
 def questionaire_statistics():
     df = read_questionnaire()
 
@@ -86,7 +103,7 @@ def questionaire_statistics():
                            willing_to_follow_female_graph=willing_to_follow_female_graphjson)
 
 
-@app.route("/static/stylesheets/hashtags.html")
+@app.route("/hashtags.html")
 def hashtags():
 
     # ----------------- Hashtags distribution -----------------

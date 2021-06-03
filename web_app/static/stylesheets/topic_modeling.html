@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
     <title>Collapsible sidebar using Bootstrap 4</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -13,7 +15,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
-    <link rel="stylesheet" href="style.css">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -63,9 +64,6 @@
             <li>
                 <a href="wordclouds.html">Wordclouds</a>
             </li>
-            <li>
-                <a href="#">About</a>
-            </li>
         </ul>
 
     </nav>
@@ -103,7 +101,7 @@
             </form>
          </div>
 
-        <iframe src="visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
+        <iframe src="static/stylesheets/visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
 
     </div>
 </body>
@@ -115,7 +113,7 @@
         var InfluencerCategory = InfluencerFormSelect.options[InfluencerFormSelect.selectedIndex].value;
         var TextCategory = TextFormSelect.options[TextFormSelect.selectedIndex].value;
 
-        theIframe.src = "visualizations/LDA/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
+        theIframe.src = "static/stylesheets/visualizations/LDA/".concat(TextCategory,"_LDA_Visualization_",InfluencerCategory,".html");
         // alert(theIframe.src)
     }
 </script>

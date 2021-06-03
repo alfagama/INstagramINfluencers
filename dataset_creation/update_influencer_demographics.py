@@ -4,7 +4,7 @@ from dataset_creation.mongo import update_demographics
 if __name__ == '__main__':
     # read data
     df = pd.read_csv("../data/influencer_demographics.csv",
-                     sep=';',
+                     sep=',',
                      header=0,
                      skiprows=0)
 

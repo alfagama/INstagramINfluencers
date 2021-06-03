@@ -7,7 +7,7 @@ from nltk import pos_tag
 import regex as re
 
 # download('vader_lexicon')
-nltk.download('vader_lexicon')  # do this once: grab the trained model from the web
+# nltk.download('vader_lexicon')  # do this once: grab the trained model from the web
 
 # Create a SentimentIntensityAnalyzer object.
 sid = SentimentIntensityAnalyzer()
