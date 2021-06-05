@@ -262,52 +262,125 @@ def hashtags():
 
     # ----------------- Hashtags distribution -----------------
     df = pd.read_csv("data_csv/hashtags/hashtag_distribution.csv", sep=',', header=0, skiprows=0)
-    fig = px.bar(df, x="Number of Hashtags", y="Number of Posts",
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['Number of Hashtags'],
+        y=df['Number of Posts'])
+    ])
+
+    fig.update_layout(title='Hashtags Distribution', title_x=0.5,
+                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    '''fig = px.bar(df, x="Number of Hashtags", y="Number of Posts",
                  labels={
                      "Number of Hashtags": "No. of hashtags",
                      "Number of Posts": "No. of posts",
                  },
-                 title="Hashtags Distribution")
+                 title="Hashtags Distribution")'''
+
     hashtags_distribution_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Top hashtag frequencies -----------------
     df = pd.read_csv("data_csv/hashtags/top_hashtag_frequency.csv", sep=',', header=0, skiprows=0).head(25)
-    fig = px.bar(df, x="hashtag", y="count",
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['hashtag'],
+        y=df['count'])
+    ])
+
+    fig.update_layout(title='Most Frequent Hashtags', title_x=0.5,
+                      xaxis=dict(title='Hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+
+    '''fig = px.bar(df, x="hashtag", y="count",
                  labels={
                      "hashtag": "Hashtags",
                      "count": "No. of posts",
                  },
-                 title="Most Frequent Hashtags")
+                 title="Most Frequent Hashtags")'''
+
+
     hashtags_frequency_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Total number of hashtags from each category -----------------
     df = pd.read_csv("data_csv/hashtags/no_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
-    fig = px.bar(df, x="category", y="hashtags_count",
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['category'],
+        y=df['hashtags_count'])
+    ])
+
+    fig.update_layout(title='No. of total hashtags by category', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of total hashtags', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+
+    '''fig = px.bar(df, x="category", y="hashtags_count",
                  labels={
                      "category": "Category",
                      "hashtags_count": "No. of total hashtags",
                  },
-                 title="No. of total hashtags by category")
+                 title="No. of total hashtags by category")'''
+
     no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Percentage of hashtags from each category -----------------
     df = pd.read_csv("data_csv/hashtags/percentage_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
-    fig = px.bar(df, x="category", y="hashtags_percentage",
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['category'],
+        y=df['hashtags_percentage'])
+    ])
+
+    fig.update_layout(title='Percentage of hashtags by category', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Percentage of hashtags', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    '''fig = px.bar(df, x="category", y="hashtags_percentage",
                  labels={
                      "category": "Category",
                      "hashtags_percentage": "Percentage of hashtags",
                  },
-                 title="Percentage of hashtags by category")
+                 title="Percentage of hashtags by category")'''
+
     percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Hashtags engagement distribution -----------------
     df = pd.read_csv("data_csv/hashtags/hashtags_engagement_distribution.csv", sep=',', header=0, skiprows=0)
-    fig = px.line(df, x="hashtag_count", y="engagement",
+
+    fig = go.Figure(data=[go.Scatter(
+        x=df['hashtag_count'],
+        y=df['engagement'],
+        mode='lines+markers')
+    ])
+
+    fig.update_layout(title='User engagement and number of hashtags correlation', title_x=0.5,
+                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='User engagement (comments & likes)', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    '''fig = px.line(df, x="hashtag_count", y="engagement",
                  labels={
                      "hashtag_count": "Category",
                      "engagement": "Percentage of hashtags",
                  },
-                 title="Percentage of hashtags by category")
+                 title="Percentage of hashtags by category")'''
     hashtags_engagement_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template("hashtags.html", hashtags_distribution=hashtags_distribution_graphjson, hashtags_frequency=hashtags_frequency_graphjson,
