@@ -9,6 +9,9 @@ from flask import jsonify
 from flask import render_template
 from web_app.funcs.db import Db
 from text_analysis import plotly_wordcloud, stopwords_removal
+from show_results.questionnaire_results import read_questionnaire, cluster_by_gender, show_reasons
+
+
 # declare application. initialize with Flask instance/class
 app = Flask(__name__, template_folder='static/stylesheets')
 import matplotlib.pyplot as plt
@@ -89,15 +92,15 @@ def statistics():
                  title="No. of posts by hour")
     hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    df = db.find_all()
-    df['Likes'] = df['Likes'].str.replace(',', '').astype(float)
-    df['Views'] = df['Views'].str.replace(',', '').astype(float)
-    df['Total Posts'] = pd.to_numeric(df['Total Posts'], errors='coerce')
+    #df = db.find_all()
+    #df['Likes'] = df['Likes'].str.replace(',', '').astype(float)
+    #df['Views'] = df['Views'].str.replace(',', '').astype(float)
+    #df['Total Posts'] = pd.to_numeric(df['Total Posts'], errors='coerce')
 
-    likes_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Likes'].sum()
-    views_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Views'].sum()
-    posts_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Total Posts'].sum()
-    likes_per_category = df.groupby(['category'], as_index=False)['Likes'].sum()
+    #likes_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Likes'].sum()
+    #views_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Views'].sum()
+    #posts_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Total Posts'].sum()
+    #likes_per_category = df.groupby(['category'], as_index=False)['Likes'].sum()
 
     # category = df['category'].value_counts().to_frame().reset_index()
     # category.rename(columns={'index': 'category', 'category': 'frequency'}, inplace=True)
