@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='skeleton.css') }}">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -70,22 +71,28 @@
 
     </div>
 
-    <div class="container" style="padding-top: 2%">
-        <div class="container">
-            <a href="https://docs.google.com/forms/d/1mKbfV2ZC_27Qqh8D_0ocI3Hv6a3NBPVRS9SMnkngRyU/edit?fbclid=IwAR23BzkNzuVRy7CBQXICbuQk07iz1b6egbnd_rUQpRXHjWa4F9fzcCEcqMo">Link to Questionaire</a>
-         </div>
-        <div class="container">
-            <div id="hour_graph"></div>
-            <div id="willing_to_follow_male_graph"></div>
-            <div id="willing_to_follow_female_graph"></div>
-            <div id="total_reasons"></div>
-            <div id="athlete"></div>
-            <div id="dance"></div>
-            <div id="ballet"></div>
-            <div id="nutrition"></div>
-            <div id="pilates"></div>
-            <div id="body_building"></div>
-            <div id="fitness_model"></div>
+    <div class="my_container" style="padding-top: 2%">
+        <div class="row" style="margin: 40px 10px; row-gap: 25px; justify-content: center">
+            <div class="col-sm-12 col-xl-10">
+                <div>
+                    <a href="https://docs.google.com/forms/d/1mKbfV2ZC_27Qqh8D_0ocI3Hv6a3NBPVRS9SMnkngRyU/edit?fbclid=IwAR23BzkNzuVRy7CBQXICbuQk07iz1b6egbnd_rUQpRXHjWa4F9fzcCEcqMo">Link
+                        to Questionaire</a>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-10">
+                <div id="hour_graph"></div>
+                <div id="willing_to_follow_male_graph"></div>
+                <div id="willing_to_follow_female_graph"></div>
+                <div id="total_reasons"></div>
+                <div id="athlete"></div>
+                <div id="dance"></div>
+                <div id="ballet"></div>
+                <div id="nutrition"></div>
+                <div id="pilates"></div>
+                <div id="body_building"></div>
+                <div id="fitness_model"></div>
+
+            </div>
 
         </div>
     </div>

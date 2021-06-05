@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='skeleton.css') }}">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -70,15 +71,29 @@
 
     </div>
 
-    <div class="container" style="padding-top: 2%">
-        <div id="plot_influencer_by_category"></div>
-        <div id="plot_by_day"></div>
-        <div id="plot_by_hour"></div>
+    <div class="my_container" style="padding: 0 20px; margin: 40px 10px">
+        <div class="row" style="margin: 40px 10px; row-gap: 25px; justify-content: center">
+            <div class="col-sm-12 col-xl-10">
+              <div id="plot_influencer_by_category"></div>
+                <div id="plot_by_day"></div>
+                <div id="plot_by_hour"></div>
+                <div id="plot_category_graphjson" />
+                <div id="plot_age_graphjson" />
+                <div id="plot_maritalStatus_graphjson" />
+                <div id="plot_sex_graphjson" />
+                <div id="plot_likes_per_category_sex_graphjson" />
+            </div>
+        </div>
     </div>
 </body>
 <script>
     Plotly.newPlot("plot_influencer_by_category", {{ influencerCountGraphJSON | safe }})
     Plotly.newPlot("plot_by_day", {{ dayGraph | safe }})
     Plotly.newPlot("plot_by_hour", {{ hourGraph | safe }})
+    Plotly.newPlot("plot_category_graphjson", {{ category_graphjson | safe }})
+    Plotly.newPlot("plot_age_graphjson", {{ age_graphjson | safe }})
+    Plotly.newPlot("plot_maritalStatus_graphjson", {{ maritalStatus_graphjson | safe }})
+    Plotly.newPlot("plot_sex_graphjson", {{ sex_graphjson | safe }})
+    Plotly.newPlot("plot_likes_per_category_sex_graphjson", {{ likes_per_category_sex_graphjson | safe }})
 </script>
 </html>

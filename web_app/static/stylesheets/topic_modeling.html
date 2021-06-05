@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='skeleton.css') }}">
 
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -70,18 +71,19 @@
 
     </div>
 
-    <div class="container" style="padding-top: 2%">
-
-        <div class="form-row">
-            <div class="form-group col-md-2" style="margin-left: 0%;">
-                <label form="inputState">Influencer Category: </label>
-            </div>
-            <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="category" class="form-control" name="category">
-                    <option value="all_categories" selected="selected">All Categories</option>
-                    <option value="body_building">Body Building</option>
-                    <option value="dance">Dance</option>
-                    <option value="nutrition">Nutrition</option>
+    <div class="my_container" style="padding-top: 2%">
+        <div class="row" style="margin: 40px 10px; row-gap: 25px; justify-content: center">
+            <div class="col-sm-12 col-xl-8">
+                <div class="form-row">
+                    <div class="form-group col-md-2" style="margin-left: 0%;">
+                        <label form="inputState">Influencer Category: </label>
+                    </div>
+                    <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
+                        <select id="category" class="form-control" name="category">
+                            <option value="all_categories" selected="selected">All Categories</option>
+                            <option value="body_building">Body Building</option>
+                            <option value="dance">Dance</option>
+                            <option value="nutrition">Nutrition</option>
                     <option value="pilates">Pilates</option>
                     <option value="yoga">Yoga</option>
                     <option value="fitness_model">Fitness Model</option>
@@ -99,11 +101,13 @@
                     <option value="Comments">Post Comments</option>
                 </select>
             </form>
-         </div>
+        </div>
 
-        <iframe src="static/stylesheets/visualizations/LDA/Description_LDA_Visualization_all_categories.html" id="myIframe" height="800px" width="1200px"></iframe>
+                <iframe src="static/stylesheets/visualizations/LDA/Description_LDA_Visualization_all_categories.html"
+                        id="myIframe" height="800px" width="1200px"></iframe>
 
-    </div>
+            </div>
+        </div>
 </body>
 <script>
     function setIframeSource() {

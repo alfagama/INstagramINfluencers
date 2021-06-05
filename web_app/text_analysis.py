@@ -19,10 +19,19 @@ import re
 
 
 def plotly_wordcloud(text):
-    wc = WordCloud(stopwords=set(STOPWORDS),
-                   max_words=200,
-                   max_font_size=100)
-    wc.generate(text)
+    # wc = WordCloud(stopwords=set(STOPWORDS),
+    #                max_words=200,
+    #                max_font_size=100)
+    # wc.generate(text)
+
+    # posts = ' '.join(map(str, text))
+    # words = re.findall(r'\b\S+\b', posts)
+    #
+    # temp_string = ' '.join(words)
+    long_string = re.sub(r'\b\w{1,3}\b', '', text)
+
+    wordcloud1 = WordCloud(collocations=True, max_words=200, max_font_size=50, stopwords=set(STOPWORDS),
+                           width=1600, height=800, background_color="black").generate(long_string)
 
     word_list = []
     freq_list = []
@@ -31,7 +40,7 @@ def plotly_wordcloud(text):
     orientation_list = []
     color_list = []
 
-    for (word, freq), fontsize, position, orientation, color in wc.layout_:
+    for (word, freq), fontsize, position, orientation, color in wordcloud1.layout_:
         word_list.append(word)
         freq_list.append(freq)
         fontsize_list.append(fontsize)
@@ -50,20 +59,21 @@ def plotly_wordcloud(text):
     new_freq_list = []
     for i in freq_list:
         new_freq_list.append(i * 100)
-    new_freq_list
 
+    print('\n'.join(word_list) )
     trace = go.Scatter(x=x,
                        y=y,
                        textfont=dict(size=new_freq_list,
                                      color=color_list),
                        hoverinfo='text',
-                       hovertext=['{0}{1}'.format(w, f) for w, f in zip(word_list, freq_list)],
+                       hovertext=['{0} {1}'.format(w, f) for w, f in zip(word_list, freq_list)],
                        mode='text',
                        text=word_list
                        )
 
-    layout = go.Layout({'xaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False},
-                        'yaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False}})
+    layout = go.Layout({ 'title': "jkdsajkhsdahkjdasjhkdaskjhbdsahjsdaw",
+        'xaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False},
+        'yaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False}})
 
     fig = go.Figure(data=[trace], layout=layout)
 

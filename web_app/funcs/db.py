@@ -17,6 +17,8 @@ from pandas import DataFrame
 
 
 class Db:
+    myLeaderboardsNew_db = collection
+
     def __init__(self):
         client = pymongo.MongoClient('localhost', 27017)
         self.db = client['todo-db']
@@ -261,5 +263,38 @@ class Db:
         return data
 
 
+    def get_post_comments(self):
+        """
+        Gets a dataframe with the comments of posts grouped by influencer's category
+        :param: -
+        :return comments_df: dataframe with posts' comments
+        """
 
+        print('\nLoading post comments from MongoDB..')
+
+        cursor = collection.aggregate([
+            {'$group': {'_id': '$category',
+                        'comments': {'$push': '$Posts.All Comments.comment_no_stopwords'}}}
+        ])
+
+        comments_df = pd.DataFrame(list(cursor))
+        return comments_df
+
+
+    def get_post_description(self):
+        """
+        Gets a dataframe with the comments of posts grouped by influencer's category
+        :param: -
+        :return comments_df: dataframe with posts' comments
+        """
+
+        print('\nLoading post comments from MongoDB..')
+
+        cursor = collection.aggregate([
+            {'$group': {'_id': '$category',
+                        'description': {'$push': '$Posts.Description'}}}
+        ])
+
+        comments_df = pd.DataFrame(list(cursor))
+        return comments_df
 
