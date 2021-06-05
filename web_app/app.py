@@ -136,6 +136,7 @@ def statistics():
 
 @app.route("/questionaire_statistics.html")
 def questionaire_statistics():
+    """
     df = read_questionnaire()
 
     gender_df, willing_to_follow_male_df, willing_to_follow_female_df = cluster_by_gender(df)
@@ -147,10 +148,77 @@ def questionaire_statistics():
 
     fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow', title='Female Annotators - Probability of Following')
     willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    """
+
+    gender_graph_json = pd.read_csv("data_csv/gender_df.csv", sep=',',
+                                                  header=0, skiprows=0)
+    fig = px.pie(gender_graph_json, values='Counter', names='Sex',
+                 title='Annotators - Gender Percentage')
+    gender_graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #-------------------------------------------------------------------------------------
+
+    willing_to_follow_male_df = pd.read_csv("data_csv/willing_to_follow_male_df.csv", sep=',',
+                                    header=0, skiprows=0)
+    fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow',
+                 title='Male Annotators - Probability of Following')
+    willing_to_follow_male_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+
+    willing_to_follow_female_df = pd.read_csv("data_csv/willing_to_follow_female_df.csv", sep=',',
+                                    header=0, skiprows=0)
+    fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow',
+                 title='Female Annotators - Probability of Following')
+    willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+
+    athlete = pd.read_csv("data_csv/athlete.csv", sep=',',
+                                              header=0, skiprows=0)
+    fig = px.pie(athlete, values='counts', names='reasons',
+                 title='Athlete category - Reasons to follow')
+    athlete_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    dance = pd.read_csv("data_csv/dance.csv", sep=',',
+                          header=0, skiprows=0)
+    fig = px.pie(dance, values='counts', names='reasons',
+                 title='Dance category - Reasons to follow')
+    dance_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    ballet = pd.read_csv("data_csv/ballet.csv", sep=',',
+                        header=0, skiprows=0)
+    fig = px.pie(ballet, values='counts', names='reasons',
+                 title='Ballet category - Reasons to follow')
+    ballet_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    nutrition = pd.read_csv("data_csv/nutrition.csv", sep=',',
+                         header=0, skiprows=0)
+    fig = px.pie(nutrition, values='counts', names='reasons',
+                 title='Nutricion category - Reasons to follow')
+    nutrition_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    pilates = pd.read_csv("data_csv/pilates.csv", sep=',',
+                            header=0, skiprows=0)
+    fig = px.pie(pilates, values='counts', names='reasons',
+                 title='Pilates category - Reasons to follow')
+    pilates_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    body_building = pd.read_csv("data_csv/body_building.csv", sep=',',
+                          header=0, skiprows=0)
+    fig = px.pie(body_building, values='counts', names='reasons',
+                 title='Body building category - Reasons to follow')
+    body_building_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+    fitness_model = pd.read_csv("data_csv/fitness_model.csv", sep=',',
+                                header=0, skiprows=0)
+    fig = px.pie(fitness_model, values='counts', names='reasons',
+                 title='Fitness model category - Reasons to follow')
+    fitness_model_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
 
     #total_reasons_df = show_reasons(df)
-    return render_template("questionaire_statistics.html", hour_graph=hour_graphjson, willing_to_follow_male_graph=willing_to_follow_male_graphjson,
-                           willing_to_follow_female_graph=willing_to_follow_female_graphjson)
+    return render_template("questionaire_statistics.html", hour_graph=gender_graph_json, willing_to_follow_male_graph=willing_to_follow_male_graphjson,
+                           willing_to_follow_female_graph=willing_to_follow_female_graphjson,
+                           athlete=athlete_graphjson, dance=dance_graphjson,ballet=ballet_graphjson, nutrition=nutrition_graphjson,
+                           body_building=body_building_graphjson,pilates=pilates_graphjson, fitness_model=fitness_model_graphjson)
 
 
 @app.route("/hashtags.html")

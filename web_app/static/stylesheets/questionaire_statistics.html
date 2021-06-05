@@ -78,6 +78,13 @@
             <div id="hour_graph"></div>
             <div id="willing_to_follow_male_graph"></div>
             <div id="willing_to_follow_female_graph"></div>
+            <div id="athlete"></div>
+            <div id="dance"></div>
+            <div id="ballet"></div>
+            <div id="nutrition"></div>
+            <div id="pilates"></div>
+            <div id="body_building"></div>
+            <div id="fitness_model"></div>
 
         </div>
     </div>
@@ -86,6 +93,13 @@
     Plotly.newPlot("hour_graph", {{ hour_graph | safe }})
     Plotly.newPlot("willing_to_follow_male_graph", {{ willing_to_follow_male_graph | safe }})
     Plotly.newPlot("willing_to_follow_female_graph", {{ willing_to_follow_female_graph | safe }})
+    Plotly.newPlot("athlete", {{ athlete | safe }})
+    Plotly.newPlot("dance", {{ dance | safe }})
+    Plotly.newPlot("ballet", {{ ballet | safe }})
+    Plotly.newPlot("nutrition", {{ nutrition | safe }})
+    Plotly.newPlot("pilates", {{ pilates | safe }})
+    Plotly.newPlot("body_building", {{ body_building | safe }})
+    Plotly.newPlot("fitness_model", {{ fitness_model | safe }})
 
 </script>
 </html>
