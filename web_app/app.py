@@ -1,21 +1,21 @@
-from flask import Flask  # Flask -> class name
-from flask import render_template, request
-from flask import jsonify
-import os
-from web_app.funcs.db import Db
+import json
+from PIL import Image
+import plotly.graph_objs as go
+from wordcloud import WordCloud, STOPWORDS
 import plotly
 import plotly.express as px
-import pandas as pd
-import json
-import collections
-from show_results.questionnaire_results import read_questionnaire, cluster_by_gender, show_reasons
-
-
+from flask import Flask  # Flask -> class name
+from flask import jsonify
+from flask import render_template
+from web_app.funcs.db import Db
+from text_analysis import plotly_wordcloud, stopwords_removal
 # declare application. initialize with Flask instance/class
 app = Flask(__name__, template_folder='static/stylesheets')
-
+import matplotlib.pyplot as plt
 # get MongoDB instance
 db = Db()
+import re
+import pandas as pd
 
 # @app.route("/", methods=['GET'])
 # @app.route('/wordclouds')
@@ -41,15 +41,24 @@ def topic_modeling():
 
 @app.route("/machine_learning.html")
 def machine_learning():
+
     return render_template("machine_learning.html")
+
 
 @app.route("/clustering.html")
 def clustering():
     return render_template("clustering.html")
 
+
 @app.route("/wordclouds.html")
 def wordclouds():
-    return render_template("wordclouds.html")
+    data = db.get_posts()
+    posts = ' '.join(map(str, list(data.Description.values)))
+    words = re.findall(r'\b\S+\b', posts)
+    fig = plotly_wordcloud(' '.join(words))
+    graphJSON2 = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('wordclouds.html', word_cloud=graphJSON2)
+
 
 @app.route("/statistics.html")
 def statistics():
@@ -79,6 +88,44 @@ def statistics():
                  },
                  title="No. of posts by hour")
     hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    df = db.find_all()
+    df['Likes'] = df['Likes'].str.replace(',', '').astype(float)
+    df['Views'] = df['Views'].str.replace(',', '').astype(float)
+    df['Total Posts'] = pd.to_numeric(df['Total Posts'], errors='coerce')
+
+    likes_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Likes'].sum()
+    views_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Views'].sum()
+    posts_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Total Posts'].sum()
+    likes_per_category = df.groupby(['category'], as_index=False)['Likes'].sum()
+
+    # category = df['category'].value_counts().to_frame().reset_index()
+    # category.rename(columns={'index': 'category', 'category': 'frequency'}, inplace=True)
+    #
+    # maritalStatus = df['marital_status'].value_counts().to_frame().reset_index()
+    # maritalStatus.rename(columns={'index': 'marital_status', 'marital_status': 'frequency'}, inplace=True)
+    #
+    # age = df['age'].value_counts().to_frame().reset_index()
+    # age.rename(columns={'index': 'age', 'age': 'frequency'}, inplace=True)
+    #
+    # sex = df['sex'].value_counts().to_frame().reset_index()
+    # sex.rename(columns={'index': 'sex', 'sex': 'frequency'}, inplace=True)
+    #
+    # fig = px.bar(category, x='category', y='frequency')
+    # category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #
+    # fig = px.bar(maritalStatus, x='category', y='frequency')
+    # maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #
+    # fig = px.bar(age, x='age', y='frequency')
+    # maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #
+    # fig = px.bar(sex, x='sex', y='frequency')
+    # maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #
+    # fig = px.bar(maritalStatus, x='category', y='frequency')
+    # maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #
 
     return render_template("statistics.html", influencerCountGraphJSON=influencer_count_graphjson,
                            dayGraph=day_graphjson, hourGraph=hour_graphjson)

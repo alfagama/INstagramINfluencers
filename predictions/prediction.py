@@ -1,22 +1,22 @@
-import pandas as pd
-from collections import Counter
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import metrics
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import LinearSVC, SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
-from matplotlib import pyplot
-from dataset_creation import read_data
-from pandas.api.types import is_string_dtype
-from sklearn.decomposition import PCA
-import numpy as np
-import matplotlib.pyplot as plt
 import os.path
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot
+from pandas.api.types import is_string_dtype
+from sklearn import metrics
+from sklearn.decomposition import PCA
+from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+
+from dataset_creation import read_data
 
 # Options for pandas -----
 pd.set_option('display.max_columns', None)
@@ -102,6 +102,7 @@ def print_scores(y_true, y_pred, model_name):
     f1.append(metrics.f1_score(y_true, y_pred))
     model_names.append(model_name)
 
+
 def plot_results(name):
 
     x = np.arange(len(model_names))
@@ -154,7 +155,6 @@ def make_prediction(dataset, prediction_type):
         x_train_final = x_train_s
         x_test_final = x_test_s
 
-
     if prediction_type == 'questionnaire_info':
         # Naive Bayes
         # ---------------------------------------------------------------
@@ -163,7 +163,6 @@ def make_prediction(dataset, prediction_type):
         print_scores(y_test, y_predicted, "MultinomialNB")
         print("score on train: ", str(mnb.score(x_train_final, y_train)), "\n")
         # ---------------------------------------------------------------
-
 
     # Logistic Regression
     # ---------------------------------------------------------------
@@ -174,7 +173,6 @@ def make_prediction(dataset, prediction_type):
     print_scores(y_test, y_predicted, "Logistic Regression")
     print("score on train: ", str(lr.score(x_train_final, y_train)), "\n")
     # ---------------------------------------------------------------
-
 
     # K Neighbors Classifier
     # ---------------------------------------------------------------

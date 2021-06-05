@@ -13,6 +13,7 @@ db = client.ININ
 CollectionName = 'myLeaderboardsNew'
 # set collection
 collection = db[CollectionName]
+from pandas import DataFrame
 
 
 class Db:
@@ -245,6 +246,19 @@ class Db:
         df = df.sort_values(by=['hashtag_count'], ascending=True)
         return df
 
+
+    def get_posts(self):
+        posts = collection.find()
+        df = DataFrame(list(posts))
+        data = pd.DataFrame(columns=['Followers at Posting', 'Post Created', 'Post Created Date',
+                                     'Post Created Time', 'Type', 'Total Interactions', 'Likes', 'Comments',
+                                     'Views', 'URL', 'Link', 'Photo', 'Title', 'Description', 'Hashtags',
+                                     'Image Text', 'Sponsor Id', 'Sponsor Name', 'Overperforming Score',
+                                     'All Comments'])
+        for i in df['Posts']:
+            data = pd.concat([data, pd.DataFrame(i, columns=data.columns)], ignore_index=True)
+
+        return data
 
 
 
