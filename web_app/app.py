@@ -10,6 +10,8 @@ from flask import render_template
 from web_app.funcs.db import Db
 from text_analysis import plotly_wordcloud, stopwords_removal
 from show_results.questionnaire_results import read_questionnaire, cluster_by_gender, show_reasons
+import re
+import pandas as pd
 
 
 # declare application. initialize with Flask instance/class
@@ -17,8 +19,6 @@ app = Flask(__name__, template_folder='static/stylesheets')
 import matplotlib.pyplot as plt
 # get MongoDB instance
 db = Db()
-import re
-import pandas as pd
 
 # @app.route("/", methods=['GET'])
 # @app.route('/wordclouds')
