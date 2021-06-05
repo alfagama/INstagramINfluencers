@@ -67,13 +67,13 @@ def wordclouds():
 def statistics():
 
     # --------------- Number of influencer by category ---------------
-    influencer_count_by_category_df = db.get_influencers_count_by_category()
+    influencer_count_by_category_df = pd.read_csv("data_csv/statistics/influencers_count_by_category.csv", sep=',', header=0, skiprows=0)
     fig = px.pie(influencer_count_by_category_df, values='count', names='_id',
                  title='Percentage of influencers from each category')
     influencer_count_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Number of posts per day -----------------
-    day_freq_df = db.get_frequency_per_day()
+    day_freq_df = pd.read_csv("data_csv/statistics/post_frequency_per_day.csv", sep=',', header=0, skiprows=0)
     fig = px.bar(day_freq_df, x="day", y="posts",
                  labels={
                      "day": "Day",
@@ -83,7 +83,7 @@ def statistics():
     day_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Number of posts per hour -----------------
-    hour_freq_df = db.get_frequency_per_hour()
+    hour_freq_df = pd.read_csv("data_csv/statistics/post_frequency_per_hour.csv", sep=',', header=0, skiprows=0)
     fig = px.bar(hour_freq_df, x="time", y="posts",
                  labels={
                      "time": "Time",
@@ -157,7 +157,7 @@ def questionaire_statistics():
 def hashtags():
 
     # ----------------- Hashtags distribution -----------------
-    df = db.get_hashtags_distribution()
+    df = pd.read_csv("data_csv/hashtags/hashtag_distribution.csv", sep=',', header=0, skiprows=0)
     fig = px.bar(df, x="Number of Hashtags", y="Number of Posts",
                  labels={
                      "Number of Hashtags": "No. of hashtags",
@@ -167,7 +167,7 @@ def hashtags():
     hashtags_distribution_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Top hashtag frequencies -----------------
-    df = db.get_top_hashtag_frequency()
+    df = pd.read_csv("data_csv/hashtags/top_hashtag_frequency.csv", sep=',', header=0, skiprows=0).head(25)
     fig = px.bar(df, x="hashtag", y="count",
                  labels={
                      "hashtag": "Hashtags",
@@ -177,7 +177,7 @@ def hashtags():
     hashtags_frequency_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Total number of hashtags from each category -----------------
-    df = db.get_no_of_hashtags_by_category()
+    df = pd.read_csv("data_csv/hashtags/no_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
     fig = px.bar(df, x="category", y="hashtags_count",
                  labels={
                      "category": "Category",
@@ -187,7 +187,7 @@ def hashtags():
     no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Percentage of hashtags from each category -----------------
-    df = db.get_percentage_of_hashtags_by_category()
+    df = pd.read_csv("data_csv/hashtags/percentage_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
     fig = px.bar(df, x="category", y="hashtags_percentage",
                  labels={
                      "category": "Category",
@@ -197,7 +197,7 @@ def hashtags():
     percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Hashtags engagement distribution -----------------
-    df = db.get_hashtags_engagement_distribution()
+    df = pd.read_csv("data_csv/hashtags/hashtags_engagement_distribution.csv", sep=',', header=0, skiprows=0)
     fig = px.line(df, x="hashtag_count", y="engagement",
                  labels={
                      "hashtag_count": "Category",
