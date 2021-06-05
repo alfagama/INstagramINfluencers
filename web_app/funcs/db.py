@@ -42,10 +42,12 @@ class Db:
         cursor = collection.aggregate([
             {'$group': {'_id': '$category', "count": {"$sum": 1}}}
         ])
+        df = pd.DataFrame(list(cursor))
+        df.to_csv('/data_csv/statistics/influencers_count_by_category.csv', index=False)
         return pd.DataFrame(list(cursor))
 
 
-    def get_frequency_per_day(self):
+    def get_post_frequency_per_day(self):
         """
         Creates a dataframe with the number of posts by day
         :param: -
@@ -70,7 +72,7 @@ class Db:
         return df
 
 
-    def get_frequency_per_hour(self):
+    def get_post_frequency_per_hour(self):
         """
         Creates a dataframe with the number of posts by hour
         :param: -
@@ -220,7 +222,7 @@ class Db:
         df = df.drop(['hashtags', 'hashtag_count', 'post_count'], axis=1)
         df = df.sort_values(by=['percentage'], ascending=False)
         df.columns = ['category', 'hashtags_percentage']
-        return df
+        df.to_csv('/data_csv/hashtags/percentage_of_hashtags_by_category.csv', index=False)
 
 
     def get_hashtags_engagement_distribution(self):
@@ -259,6 +261,7 @@ class Db:
                                      'All Comments'])
         for i in df['Posts']:
             data = pd.concat([data, pd.DataFrame(i, columns=data.columns)], ignore_index=True)
+
 
         return data
 
