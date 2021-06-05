@@ -171,6 +171,15 @@ def questionaire_statistics():
     willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
 
+    ########## pies with reasons
+    total_reasons = pd.read_csv("data_csv/total_reasons.csv", sep=',',
+                          header=0, skiprows=0, nrows=10)
+    total_reasons = total_reasons
+    fig = px.pie(total_reasons, values='Counter', names='Reason',
+                 title='All categories - Top-10 reasons to follow')
+    total_reasons_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # -------------------------------------------------------------------------------------
+
     athlete = pd.read_csv("data_csv/athlete.csv", sep=',',
                                               header=0, skiprows=0)
     fig = px.pie(athlete, values='counts', names='reasons',
@@ -218,7 +227,8 @@ def questionaire_statistics():
     return render_template("questionaire_statistics.html", hour_graph=gender_graph_json, willing_to_follow_male_graph=willing_to_follow_male_graphjson,
                            willing_to_follow_female_graph=willing_to_follow_female_graphjson,
                            athlete=athlete_graphjson, dance=dance_graphjson,ballet=ballet_graphjson, nutrition=nutrition_graphjson,
-                           body_building=body_building_graphjson,pilates=pilates_graphjson, fitness_model=fitness_model_graphjson)
+                           body_building=body_building_graphjson,pilates=pilates_graphjson, fitness_model=fitness_model_graphjson,
+                           total_reasons=total_reasons_graphjson)
 
 
 @app.route("/hashtags.html")
