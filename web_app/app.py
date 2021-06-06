@@ -228,16 +228,11 @@ def questionaire_statistics():
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
-    colors = ['gold', 'mediumturquoise']
+    colors = ['#198DE8', '#EF1453']
     fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
-
-
-    '''fig = px.pie(gender_graph_json, values='Counter', names='Sex',
-                 title='Annotators - Gender Percentage')'''
-
     gender_graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #-------------------------------------------------------------------------------------
-
+    colorsYesNo = ['#85e085', '#ffa64d']
     willing_to_follow_male_df = pd.read_csv("data_csv/willing_to_follow_male_df.csv", sep=',',
                                     header=0, skiprows=0)
 
@@ -245,75 +240,139 @@ def questionaire_statistics():
                                  textinfo='label+percent',
                                  insidetextorientation='radial'
                                  )])
-    fig.update_layout(title='Male Annotators - Probability of Following', title_x=0.5,
+    fig.update_layout(title='Male Annotators - Probability of following', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
-    colors = ['gold', 'mediumturquoise']
-    fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
-
-    '''fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow',
-                 title='Male Annotators - Probability of Following')'''
-
+    fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colorsYesNo))
     willing_to_follow_male_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
-
     willing_to_follow_female_df = pd.read_csv("data_csv/willing_to_follow_female_df.csv", sep=',',
                                     header=0, skiprows=0)
-    fig = px.pie(willing_to_follow_female_df, values='Counter', names='Willing to follow',
-                 title='Female Annotators - Probability of Following')
+    fig = go.Figure(
+        data=[go.Pie(values=willing_to_follow_female_df['Counter'], labels=willing_to_follow_female_df['Willing to follow'],
+                     textinfo='label+percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Female Annotators - Probability of following', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+    fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colorsYesNo))
     willing_to_follow_female_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
 
     ########## pies with reasons
     total_reasons = pd.read_csv("data_csv/total_reasons.csv", sep=',',
                           header=0, skiprows=0, nrows=10)
-    total_reasons = total_reasons
-    fig = px.pie(total_reasons, values='Counter', names='Reason',
-                 title='All categories - Top-10 reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=total_reasons['Counter'],
+                     labels=total_reasons['Reason'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='All categories - Top 10 reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6,color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     total_reasons_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
-
     athlete = pd.read_csv("data_csv/athlete.csv", sep=',',
                                               header=0, skiprows=0)
-    fig = px.pie(athlete, values='counts', names='reasons',
-                 title='Athlete category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=athlete['counts'],
+                     labels=athlete['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Athlete category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     athlete_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     dance = pd.read_csv("data_csv/dance.csv", sep=',',
                           header=0, skiprows=0)
-    fig = px.pie(dance, values='counts', names='reasons',
-                 title='Dance category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=dance['counts'],
+                     labels=dance['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Dance category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     dance_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     ballet = pd.read_csv("data_csv/ballet.csv", sep=',',
                         header=0, skiprows=0)
-    fig = px.pie(ballet, values='counts', names='reasons',
-                 title='Ballet category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=ballet['counts'],
+                     labels=ballet['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Ballet category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     ballet_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     nutrition = pd.read_csv("data_csv/nutrition.csv", sep=',',
                          header=0, skiprows=0)
-    fig = px.pie(nutrition, values='counts', names='reasons',
-                 title='Nutricion category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=nutrition['counts'],
+                     labels=nutrition['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Nutrition category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     nutrition_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     pilates = pd.read_csv("data_csv/pilates.csv", sep=',',
                             header=0, skiprows=0)
-    fig = px.pie(pilates, values='counts', names='reasons',
-                 title='Pilates category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=pilates['counts'],
+                     labels=pilates['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Pilates category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     pilates_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     body_building = pd.read_csv("data_csv/body_building.csv", sep=',',
                           header=0, skiprows=0)
-    fig = px.pie(body_building, values='counts', names='reasons',
-                 title='Body building category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=body_building['counts'],
+                     labels=body_building['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Body building category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     body_building_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
     fitness_model = pd.read_csv("data_csv/fitness_model.csv", sep=',',
                                 header=0, skiprows=0)
-    fig = px.pie(fitness_model, values='counts', names='reasons',
-                 title='Fitness model category - Reasons to follow')
+    fig = go.Figure(
+        data=[go.Pie(values=fitness_model['counts'],
+                     labels=fitness_model['reasons'],
+                     textinfo='percent',
+                     insidetextorientation='radial'
+                     )])
+    fig.update_layout(title='Fitness model category - Reasons to follow', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=5, color="black")))
+    fig.update_traces(hoverinfo='label+percent')
     fitness_model_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
 
