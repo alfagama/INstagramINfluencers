@@ -387,7 +387,7 @@ def hashtags():
     fig = go.Figure(data=[go.Bar(
         x=df['category'],
         y=df['hashtags_count'],
-        marker_color='rgb(0, 179, 179)')
+        marker_color='rgb(196, 108, 235)')
     ])
 
     fig.update_layout(title='No. of total hashtags by category', title_x=0.5,
@@ -413,7 +413,7 @@ def hashtags():
     fig = go.Figure(data=[go.Bar(
         x=df['category'],
         y=df['hashtags_percentage'],
-        marker_color='rgb(0, 179, 179)')
+        marker_color='rgb(196, 108, 235)')
     ])
 
     fig.update_layout(title='Percentage of hashtags by category', title_x=0.5,
