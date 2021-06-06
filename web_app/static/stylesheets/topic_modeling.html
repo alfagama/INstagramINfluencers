@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='stylesheets/pics/logo_rect.png') }}">
 
-    <title>Collapsible sidebar using Bootstrap 4</title>
+    <title>Instagram Influencers Analysis</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <!-- Bootstrap CSS CDN -->
@@ -54,6 +54,9 @@
                 <a href="machine_learning.html">Machine Learning Models</a>
             </li>
             <li>
+                <a href="clustering.html">Clustering</a>
+            </li>
+            <li>
                 <a href="hashtags.html">Hashtag Analysis</a>
             </li>
             <li class="active">
@@ -68,43 +71,45 @@
 
     </div>
 
-    <div class="my_container" style="padding-top: 2%">
-        <div class="row" style="margin: 40px 10px; row-gap: 25px; justify-content: center">
+
+    <div style="padding: 0 40px; margin: 40px 10px">
+        <div class="row" style="justify-content: center">
             <div class="col-sm-12 col-xl-8">
+                <div class="form-row">
+                    <div class="form-group col-md-2" >
+                        <label form="inputState">Text Category: </label>
+                    </div>
+                    <form id="form2" method="post" class="form-group col" onchange="setIframeSource()">
+                    <select id="text_category" class="form-control" name="text_category">
+                        <option value="Description">Post Description</option>
+                        <option value="Comments">Post Comments</option>
+                    </select>
+                    </form>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group col-md-2" style="margin-left: 0%;">
                         <label form="inputState">Influencer Category: </label>
                     </div>
-                    <form id="form1" method="post" class="form-group col-md-4" onchange="setIframeSource()">
+                    <form id="form1" method="post" class="form-group col" onchange="setIframeSource()">
                         <select id="category" class="form-control" name="category">
                             <option value="all_categories" selected="selected">All Categories</option>
                             <option value="body_building">Body Building</option>
                             <option value="dance">Dance</option>
                             <option value="nutrition">Nutrition</option>
-                    <option value="pilates">Pilates</option>
-                    <option value="yoga">Yoga</option>
-                    <option value="fitness_model">Fitness Model</option>
-                    <option value="athlete">Athlete</option>
-                </select>
-            </form>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-2" style="padding-left: 0%;">
-                <label form="inputState">Text Category: </label>
-            </div>
-            <form id="form2" method="post" class="form-group col-md-4" onchange="setIframeSource()">
-                <select id="text_category" class="form-control" name="text_category">
-                    <option value="Description">Post Description</option>
-                    <option value="Comments">Post Comments</option>
-                </select>
-            </form>
-        </div>
-
+                            <option value="pilates">Pilates</option>
+                            <option value="yoga">Yoga</option>
+                            <option value="fitness_model">Fitness Model</option>
+                            <option value="athlete">Athlete</option>
+                    </select>
+                    </form>
+                </div>
                 <iframe src="static/stylesheets/visualizations/LDA/Description_LDA_Visualization_all_categories.html"
                         id="myIframe" height="800px" width="1200px"></iframe>
 
             </div>
         </div>
+    </div>
 </body>
 <script>
     function setIframeSource() {
