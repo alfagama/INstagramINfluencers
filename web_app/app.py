@@ -306,7 +306,7 @@ def questionaire_statistics():
                      )])
     fig.update_layout(title='All categories - Top 10 reasons to follow', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6,color="black")))
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=5,color="black")))
     fig.update_traces(hoverinfo='label+percent')
     total_reasons_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
@@ -334,7 +334,7 @@ def questionaire_statistics():
                      )])
     fig.update_layout(title='Dance category - Reasons to follow', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=5, color="black")))
     fig.update_traces(hoverinfo='label+percent')
     dance_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
@@ -348,7 +348,7 @@ def questionaire_statistics():
                      )])
     fig.update_layout(title='Ballet category - Reasons to follow', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=8, color="black")))
     fig.update_traces(hoverinfo='label+percent')
     ballet_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
@@ -376,7 +376,7 @@ def questionaire_statistics():
                      )])
     fig.update_layout(title='Pilates category - Reasons to follow', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=5, color="black")))
     fig.update_traces(hoverinfo='label+percent')
     pilates_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
@@ -390,7 +390,7 @@ def questionaire_statistics():
                      )])
     fig.update_layout(title='Body building category - Reasons to follow', title_x=0.5,
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=6, color="black")))
+                      plot_bgcolor='rgba(0,0,0,0)', legend=dict(font=dict(size=5, color="black")))
     fig.update_traces(hoverinfo='label+percent')
     body_building_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
@@ -615,4 +615,4 @@ def get_todo(importance_val):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='127.0.0.1', port=5110)
+    app.run(debug=True, host='127.0.0.1', port=5111)
