@@ -60,7 +60,7 @@ def statistics():
     influencer_count_by_category_df = pd.read_csv("data_csv/statistics/influencers_count_by_category.csv", sep=',', header=0, skiprows=0)
 
     fig = go.Figure(data=[go.Pie(labels=influencer_count_by_category_df['_id'], values=influencer_count_by_category_df['count'],
-                                 textinfo='label+percent',
+                                 textinfo='percent',
                                  insidetextorientation='radial'
                                  )])
     fig.update_layout(title='Percentage of influencers from each category', title_x=0.5,
