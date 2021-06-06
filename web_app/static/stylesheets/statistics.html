@@ -77,16 +77,17 @@
               <div id="plot_influencer_by_category"></div>
                 <div id="plot_by_day"></div>
                 <div id="plot_by_hour"></div>
-                <div id="plot_category_graphjson" />
-                <div id="plot_age_graphjson" />
-                <div id="plot_maritalStatus_graphjson" />
-                <div id="plot_sex_graphjson" />
-                <div id="likes_per_category_graphjson" />
-                <div id="category_sex_graphjson" />
-                <div id="posts_likes_scatter_json" />
-                <div id="posts_per_category" />
-                <div id="views_posts_scatter_graph_json" />
-                <div id="likes_per_category_sex_graphjson" />
+                <div id="plot_category_graphjson"></div>
+                <div id="plot_age_graphjson"></div>
+                <div id="plot_maritalStatus_graphjson"></div>
+                <div id="plot_sex_graphjson"></div>
+                <div id="plot_likes_per_category_sex_graphjson"></div>
+                <div id="likes_per_category_graphjson"></div>
+                <div id="category_sex_graphjson"></div>
+                <div id="posts_likes_scatter_json"></div>
+                <div id="posts_per_category"></div>
+                <div id="views_posts_scatter_graph_json"></div>
+                <div id="likes_per_category_sex_graphjson"></div>
             </div>
         </div>
     </div>
@@ -99,6 +100,9 @@
     Plotly.newPlot("plot_age_graphjson", {{ age_Graphjson | safe }})
     Plotly.newPlot("plot_maritalStatus_graphjson", {{ maritalStatus_Graphjson | safe }})
     Plotly.newPlot("plot_sex_graphjson", {{ sex_Graphjson | safe }})
+
+
+
     Plotly.newPlot("plot_likes_per_category_sex_graphjson", {{ likes_per_category_sex_Graphjson | safe }})
     Plotly.newPlot("likes_per_category_graphjson", {{ likes_per_category_Graphjson | safe }})
     Plotly.newPlot("category_sex_graphjson", {{ category_sex_Graphjson | safe }})
