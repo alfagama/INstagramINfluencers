@@ -533,14 +533,13 @@ def hashtags():
 
     # ----------------- Hashtags PCA 2D -----------------
     df = pd.read_csv("data_csv/hashtags/hashtags_2d.csv", sep=',', header=0, skiprows=0)
-    print(df)
+    #print(df)
     fig = go.Figure(data=[go.Scatter(
         x=df['x'],
         y=df['y'],
         hovertext= df['hashtags'],
         mode='markers')
     ])
-
     fig.update_traces(go.Scatter(
         mode="markers",
         name="Markers and Text",
@@ -557,7 +556,7 @@ def hashtags():
 
     fig.update_layout(
         height=800,
-        title_text='Hashtags PCA Representation', title_x=0.5,
+        title_text='Hashtags PCA 2D Representation', title_x=0.5,
         xaxis=dict(title='x', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)",
                    zeroline=False),
         yaxis=dict(title='y', showgrid=True, linecolor='rgb(204, 204, 204)',
