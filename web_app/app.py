@@ -231,7 +231,6 @@ def statistics():
                            posts_per_category_Graphjson=posts_per_category,
                            views_posts_scatter_Graph_json=views_posts_scatter_graph_json,
                            likes_per_category_sex_Graphjson2=likes_per_category_sex_graphjson
-
                            )
 
 
@@ -432,8 +431,9 @@ def hashtags():
     ])
 
     fig.update_layout(title='Hashtags Distribution', title_x=0.5,
-                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)', zeroline=False),
+                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)",
+                                 zeroline=True, zerolinecolor='rgb(204, 204, 204)', zerolinewidth=1),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
@@ -456,7 +456,7 @@ def hashtags():
         marker_color='rgb(0, 179, 179)')
     ])
 
-    fig.update_layout(title='Most Frequent Hashtags', title_x=0.5,
+    fig.update_layout(title='Most Popular Hashtags', title_x=0.5,
                       xaxis=dict(title='Hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
@@ -490,14 +490,6 @@ def hashtags():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
 
-
-    '''fig = px.bar(df, x="category", y="hashtags_count",
-                 labels={
-                     "category": "Category",
-                     "hashtags_count": "No. of total hashtags",
-                 },
-                 title="No. of total hashtags by category")'''
-
     no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Percentage of hashtags from each category -----------------
@@ -516,13 +508,6 @@ def hashtags():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
 
-    '''fig = px.bar(df, x="category", y="hashtags_percentage",
-                 labels={
-                     "category": "Category",
-                     "hashtags_percentage": "Percentage of hashtags",
-                 },
-                 title="Percentage of hashtags by category")'''
-
     percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Hashtags engagement distribution -----------------
@@ -536,23 +521,92 @@ def hashtags():
     ])
 
     fig.update_layout(title='User engagement and number of hashtags correlation', title_x=0.5,
-                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='User engagement (comments & likes)', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)',
+                                 zeroline=False),
+                      yaxis=dict(title='User engagement (comments & likes)', showgrid=True, linecolor='rgb(204, 204, 204)',
+                                 showline=True, gridcolor="rgb(204, 204, 204)", zeroline=True, zerolinecolor='rgb(204, 204, 204)', zerolinewidth=1),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
 
-    '''fig = px.line(df, x="hashtag_count", y="engagement",
-                 labels={
-                     "hashtag_count": "Category",
-                     "engagement": "Percentage of hashtags",
-                 },
-                 title="Percentage of hashtags by category")'''
     hashtags_engagement_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Hashtags PCA 2D -----------------
+    df = pd.read_csv("data_csv/hashtags/hashtags_2d.csv", sep=',', header=0, skiprows=0)
+    print(df)
+    fig = go.Figure(data=[go.Scatter(
+        x=df['x'],
+        y=df['y'],
+        hovertext= df['hashtags'],
+        mode='markers')
+    ])
+
+    fig.update_traces(go.Scatter(
+        mode="markers",
+        name="Markers and Text",
+        textposition="bottom center",
+        marker=dict(
+            color='rgba(0,0,0,0)',
+            size=0,
+            line=dict(
+                color='MediumPurple',
+                width=1.5
+            )
+        )
+    ))
+
+    fig.update_layout(
+        height=800,
+        title_text='Hashtags PCA Representation', title_x=0.5,
+        xaxis=dict(title='x', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)",
+                   zeroline=False),
+        yaxis=dict(title='y', showgrid=True, linecolor='rgb(204, 204, 204)',
+                   showline=True, gridcolor="rgb(204, 204, 204)", zeroline=True, zerolinecolor='rgb(204,204,204)', zerolinewidth=1),
+
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    hashtags_PCA_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Hashtags PCA 3D -----------------
+    df = pd.read_csv("data_csv/hashtags/hashtags_3d.csv", sep=',', header=0, skiprows=0)
+    print(df)
+    fig = go.Figure(data=[go.Scatter3d(
+        x=df['x'],
+        y=df['y'],
+        z=df['z'],
+        hovertext=df['hashtags'],
+        mode='markers')
+    ])
+
+    fig.update_traces(go.Scatter3d(
+        mode="markers",
+        name="Markers and Text",
+        textposition="bottom center",
+        marker=dict(
+            color='MediumPurple',
+            size=2,
+            line=dict(
+
+                width=0
+            )
+        )
+    ))
+
+    fig.update_layout(
+        height=800,
+        title_x = 0.5,
+        title_text='Hashtags PCA 3D Representation',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    hashtags_PCA_3d_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
 
     return render_template("hashtags.html", hashtags_distribution=hashtags_distribution_graphjson, hashtags_frequency=hashtags_frequency_graphjson,
                            no_of_hashtags_by_category=no_of_hashtags_by_category_graphjson, percentage_of_hashtags=percentage_of_hashtags_graphjson,
-                           hashtags_engagement=hashtags_engagement_graphjson)
+                           hashtags_engagement=hashtags_engagement_graphjson, hashtags_PCA=hashtags_PCA_graphjson,
+                           hashtags_PCA_3d=hashtags_PCA_3d_graphjson)
 
 
 @app.route("/todo/<importance_val>")
