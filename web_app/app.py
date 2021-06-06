@@ -419,6 +419,43 @@ def questionaire_statistics():
 
 @app.route("/hashtags.html")
 def hashtags():
+    # ----------------- Total number of hashtags from each category -----------------
+    df = pd.read_csv("data_csv/hashtags/no_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['category'],
+        y=df['hashtags_count'],
+        marker_color='rgb(175, 122, 197)')
+    ])
+
+    fig.update_layout(title='No. of total hashtags by category', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of total hashtags', showgrid=True, linecolor='rgb(204, 204, 204)',
+                                 showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # ----------------- Percentage of hashtags from each category -----------------
+    df = pd.read_csv("data_csv/hashtags/percentage_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
+
+    fig = go.Figure(data=[go.Bar(
+        x=df['category'],
+        y=df['hashtags_percentage'],
+        marker_color='rgb(175, 122, 197)')
+    ])
+
+    fig.update_layout(title='Percentage of hashtags by category', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Percentage of hashtags', showgrid=True, linecolor='rgb(204, 204, 204)',
+                                 showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Hashtags distribution -----------------
     df = pd.read_csv("data_csv/hashtags/hashtag_distribution.csv", sep=',', header=0, skiprows=0).sort_values(by=['Number of Hashtags'], ascending=True)
@@ -474,42 +511,6 @@ def hashtags():
 
     hashtags_frequency_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    # ----------------- Total number of hashtags from each category -----------------
-    df = pd.read_csv("data_csv/hashtags/no_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
-
-    fig = go.Figure(data=[go.Bar(
-        x=df['category'],
-        y=df['hashtags_count'],
-        marker_color='rgb(196, 108, 235)')
-    ])
-
-    fig.update_layout(title='No. of total hashtags by category', title_x=0.5,
-                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='No. of total hashtags', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
-                      paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)'
-                      )
-
-    no_of_hashtags_by_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # ----------------- Percentage of hashtags from each category -----------------
-    df = pd.read_csv("data_csv/hashtags/percentage_of_hashtags_by_category.csv", sep=',', header=0, skiprows=0)
-
-    fig = go.Figure(data=[go.Bar(
-        x=df['category'],
-        y=df['hashtags_percentage'],
-        marker_color='rgb(196, 108, 235)')
-    ])
-
-    fig.update_layout(title='Percentage of hashtags by category', title_x=0.5,
-                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='Percentage of hashtags', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
-                      paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)'
-                      )
-
-    percentage_of_hashtags_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
     # ----------------- Hashtags engagement distribution -----------------
     df = pd.read_csv("data_csv/hashtags/hashtags_engagement_distribution.csv", sep=',', header=0, skiprows=0)
 
@@ -520,7 +521,7 @@ def hashtags():
         mode='lines+markers')
     ])
 
-    fig.update_layout(title='User engagement and number of hashtags correlation', title_x=0.5,
+    fig.update_layout(title='User engagement - Νumber of hashtags', title_x=0.5,
                       xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)',
                                  zeroline=False),
                       yaxis=dict(title='User engagement (comments & likes)', showgrid=True, linecolor='rgb(204, 204, 204)',
@@ -548,7 +549,7 @@ def hashtags():
             color='rgba(0,0,0,0)',
             size=0,
             line=dict(
-                color='MediumPurple',
+                color='rgb(175, 122, 197)',
                 width=1.5
             )
         )
@@ -583,10 +584,10 @@ def hashtags():
         name="Markers and Text",
         textposition="bottom center",
         marker=dict(
-            color='MediumPurple',
+            color='rgb(175, 122, 197)',
             size=2,
             line=dict(
-
+                #color='rgb(175, 122, 197)',
                 width=0
             )
         )
