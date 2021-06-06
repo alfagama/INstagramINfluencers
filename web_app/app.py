@@ -1,23 +1,17 @@
 import json
-from PIL import Image
-import plotly.graph_objs as go
-from wordcloud import WordCloud, STOPWORDS
+
+import pandas as pd
 import plotly
 import plotly.express as px
+import plotly.graph_objs as go
 from flask import Flask  # Flask -> class name
 from flask import jsonify
 from flask import render_template
+
 from web_app.funcs.db import Db
-from dataset_creation import mongo
-from text_analysis import plotly_wordcloud, stopwords_removal
-from show_results.questionnaire_results import read_questionnaire, cluster_by_gender, show_reasons
-import re
-import pandas as pd
-# from pymongo import MongoClient
-from pymongo import MongoClient
+
 # declare application. initialize with Flask instance/class
 app = Flask(__name__, template_folder='static/stylesheets')
-import matplotlib.pyplot as plt
 # get MongoDB instance
 db = Db()
 
@@ -173,18 +167,35 @@ def statistics():
 
     sex = df['sex'].value_counts().to_frame().reset_index()
     sex.rename(columns={'index': 'sex', 'sex': 'frequency'}, inplace=True)
-
+    # 1
     fig = px.bar(category, x='category', y='frequency')
     category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
+    # 2
     fig = px.bar(maritalStatus, x='marital_status', y='frequency')
     maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
+    # 3
     fig = px.bar(age, x='age', y='frequency')
     age_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
+    # 4
     fig = px.bar(sex, x='sex', y='frequency')
     sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    fig = px.pie(labels=likes_per_category['category'], values=likes_per_category['Likes'],
+                 title='Percentage of likes per category',
+                 )
+    likes_per_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    fig = px.line(likes_per_category_sex, x='category', y='Likes', color='sex')
+    category_sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    fig = px.scatter(df, x='Total Posts', y='Likes', color='category', hover_name='sex')
+    posts_likes_scatter_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    fig = px.line(posts_per_category_sex, x='category', y='Total Posts', color='sex')
+    posts_per_category = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    fig = px.scatter(df, x='Views', y='Total Posts', color='category', hover_name='sex')
+    views_posts_scatter_graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     fig = px.bar(likes_per_category_sex, x='category', y='Likes')
     likes_per_category_sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -193,11 +204,18 @@ def statistics():
     #              title='Percentage of influencers from each category')
     # likes_per_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-
     return render_template("statistics.html", influencerCountGraphJSON=influencer_count_graphjson,
-                           dayGraph=day_graphjson, hourGraph=hour_graphjson, category_graphjson=category_graphjson,
-                           maritalStatus_graphjson=maritalStatus_graphjson, age_graphjson=age_graphjson,
-                           sex_graphjson=sex_graphjson, likes_per_category_sex_graphjson=likes_per_category_sex_graphjson
+                           dayGraph=day_graphjson, hourGraph=hour_graphjson, category_Graphjson=category_graphjson,
+                           age_Graphjson=age_graphjson, maritalStatus_Graphjson=maritalStatus_graphjson,
+                           sex_Graphjson=sex_graphjson,
+                           likes_per_category_sex_Graphjson=likes_per_category_sex_graphjson,
+                           likes_per_category_Graphjson=likes_per_category_graphjson,
+                           category_sex_Graphjson=category_sex_graphjson,
+                           posts_likes_scatter_Graphjson=posts_likes_scatter_json,
+                           posts_per_category_Graphjson=posts_per_category,
+                           views_posts_scatter_Graph_json=views_posts_scatter_graph_json,
+                           likes_per_category_sex_Graphjson2=likes_per_category_sex_graphjson
+
                            )
 
 
