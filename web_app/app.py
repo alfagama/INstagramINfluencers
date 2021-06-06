@@ -194,8 +194,8 @@ def statistics():
     ])
     # fig = px.bar(category, x='category', y='frequency')
     fig.update_layout(title='Bar-chart-category', title_x=0.5,
-                      xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
@@ -212,9 +212,9 @@ def statistics():
         y=maritalStatus['frequency'],
         marker_color='rgb(0, 179, 179)')
     ])
-    fig.update_layout(title='Marital_Status Bar-chart', title_x=0.5,
-                      xaxis=dict(title='marital_status', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+    fig.update_layout(title='Marital status', title_x=0.5,
+                      xaxis=dict(title='Marital Status', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
@@ -228,8 +228,8 @@ def statistics():
         marker_color='rgb(0, 179, 179)')
     ])
     fig.update_layout(title='Age Distribution', title_x=0.5,
-                      xaxis=dict(title='age', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+                      xaxis=dict(title='Age', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
@@ -242,9 +242,9 @@ def statistics():
         marker_color='rgb(0, 179, 179)')
     ])
     # fig = px.bar(sex, x='sex', y='frequency')
-    fig.update_layout(title='Sex countplot', title_x=0.5,
-                      xaxis=dict(title='sex', showgrid=False, linecolor='rgb(204, 204, 204)'),
-                      yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+    fig.update_layout(title='Sex', title_x=0.5,
+                      xaxis=dict(title='Sex', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
@@ -274,14 +274,8 @@ def statistics():
     fig = px.bar(likes_per_category_sex, x="category", y="Likes",
                  color="sex", barmode='group')
 
-    #fig = px.bar(likes_per_category_sex, x='category', y='Likes', color='category')
-    # plot = px.Figure(data=[go.Bar(
-    #     x=likes_per_category_sex['category'], y=likes_per_category_sex['Likes'], color='sex'
-    # ),
-    #
-    # ])
     fig.update_layout(title='likes_per_category_sex', title_x=0.5,
-                      xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Likes', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
@@ -290,7 +284,7 @@ def statistics():
     category_sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     fig = px.scatter(df, x='Total Posts', y='Likes', color='category', hover_name='sex', log_x=True, log_y=True)
-    fig.update_layout(title='Total posts/likes scatter', title_x=0.5,
+    fig.update_layout(title='Posts - Likes per user', title_x=0.5,
                       xaxis=dict(title='Total Posts', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Likes', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
@@ -302,8 +296,8 @@ def statistics():
     # fig = px.line(posts_per_category_sex, x='category', y='Total Posts', color='sex')
     fig = px.bar(posts_per_category_sex, x="category", y="Total Posts",
                  color="sex", barmode='group')
-    fig.update_layout(title='category-Posts-scatter', title_x=0.5,
-                      xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+    fig.update_layout(title='Posts per category', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Total Posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
@@ -312,8 +306,8 @@ def statistics():
     posts_per_category = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     fig = px.scatter(df, x='Views', y='Total Posts', color='category', hover_name='sex', log_x=True, log_y=True)
-    fig.update_layout(title='views-posts-scatter', title_x=0.5,
-                      xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+    fig.update_layout(title='Video posts - Views per user', title_x=0.5,
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Likes', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
@@ -329,7 +323,7 @@ def statistics():
     ])
 
     fig.update_layout(title='likes-category-Bar-chart', title_x=0.5,
-                      xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      xaxis=dict(title='Category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Likes', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
                       paper_bgcolor='rgba(0,0,0,0)',
@@ -596,13 +590,6 @@ def hashtags():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
 
-    '''fig = px.bar(df, x="Number of Hashtags", y="Number of Posts",
-                 labels={
-                     "Number of Hashtags": "No. of hashtags",
-                     "Number of Posts": "No. of posts",
-                 },
-                 title="Hashtags Distribution")'''
-
     hashtags_distribution_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Top hashtag frequencies -----------------
@@ -620,15 +607,6 @@ def hashtags():
                       paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
-
-
-    '''fig = px.bar(df, x="hashtag", y="count",
-                 labels={
-                     "hashtag": "Hashtags",
-                     "count": "No. of posts",
-                 },
-                 title="Most Frequent Hashtags")'''
-
 
     hashtags_frequency_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
