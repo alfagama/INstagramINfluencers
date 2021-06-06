@@ -134,7 +134,7 @@ def fit_predict(x_train, x_test, model):
 
 
 def make_prediction(dataset, prediction_type):
-
+    print(dataset.head(2))
     X = dataset.iloc[:, :-1].values
     y = dataset.iloc[:, -1].values
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=2)

@@ -1,13 +1,13 @@
 feauture,score
-likeable,0.02601
-creative,0.09420
-emotionally balanced,0.13258
-extrovert,0.10059
-no-coherence,0.04701
-narcissus,0.06798
-temperamental,0.04972
-reliable,0.06036
-fitness_trust,0.04884
-other_trust,0.06438
-follow,0.18529
-reasons,0.12303
+gender,0.02601
+age,0.09420
+likeable,0.13258
+creative,0.10059
+emotionally balanced,0.04701
+extrovert,0.06798
+no-coherence,0.04972
+narcissus,0.06036
+temperamental,0.04884
+reliable,0.06438
+fitness_trust,0.18529
+other_trust,0.12303
