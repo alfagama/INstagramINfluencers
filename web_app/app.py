@@ -161,21 +161,19 @@ def statistics():
     df = pd.DataFrame(list(posts))
     df['Likes'] = df['Likes'].str.replace(',', '').astype(float)
     df['Views'] = df['Views'].str.replace(',', '').astype(float)
-    df['Comments'] = df['Comments'].str.replace(',', '').astype(float)
-    df['Followers'] = df['Followers'].str.replace(',', '').astype(float)
     df['Total Posts'] = pd.to_numeric(df['Total Posts'], errors='coerce')
 
     likes_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Likes'].sum()
     # views_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Views'].sum()
     posts_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Total Posts'].sum()
     likes_per_category = df.groupby(['category'], as_index=False)['Likes'].sum()
-    comments_per_category = df.groupby(['category'], as_index=False)['Comments'].sum()
+    # comments_per_category = df.groupby(['category'], as_index=False)['Comments'].sum()
 
-    data = likes_per_category.copy()
-    data['posts'] = posts_per_category_sex['posts']
-    data['likes'] = likes_per_category['Likes']
-    data['comments'] = comments_per_category
-    data['calc'] = (data['likes'] + data['comments']) / df['Followers'] * data['posts']
+    # data = likes_per_category.copy()
+    # data['posts'] = posts_per_category_sex['posts']
+    # data['likes'] = likes_per_category['Likes']
+    # data['comments'] = comments_per_category
+    # data['calc'] = (data['likes'] + data['comments']) / df['Followers'] * data['posts']
 
     category = df['category'].value_counts().to_frame().reset_index()
     category.rename(columns={'index': 'category', 'category': 'frequency'}, inplace=True)
@@ -254,7 +252,7 @@ def statistics():
     sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     fig = go.Figure(
-        data=[go.Pie(labels=likes_per_category['category'], values=data['calc'],
+        data=[go.Pie(labels=likes_per_category['category'], values=likes_per_category['Likes'],
                      textinfo='percent',
                      insidetextorientation='radial',
                      title='Percentage of likes per category'
