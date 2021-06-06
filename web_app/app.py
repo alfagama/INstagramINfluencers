@@ -167,13 +167,6 @@ def statistics():
     # views_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Views'].sum()
     posts_per_category_sex = df.groupby(['category', 'sex'], as_index=False)['Total Posts'].sum()
     likes_per_category = df.groupby(['category'], as_index=False)['Likes'].sum()
-    # comments_per_category = df.groupby(['category'], as_index=False)['Comments'].sum()
-
-    # data = likes_per_category.copy()
-    # data['posts'] = posts_per_category_sex['posts']
-    # data['likes'] = likes_per_category['Likes']
-    # data['comments'] = comments_per_category
-    # data['calc'] = (data['likes'] + data['comments']) / df['Followers'] * data['posts']
 
     category = df['category'].value_counts().to_frame().reset_index()
     category.rename(columns={'index': 'category', 'category': 'frequency'}, inplace=True)
@@ -186,13 +179,12 @@ def statistics():
 
     sex = df['sex'].value_counts().to_frame().reset_index()
     sex.rename(columns={'index': 'sex', 'sex': 'frequency'}, inplace=True)
-    # 1
+
     fig = go.Figure(data=[go.Bar(
         x=category['category'],
         y=category['frequency'],
         marker_color='rgb(0, 179, 179)')
     ])
-    # fig = px.bar(category, x='category', y='frequency')
     fig.update_layout(title='Bar-chart-category', title_x=0.5,
                       xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
@@ -202,11 +194,6 @@ def statistics():
                       )
     category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-
-
-
-    # 2
-    #fig = px.bar(maritalStatus, x='marital_status', y='frequency')
     fig = go.Figure(data=[go.Bar(
         x=maritalStatus['marital_status'],
         y=maritalStatus['frequency'],
@@ -220,8 +207,7 @@ def statistics():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
     maritalStatus_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    # 3
-    # fig = px.bar(age, x='age', y='frequency')
+
     fig = go.Figure(data=[go.Bar(
         x=age['age'],
         y=age['frequency'],
@@ -235,13 +221,11 @@ def statistics():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
     age_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    # 4
     fig = go.Figure(data=[go.Bar(
         x=sex['sex'],
         y=sex['frequency'],
         marker_color='rgb(0, 179, 179)')
     ])
-    # fig = px.bar(sex, x='sex', y='frequency')
     fig.update_layout(title='Sex countplot', title_x=0.5,
                       xaxis=dict(title='sex', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='frequency', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
@@ -257,9 +241,6 @@ def statistics():
                      insidetextorientation='radial',
                      title='Percentage of likes per category'
                      )])
-    # fig = px.pie(labels=likes_per_category['category'], values=likes_per_category['Likes'],
-    #              title='Percentage of likes per category',
-    #              )
     fig.update_layout(title='No. of posts by day', title_x=0.5,
                       xaxis=dict(title='Day', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
@@ -269,17 +250,9 @@ def statistics():
                       )
     likes_per_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    # fig = px.Figure(data=[go.bar(likes_per_category_sex, x='category', y='Likes', color='sex')])
-
     fig = px.bar(likes_per_category_sex, x="category", y="Likes",
                  color="sex", barmode='group')
 
-    #fig = px.bar(likes_per_category_sex, x='category', y='Likes', color='category')
-    # plot = px.Figure(data=[go.Bar(
-    #     x=likes_per_category_sex['category'], y=likes_per_category_sex['Likes'], color='sex'
-    # ),
-    #
-    # ])
     fig.update_layout(title='likes_per_category_sex', title_x=0.5,
                       xaxis=dict(title='category', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Likes', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
@@ -298,8 +271,6 @@ def statistics():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
     posts_likes_scatter_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # fig = px.line(posts_per_category_sex, x='category', y='Total Posts', color='sex')
     fig = px.bar(posts_per_category_sex, x="category", y="Total Posts",
                  color="sex", barmode='group')
     fig.update_layout(title='category-Posts-scatter', title_x=0.5,
@@ -320,8 +291,6 @@ def statistics():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
     views_posts_scatter_graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # fig = px.bar(likes_per_category_sex, x='category', y='Likes')
     fig = go.Figure(data=[go.Bar(
         x=likes_per_category_sex['category'],
         y=likes_per_category_sex['Likes'],
@@ -336,11 +305,6 @@ def statistics():
                       plot_bgcolor='rgba(0,0,0,0)'
                       )
     likes_per_category_sex_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # fig = px.pie(likes_per_category['Likes'], values='Likes', names='category',
-    #              title='Percentage of influencers from each category')
-    # likes_per_category_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
     return render_template("statistics.html", influencerCountGraphJSON=influencer_count_graphjson,
                            dayGraph=day_graphjson, hourGraph=hour_graphjson, category_Graphjson=category_graphjson,
                            age_Graphjson=age_graphjson, maritalStatus_Graphjson=maritalStatus_graphjson,
