@@ -12,11 +12,7 @@
 4. Leonidas Vogiatzis
 
 ----------------------------------------------------
-## [Influencers List](https://docs.google.com/spreadsheets/d/1L-l74HHXwRrunIwQjSWoBb7D1PbDF-07/edit#gid=32005799)
-
-## [Technical Report](https://drive.google.com/file/d/1ZCqqVXifB23bjGgmKFm17tAU7wZwGyJv/view?usp=sharing)
-
-## [Technical Report] pdf
+## [Technical Report] (pdf)
 
 ----------------------------------------------------
 Requirements:
