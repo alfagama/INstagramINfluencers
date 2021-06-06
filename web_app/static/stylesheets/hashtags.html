@@ -76,7 +76,8 @@
                 <div id="no_of_hashtags_by_category"></div>
                 <div id="percentage_of_hashtags"></div>
                 <div id="hashtags_engagement"></div>
-                <div id="topic"></div>
+                <div id="hashtags_PCA"></div>
+                <div id="hashtags_PCA_3d"></div>
             </div>
         </div>
     </div>
@@ -87,5 +88,7 @@
     Plotly.newPlot("no_of_hashtags_by_category", {{ no_of_hashtags_by_category | safe }})
     Plotly.newPlot("percentage_of_hashtags", {{ percentage_of_hashtags | safe }})
     Plotly.newPlot("hashtags_engagement", {{ hashtags_engagement | safe }})
+    Plotly.newPlot("hashtags_PCA", {{ hashtags_PCA | safe }})
+    Plotly.newPlot("hashtags_PCA_3d", {{ hashtags_PCA_3d | safe }})
 </script>
 </html>
