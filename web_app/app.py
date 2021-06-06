@@ -64,28 +64,69 @@ def statistics():
 
     # --------------- Number of influencer by category ---------------
     influencer_count_by_category_df = pd.read_csv("data_csv/statistics/influencers_count_by_category.csv", sep=',', header=0, skiprows=0)
-    fig = px.pie(influencer_count_by_category_df, values='count', names='_id',
-                 title='Percentage of influencers from each category')
+
+    fig = go.Figure(data=[go.Pie(labels=influencer_count_by_category_df['_id'], values=influencer_count_by_category_df['count'],
+                                 textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                 )])
+    fig.update_layout(title='Percentage of influencers from each category', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+    #colors = ['gold', 'mediumturquoise']
+    #fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
+
     influencer_count_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Number of posts per day -----------------
     day_freq_df = pd.read_csv("data_csv/statistics/post_frequency_per_day.csv", sep=',', header=0, skiprows=0)
-    fig = px.bar(day_freq_df, x="day", y="posts",
+
+    fig = go.Figure(data=[go.Bar(
+        x=day_freq_df['day'],
+        y=day_freq_df['posts'],
+        marker_color='rgb(0, 179, 179)')
+    ])
+
+    fig.update_layout(title='No. of posts by day', title_x=0.5,
+                      xaxis=dict(title='Day', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+                                 gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    '''fig = px.bar(day_freq_df, x="day", y="posts",
                  labels={
                      "day": "Day",
                      "posts": "No. of posts",
                  },
-                 title="No. of posts by day")
+                 title="No. of posts by day")'''
     day_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Number of posts per hour -----------------
     hour_freq_df = pd.read_csv("data_csv/statistics/post_frequency_per_hour.csv", sep=',', header=0, skiprows=0)
-    fig = px.bar(hour_freq_df, x="time", y="posts",
+
+    fig = go.Figure(data=[go.Scatter(
+        x=hour_freq_df['time'],
+        y=hour_freq_df['posts'],
+        line_color='rgb(0, 179, 179)',
+        mode='lines+markers')
+    ])
+
+    fig.update_layout(title='No. of posts by hour', title_x=0.5,
+                      xaxis=dict(title='Time', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+
+    '''fig = px.bar(hour_freq_df, x="time", y="posts",
                  labels={
                      "time": "Time",
                      "posts": "No. of posts",
                  },
-                 title="No. of posts by hour")
+                 title="No. of posts by hour")'''
+
     hour_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     #df = db.find_all()
@@ -178,15 +219,42 @@ def questionaire_statistics():
 
     gender_graph_json = pd.read_csv("data_csv/gender_df.csv", sep=',',
                                                   header=0, skiprows=0)
-    fig = px.pie(gender_graph_json, values='Counter', names='Sex',
-                 title='Annotators - Gender Percentage')
+
+    fig = go.Figure(data=[go.Pie(values=gender_graph_json['Counter'], labels=gender_graph_json['Sex'],
+                                 textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                 )])
+    fig.update_layout(title='Annotators - Gender Percentage', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+    colors = ['gold', 'mediumturquoise']
+    fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
+
+
+    '''fig = px.pie(gender_graph_json, values='Counter', names='Sex',
+                 title='Annotators - Gender Percentage')'''
+
     gender_graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #-------------------------------------------------------------------------------------
 
     willing_to_follow_male_df = pd.read_csv("data_csv/willing_to_follow_male_df.csv", sep=',',
                                     header=0, skiprows=0)
-    fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow',
-                 title='Male Annotators - Probability of Following')
+
+    fig = go.Figure(data=[go.Pie(values=willing_to_follow_male_df['Counter'], labels=willing_to_follow_male_df['Willing to follow'],
+                                 textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                 )])
+    fig.update_layout(title='Male Annotators - Probability of Following', title_x=0.5,
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+    colors = ['gold', 'mediumturquoise']
+    fig.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
+
+    '''fig = px.pie(willing_to_follow_male_df, values='Counter', names='Willing to follow',
+                 title='Male Annotators - Probability of Following')'''
+
     willing_to_follow_male_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # -------------------------------------------------------------------------------------
 
@@ -261,11 +329,13 @@ def questionaire_statistics():
 def hashtags():
 
     # ----------------- Hashtags distribution -----------------
-    df = pd.read_csv("data_csv/hashtags/hashtag_distribution.csv", sep=',', header=0, skiprows=0)
+    df = pd.read_csv("data_csv/hashtags/hashtag_distribution.csv", sep=',', header=0, skiprows=0).sort_values(by=['Number of Hashtags'], ascending=True)
 
-    fig = go.Figure(data=[go.Bar(
+    fig = go.Figure(data=[go.Scatter(
         x=df['Number of Hashtags'],
-        y=df['Number of Posts'])
+        y=df['Number of Posts'],
+        line_color='rgb(0, 179, 179)',
+        mode='lines+markers')
     ])
 
     fig.update_layout(title='Hashtags Distribution', title_x=0.5,
@@ -289,7 +359,8 @@ def hashtags():
 
     fig = go.Figure(data=[go.Bar(
         x=df['hashtag'],
-        y=df['count'])
+        y=df['count'],
+        marker_color='rgb(0, 179, 179)')
     ])
 
     fig.update_layout(title='Most Frequent Hashtags', title_x=0.5,
@@ -315,7 +386,8 @@ def hashtags():
 
     fig = go.Figure(data=[go.Bar(
         x=df['category'],
-        y=df['hashtags_count'])
+        y=df['hashtags_count'],
+        marker_color='rgb(0, 179, 179)')
     ])
 
     fig.update_layout(title='No. of total hashtags by category', title_x=0.5,
@@ -340,7 +412,8 @@ def hashtags():
 
     fig = go.Figure(data=[go.Bar(
         x=df['category'],
-        y=df['hashtags_percentage'])
+        y=df['hashtags_percentage'],
+        marker_color='rgb(0, 179, 179)')
     ])
 
     fig.update_layout(title='Percentage of hashtags by category', title_x=0.5,
@@ -365,6 +438,7 @@ def hashtags():
     fig = go.Figure(data=[go.Scatter(
         x=df['hashtag_count'],
         y=df['engagement'],
+        line_color='rgb(0, 179, 179)',
         mode='lines+markers')
     ])
 
