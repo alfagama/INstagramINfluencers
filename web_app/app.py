@@ -42,12 +42,12 @@ def machine_learning():
     f_importance_q = pd.read_csv("static/predictions/f_importance_questionnaire.csv", sep=',',
                                             header=0, skiprows=0)
     fig = go.Figure(data=[go.Bar(
-        x=f_importance_q['feauture'],
+        x=f_importance_q['feature'],
         y=f_importance_q['score'],
         marker_color='rgb(0, 179, 179)')
     ])
 
-    fig.update_layout(title='Feauture Importance - Questionnaire', title_x=0.5,
+    fig.update_layout(title='Feature Importance - Questionnaire', title_x=0.5,
                       xaxis=dict(title='Feautures', showgrid=False, linecolor='rgb(204, 204, 204)'),
                       yaxis=dict(title='Score', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
                                  gridcolor="rgb(204, 204, 204)"),
@@ -56,7 +56,25 @@ def machine_learning():
                       )
     f_importance_q_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template("machine_learning.html", f_importance_q=f_importance_q_graphjson)
+    #-----------------------------------------------------------------------------------------
+    f_importance_m = pd.read_csv("static/predictions/f_importance_mongo.csv", sep=',',
+                                 header=0, skiprows=0)
+    fig = go.Figure(data=[go.Bar(
+        x=f_importance_m['feature'],
+        y=f_importance_m['score'],
+        marker_color='rgb(0, 179, 179)')
+    ])
+
+    fig.update_layout(title='Feature Importance - Crowdtangle', title_x=0.5,
+                      xaxis=dict(title='Features', showgrid=False, linecolor='rgb(204, 204, 204)'),
+                      yaxis=dict(title='Score', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True,
+                                 gridcolor="rgb(204, 204, 204)"),
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      plot_bgcolor='rgba(0,0,0,0)'
+                      )
+    f_importance_m_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template("machine_learning.html", f_importance_q=f_importance_q_graphjson, f_importance_mongo=f_importance_m_graphjson)
 
 
 @app.route("/clustering.html")

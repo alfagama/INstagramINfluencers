@@ -1,13 +1,13 @@
-feauture,score
-gender,0.02601
-age,0.09420
-likeable,0.13258
-creative,0.10059
-emotionally balanced,0.04701
-extrovert,0.06798
-no-coherence,0.04972
-narcissus,0.06036
-temperamental,0.04884
-reliable,0.06438
-fitness_trust,0.18529
-other_trust,0.12303
+feature,score
+Gender,0.02601
+Age,0.09420
+Likeable,0.13258
+Creative,0.10059
+Calm / Emotionally Balanced,0.04701
+Outgoing,0.06798
+Post Cohesion,0.04972
+Narcissus,0.06036
+Short-Tempered,0.04884
+Professional,0.06438
+Fitness Advice,0.18529
+General Advice,0.12303
