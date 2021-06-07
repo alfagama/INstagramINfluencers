@@ -582,12 +582,42 @@ def hashtags():
         mode='lines+markers')
     ])
 
+    '''fig.me = [
+        dict(
+            type="buttons",
+            direction="left",
+            buttons=list([
+                dict(
+                    args=[{'yaxis': {'type': 'linear'}}],
+                    label="Linear Scale",
+                    method="update"
+                ),
+                dict(
+                    args=[{'yaxis': {'type': 'log'}}],
+                    label="Log Scale",
+                    method="update"
+                )
+            ])
+        ),
+    ]'''
     fig.update_layout(title='Hashtags Distribution', title_x=0.5,
                       xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)', zeroline=False),
                       yaxis=dict(title='No. of posts', showgrid=True, linecolor='rgb(204, 204, 204)', showline=True, gridcolor="rgb(204, 204, 204)",
                                  zeroline=True, zerolinecolor='rgb(204, 204, 204)', zerolinewidth=1),
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)'
+                      plot_bgcolor='rgba(0,0,0,0)',
+                      updatemenus=[
+                          dict(
+                              x=1.01,
+                              xanchor="left",
+                              buttons=list([
+                                  dict(label="Linear",
+                                       method="relayout",
+                                       args=[{"yaxis.type": "linear"}]),
+                                  dict(label="Log",
+                                       method="relayout",
+                                       args=[{"yaxis.type": "log"}])
+                              ]))]
                       )
 
     hashtags_distribution_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -619,6 +649,8 @@ def hashtags():
         line_color='rgb(0, 179, 179)',
         mode='lines+markers')
     ])
+    fig.update_yaxes(type="log")
+
 
     fig.update_layout(title='User engagement - Νumber of hashtags', title_x=0.5,
                       xaxis=dict(title='No. of hashtags', showgrid=False, linecolor='rgb(204, 204, 204)',
@@ -626,7 +658,19 @@ def hashtags():
                       yaxis=dict(title='User engagement (comments & likes)', showgrid=True, linecolor='rgb(204, 204, 204)',
                                  showline=True, gridcolor="rgb(204, 204, 204)", zeroline=True, zerolinecolor='rgb(204, 204, 204)', zerolinewidth=1),
                       paper_bgcolor='rgba(0,0,0,0)',
-                      plot_bgcolor='rgba(0,0,0,0)'
+                      plot_bgcolor='rgba(0,0,0,0)',
+                      updatemenus=[
+                          dict(
+                              x=1.01,
+                              xanchor="left",
+                              buttons=list([
+                                  dict(label="Linear",
+                                       method="relayout",
+                                       args=[{"yaxis.type": "linear"}]),
+                                  dict(label="Log",
+                                       method="relayout",
+                                       args=[{"yaxis.type": "log"}])
+                              ]))]
                       )
 
     hashtags_engagement_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -668,7 +712,7 @@ def hashtags():
     hashtags_PCA_graphjson = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # ----------------- Hashtags PCA 3D -----------------
-    df = pd.read_csv("data_csv/hashtags/hashtags_3d.csv", sep=',', header=0, skiprows=0)
+    df = pd.read_csv("data_csv/hashtags/hashtags_2d.csv", sep=',', header=0, skiprows=0)
     print(df)
     fig = go.Figure(data=[go.Scatter3d(
         x=df['x'],
