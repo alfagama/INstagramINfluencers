@@ -55,21 +55,21 @@ The goal of this project is to study and explore in depth the effects of fitness
     │   │   └── .csv
     │   ├── funcs
     │   │   └── db.py
-    │   ├── static
-    │   │   ├── predictions
-    │   │   │   └── .csv
-    │   │   └── stylesheets
-    │   │   │   ├── pics
-    │   │   │   │   └── .png
-    │   │   │   ├── visualizations/LDA
-    │   │   │   │   └── .html
-    │   │   │   ├── .html
-    │   │   │   └── .css
-    │   │   ├── wordCloud_plots
-    │   │   │   └── .png
-    │   │   │   ├── .css
-    │   │   │   ├── .js
-    │   │   └── app.py
+    │   └── static
+    │       ├── predictions
+    │       │   └── .csv
+    │       └── stylesheets
+    │       │   ├── pics
+    │       │   │   └── .png
+    │       │   ├── visualizations/LDA
+    │       │   │   └── .html
+    │       │   ├── .html
+    │       │   └── .css
+    │       ├── wordCloud_plots
+    │       │   └── .png
+    │       │   ├── .css
+    │       │   └── .js
+    │       └── app.py
     ├── .gitingnore
     ├── LICENSE
     └── README.md
