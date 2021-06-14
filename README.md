@@ -36,6 +36,8 @@ The goal of this project is to study and explore in depth the effects of fitness
     │   ├── read_data.py
     │   ├── scraper.py
     │   └── update_influencer_demographics.py
+    ├── hashtags_analysis
+    │   └── hashtags_clustering.py
     ├── predictions
     │   ├── final_questionnaire.csv
     │   ├── mongoInfo.png
