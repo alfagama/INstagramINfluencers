@@ -81,5 +81,6 @@ pip install -r requirements.txt
     │       └── app.py
     ├── .gitingnore
     ├── LICENSE
-    └── README.md
+    ├── README.md
+    └── requirements.txt
 ```
