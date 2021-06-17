@@ -12,7 +12,7 @@
 4. Leonidas Vogiatzis
 
 ----------------------------------------------------
-## [Technical Report] (pdf)
+## [Technical Report](https://drive.google.com/file/d/1OMUhIAEuvtnDlUE6VoKs8e8ubJf34T3Y/view?usp=sharing)
 
 ----------------------------------------------------
 **Project Overview**:
