@@ -16,12 +16,9 @@
 
 ----------------------------------------------------
 **Project Overview**:
-@settings {
-  font-size: 100;
-}
 The goal of this project is to study and explore in depth the effects of fitness influencers personality on audience acceptance and motivation, aiming at a better overview of the topic. This includes analyzing behavioural patterns of influencers active on the Instagram social media platform and detecting which aspects of their activities are more commonly endorsed by other users.
-----------------------------------------------------
 
+----------------------------------------------------
 ## Create a python virtual environment:
 
 ```sh
