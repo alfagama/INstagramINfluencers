@@ -68,7 +68,7 @@ def all_descriptions():
     """
     data = db.get_posts()
     posts = ' '.join(map(str, data.Description.values))
-    words = re.findall(r'\b\S+\b', posts)
+    words = re.findall(r'\b\w{2,}\b', posts)
     wordcloud1 = WordCloud(collocations=True, width=2000, height=1000, background_color="black").generate(
         ' '.join(words))
     plt.figure(figsize=[20, 10])
@@ -95,7 +95,7 @@ def all_comments():
                     if something:
                         comments_list.append(something)
     posts = ' '.join(map(str, comments_list))
-    words = re.findall(r'\b\S+\b', posts)
+    words = re.findall(r'\b\w{2,}\b', posts)
     wordcloud1 = WordCloud(collocations=True, width=2000, height=1000, background_color="black").generate(
         ' '.join(words))
     plt.figure(figsize=[20, 10])
